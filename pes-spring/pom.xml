@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>sk.kaspian.pes</groupId>
+	<artifactId>pes</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>pes-spring</name>
+	<description>PES aplication for Kaspian</description>
+	<properties>
+		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<spring-cloud.version>2020.0.3</spring-cloud.version>
+		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<groups>fast,it</groups>
+
+		<!-- Spring Boot Versions override -->
+		<hazelcast.version>3.12.12</hazelcast.version>
+		
+		<!-- non Spring Boot dependencies -->
+		<equalsverifier.version>3.5.5</equalsverifier.version><!-- 3.6.1,3.7.2,3.8 -->
+		<spring-admin-client.version>2.5.4</spring-admin-client.version>
+		<dom4j.version>2.1.3</dom4j.version>
+
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<db.profile>postgres</db.profile>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- Spring Session Dependencies -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-hazelcast</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-common</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.1</version>
+			<!-- This is bug in open api generator to used unused import https://github.com/OpenAPITools/openapi-generator/issues/2901 -->
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	    <dependency>
+	        <groupId>org.projectlombok</groupId>
+	        <artifactId>lombok</artifactId>
+	        <scope>provided</scope>
+	    </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+						<configuration>
+							<additionalProperties>
+								<java.version>${java.version}</java.version>
+							</additionalProperties>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.3.0</version>
+				<executions>
+					<execution>
+						<id>generate-portfolio-server</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/pes.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<addCompileSourceRoot>true</addCompileSourceRoot>
+							<configOptions>
+								<modelPackage>sk.kaspian.pes.openapi.model.v1</modelPackage>
+								<apiPackage>sk.kaspian.pes.openapi.server.controller.v1</apiPackage>
+								<swaggerDocketConfig>false</swaggerDocketConfig>
+								<configPackage>sk.kaspian.pes.openapi.server.config</configPackage>
+								<useOptional>true</useOptional>
+								<returnSuccessCode>false</returnSuccessCode>
+								<useTags>false</useTags>
+								<virtualService>false</virtualService>
+								<dateLibrary>java8</dateLibrary>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<interfaceOnly>true</interfaceOnly>
+								<skipDefaultInterface>true</skipDefaultInterface>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+<profiles>
+	<profile>
+		<id>postgres</id>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+		<properties>
+			<db.profile>postgres</db.profile>
+			<spring.profiles.active>postgres</spring.profiles.active>
+			<spring-boot.run.profiles>postgres</spring-boot.run.profiles>
+			<flyway.driver>org.postgresql.Driver</flyway.driver>
+			<flyway.url>${env.DB_JDBC_URL}</flyway.url>
+			<flyway.user>${env.DB_USERNAME}</flyway.user>
+			<flyway.password>${env.DB_PASSWORD}</flyway.password>
+			<flyway.locations>filesystem:src\main\resources\db\specific\postgres</flyway.locations>
+		</properties>
+	</profile>
+	<profile>
+		<id>db-env-defaults</id>
+		<activation>
+			<property>
+				<name>!env.DB_JDBC_URL</name>
+			</property>
+		</activation>
+		<properties>
+			<env.DB_JDBC_URL>jdbc:postgresql://localhost:5434/pes_prod?currentSchema=pes</env.DB_JDBC_URL>
+			<env.DB_USERNAME>postgres</env.DB_USERNAME>
+			<env.DB_PASSWORD>PASSWORD</env.DB_PASSWORD>
+		</properties>
+	</profile>
+</profiles>
+</project>

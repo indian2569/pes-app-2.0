@@ -1,0 +1,38 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xml:lang="en">
+<head>
+  <title>Kaspian: PES System API</title>
+  <meta charset="utf-8">
+  <script type="module" src="https://unpkg.com/rapidoc@9.1.3/dist/rapidoc-min.js"></script> 
+  <!--https://unpkg.com/rapidoc/dist/rapidoc-min.js ERROR in 9.1.4 for Examples dropdown -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    rapi-doc p {
+      padding: 0 !important;
+    }
+  </style>
+ </head>
+<body>
+  <rapi-doc 
+    spec-url="/v3/api-docs" render-style="read" 
+    show-header="false"
+    header-color="#2d87e2" 
+    nav-bg-color = "#02264B"
+    regular-font="Open Sans"
+    mono-font = "Roboto Mono"
+    allow-server-selection = "false"
+    schema-style="tree"
+    allow-spec-url-load="false"
+    allow-spec-file-load="false"
+  > 
+	<p slot="nav-logo" style="text-align:center; font-size: 14px; font-weight:700; margin: 0; color: var(--nav-accent-color)" 
+		th:text="'Version ' + ${version}">
+	<p>	
+	<p slot="nav-logo" style="text-align:center; font-size: 13px; margin: 0" 
+		th:text="${#temporals.formatISO(buildDate)}">
+	<p>	
+  </rapi-doc>
+</body> 
+</html>

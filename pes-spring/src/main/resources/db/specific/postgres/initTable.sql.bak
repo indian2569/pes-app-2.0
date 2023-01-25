@@ -1,0 +1,78 @@
+-- Initializing all table for DB
+CREATE TABLE IF NOT EXISTS campaigne (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE campaigne	IS 'Collection of campaigne';
+
+CREATE TABLE IF NOT EXISTS event (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE event	IS 'Collection of event';
+
+CREATE TABLE IF NOT EXISTS coworker (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE coworker	IS 'Collection of coworker';
+
+CREATE TABLE IF NOT EXISTS institution (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE institution	IS 'Collection of institution';
+
+CREATE TABLE IF NOT EXISTS method (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE method	IS 'Collection of method';
+
+CREATE TABLE IF NOT EXISTS program (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE program	IS 'Collection of program';
+
+CREATE TABLE IF NOT EXISTS entry (
+	id	bigserial	PRIMARY KEY
+,	client_id	bigserial	NOT NULL UNIQUE
+,	entry_date_from	timestamptz
+,	entry_date_to timestamptz
+,	place	text
+,	contactType	text
+,	campaign_id	bigserial
+,	program_type_id	bigserial
+,	event_description	 text
+,	fast_message	text
+
+);
+COMMENT ON TABLE program	IS 'Collection of entry';
+
+CREATE TABLE IF NOT EXISTS card (
+	id	bigserial	PRIMARY KEY
+,	name	text		NOT NULL UNIQUE
+,	description	text
+,	active BOOLEAN NOT NULL
+
+);
+COMMENT ON TABLE program	IS 'Collection of card';

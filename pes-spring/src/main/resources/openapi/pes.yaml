@@ -1,0 +1,1352 @@
+openapi: 3.0.3
+info:
+  title: Kaspian PES application API
+  description: "kaspian: PES application API Documentation"
+  termsOfService: http://kaspian.sk/terms/
+  contact:
+    email: kaspian@kaspian.sk
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+externalDocs:
+  description: Find out more
+  url: http://kapian.com/pes
+servers:
+  - url: https://pes.kaspian.sk/v1
+tags:
+  - name: Authentication
+    description: Authentication 
+  - name: Cards
+    description: Tools for Cards
+  - name: Entrys
+    description: Tools for Entrys
+  - name: Events
+    description: Tools for Events
+  - name: Campaigns
+    description: Tools for Campaigns
+  - name: Coworkers
+    description: Tools for Coworkers
+  - name: Institutions
+    description: Tools for Institutions
+  - name: Methods
+    description: Tools for Methods
+  - name: Programs
+    description: Tools for Programs
+paths:
+  /card/save:
+    post: 
+      security:
+        - bearerAuth: []
+      tags: 
+        - Cards
+      summary: Save object type of Card
+      operationId: saveCard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+      responses:
+        201:
+          description: "Successfully saved Card"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /card/{code}:
+    get: 
+      security:
+        - bearerAuth: []
+      tags: 
+        - Cards
+      summary: Return object type of Card base on code
+      operationId: getCard
+      parameters:
+        - in: path
+          name: code
+          description: String code of card
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Card"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Cards
+      summary: Remove object type of Card
+      operationId: deleteCard
+      parameters:
+        - in: path
+          name: code
+          description: String code of card
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Card"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /card/allCards:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Cards
+      summary: Return all cards
+      operationId: getAllCard
+      responses:
+        200:
+          description: "Successfully get All Cards"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /entry/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Entrys
+      summary: Save object type of Entry
+      operationId: saveEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entry'
+      responses:
+        201:
+          description: "Successfully saved Entry"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /entry/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Entrys
+      summary: Return object type of Entry base on code
+      operationId: getEntry
+      parameters:
+        - in: path
+          name: code
+          description: String code of entry
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Entry"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Entrys
+      summary: Remove object type of Entry
+      operationId: deleteEntry
+      parameters:
+        - in: path
+          name: code
+          description: String code of entry
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Entry"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /entry/allEntrys:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Entrys
+      summary: Return all entrys
+      operationId: getAllEntry
+      responses:
+        200:
+          description: "Successfully get All Entrys"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /entry/allCardEntrys:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Return all entrys for selected card
+      operationId: getAllCardEntrys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+      responses:
+        200:
+          description: "Successfully get All cards entrys"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /entry/newUserEntrys:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Return 5 newest events for user
+      operationId: getNewUserEntrys
+      responses:
+        200:
+          description: "Successfully get All entrys"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /event/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Save object type of Event
+      operationId: saveEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        201:
+          description: "Successfully saved Event"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /event/{code}:
+    get: 
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Return object type of Event base on code
+      operationId: getEvent
+      parameters:
+        - in: path
+          name: code
+          description: String code of event
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Event"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Remove object type of Event
+      operationId: deleteEvent
+      parameters:
+        - in: path
+          name: code
+          description: String code of event
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Event"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /event/allEvents:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Events
+      summary: Return all events
+      operationId: getAllEvent
+      responses:
+        200:
+          description: "Successfully get All Events"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /campaign/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Campaigns
+      summary: Save object type of Campaign
+      operationId: saveCampaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+      responses:
+        201:
+          description: "Successfully saved Campaign"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /campaign/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Campaigns
+      summary: Return object type of Campaign base on code
+      operationId: getCampaign
+      parameters:
+        - in: path
+          name: code
+          description: String code of campaign
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Campaign"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Campaigns
+      summary: Remove object type of Campaign
+      operationId: deleteCampaign
+      parameters:
+        - in: path
+          name: code
+          description: String code of campaign
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Campaign"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /campaign/allCampaigns:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Campaigns
+      summary: Return all campaigns
+      operationId: getAllCampaign
+      responses:
+        200:
+          description: "Successfully get All Campaigns"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /coworker/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Coworkers
+      summary: Save object type of Coworker
+      operationId: saveCoworker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Coworker'
+      responses:
+        201:
+          description: "Successfully saved Coworker"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coworker'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /coworker/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Coworkers
+      summary: Return object type of Coworker base on code
+      operationId: getCoworker
+      parameters:
+        - in: path
+          name: code
+          description: String code of coworker
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Coworker"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coworker'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Coworkers
+      summary: Remove object type of Coworker
+      operationId: deleteCoworker
+      parameters:
+        - in: path
+          name: code
+          description: String code of coworker
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Coworker"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /coworker/allCoworkers:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Coworkers
+      summary: Return all coworkers
+      operationId: getAllCoworker
+      responses:
+        200:
+          description: "Successfully get All Coworkers"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coworker'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /institution/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Institutions
+      summary: Save object type of Institutions
+      operationId: saveInstitutions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Institution'
+      responses:
+        201:
+          description: "Successfully saved Institution"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /institution/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Institutions
+      summary: Return object type of Institutions base on code
+      operationId: getInstitutions
+      parameters:
+        - in: path
+          name: code
+          description: String code of institutions
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Institution"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Institutions
+      summary: Remove object type of Institutions
+      operationId: deleteInstitutions
+      parameters:
+        - in: path
+          name: code
+          description: String code of institutions
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Institution"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /institution/allInstitutions:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Institutions
+      summary: Return all institutions
+      operationId: getAllInstitutions
+      responses:
+        200:
+          description: "Successfully get All Institutions"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Institution'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /method/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Methods
+      summary: Save object type of Method
+      operationId: saveMethods
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Method'
+      responses:
+        201:
+          description: "Successfully saved Method"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Method'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /method/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Methods
+      summary: Return object type of Method base on code
+      operationId: getMethods
+      parameters:
+        - in: path
+          name: code
+          description: String code of method
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Method"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Method'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Methods
+      summary: Remove object type of Methods
+      operationId: deleteMethods
+      parameters:
+        - in: path
+          name: code
+          description: String code of method
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Method"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /method/allMethods:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Methods
+      summary: Return all method
+      operationId: getAllMethods
+      responses:
+        200:
+          description: "Successfully get All Methods"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Method'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /program/save:
+    post:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Programs
+      summary: Save object type of Program
+      operationId: savePrograms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Program'
+      responses:
+        201:
+          description: "Successfully saved Program"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /program/{code}:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Programs
+      summary: Return object type of Programs base on code
+      operationId: getPrograms
+      parameters:
+        - in: path
+          name: code
+          description: String code of program
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Program"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Programs
+      summary: Remove object type of Program
+      operationId: deletePrograms
+      parameters:
+        - in: path
+          name: code
+          description: String code of program
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: "Successfully removed Program"
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /program/allPrograms:
+    get:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Programs
+      summary: Return all program
+      operationId: getAllPrograms
+      responses:
+        200:
+          description: "Successfully get All Programs"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate and create session
+      security:
+        - bearerAuth: []
+      operationId: login
+      responses:
+        200:
+          description: Identity successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditIdentity'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /auth/access:
+    get:
+      tags:
+        - Authentication
+      summary: Get authenticated informations
+      security:
+        - authSessionToken: []
+      operationId: checkAccess
+      responses:
+        200:
+          description: Identity successfully authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditIdentity'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        500:
+          $ref: '#/components/responses/SystemException'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    authSessionToken:
+      type: apiKey
+      in: header
+      name: X-Auth-Token
+      description: Include the `X-Auth-Token` header for session identification.    
+  responses:
+    EntityNotFound:
+      description: "Entity not found"
+    BadGatewayException:
+      description: "Target processable service unreachable"
+    SystemException:
+      description: "A system error occurred in the service call"
+    InvalidRequest:
+      description: "The request does not match the specification"
+    URLNotExist:
+      description: "Given URL does not exist"
+    UnauthorizedError:
+      description: "Access token is missing or invalid"
+    AccessDenied:
+      description: "Access denied - insufficient rights"
+  schemas:
+    Card:
+      description: "Card object"
+      type: object
+      properties:
+        id: 
+          type: number
+        client_nick:
+          type: string
+        client_gender:
+          type: string
+        client_anamnesis:
+          type: string
+        client_dev_plan:
+          type: string
+        clint_age:
+          type: string
+        client_birth_year:
+          type: string
+        client_name:
+          type: string
+        client_surname:
+          type: string
+        client_birth_date:
+          type: string
+        client_family_status:
+          type: string
+        client_citizenship:
+          type: string
+        client_address:
+          type: string
+        client_phone:
+          type: string
+        client_email:
+          type: string
+        client_socnet:
+          type: string
+        client_health:
+          type: string
+        client_income:
+          type: string
+        client_belongings:
+          type: string
+        client_other_institutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Institution'
+        createdBy:
+          type: string
+        status:
+          type: string
+        createDate:
+          type: string
+    Entry:
+      description: "Entry object"
+      type: object
+      properties:
+        id: 
+          type: number
+        client:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        client_on_site:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        entry_date_from:
+          type: string
+        entry_date_to:
+          type: string
+        place:
+          type: string
+        contact_type:
+          type: string
+        campaign:
+          $ref: '#/components/schemas/Campaign'
+        program_type:
+          $ref: '#/components/schemas/Program'
+        work_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Method'
+        other_workers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coworker'
+        event_description:
+          type: string
+        fast_message:
+          type: string
+    Event:
+      description: "Event object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+    Campaign:
+      description: "Campaign object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+    Coworker:
+      description: "Coworker object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        position:
+          type: string
+        active:
+          type: boolean
+    Institution:
+      description: "Institution object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+    Method:
+      description: "Methods object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+    Program:
+      description: "Programs object"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+    LoginRequest:
+      description: "Login object"
+      type: object
+      properties:
+        username: 
+          type: string
+        password:
+          type: string
+    SignUpRequest:
+      description: "Login object"
+      type: object
+      properties:
+        username: 
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        roles:
+          type: array
+          items: 
+            type: string
+    LogUser:
+      description: "Programs object"
+      type: object
+      properties:
+        jwt: 
+          type: string
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        roles:
+          type: array
+          items: 
+            type: string
+    MessageResponse:
+      description: "user registration response"
+      type: object
+      properties: 
+        message: 
+          type: string
+    AuditIdentity:
+      type: object
+      required:
+        - sid
+        - provider
+      properties:
+        sid:
+          type: string
+          description: Unique identity identificator
+        name:
+          type: string
+          description: Common readable name
+        provider:
+          type: string
+          description: Authentication provider identification
+        expressNbr:
+          type: string
+          description: Special identification for FT
+        session:
+          $ref: "#/components/schemas/SessionInfo"
+      description: Identification of Identity (User)
+      readOnly: true
+      example:
+        sid: 96009540
+        name: Chris Thorthon
+        provider: authority.com
+    SessionInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identity identificator
+        created:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time

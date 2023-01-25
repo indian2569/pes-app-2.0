@@ -1,0 +1,55 @@
+app:
+  validation:
+    weightSumTolerance: 0.0005
+
+spring:
+  profiles:
+    active: postgres
+  main:  
+   banner-mode: off
+  application:
+    name: pes
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming.implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    properties:
+      hibernate: 
+        jdbc:
+          batch-size: 20
+        show_sql: true
+        cache:
+          use_second_level_cache: false
+
+  jackson:
+    serialization:
+      indent-output: true
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non-empty   
+  boot.admin.client.url:  ${ADMIN_SERVER_URL:}   
+
+management:
+  endpoints.web.exposure.include: "*"
+  metrics.web.server.request.autotime.enabled: true
+
+
+server:
+  error:
+    include-message: always
+
+logging:
+  level:
+#    root: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    org.springframework.cache: trace
+    org.springframework.security: debug
+    sk.kaspian.pes: debug
+
+bezkoder:
+  app:
+    jwtSecret: bezKoderSecretKey
+    jwtExpirationMs: 86400000
