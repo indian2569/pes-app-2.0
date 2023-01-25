@@ -1,0 +1,85 @@
+<mat-card>
+  <h3> {{title}}</h3>
+  <form class="mainComponent" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <chips-input title = "Klienti:" [dataSet]="cards"
+      [parentForm]="formGroup" #client></chips-input>
+      <chips-input title = "Klienti na službe:" [dataSet]="cards"
+      [parentForm]="formGroup" #otherClientsInput></chips-input>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="one_half first">
+        <mat-label>Dátum od: </mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker1" formControlName="entry_date_from" [readonly]="readonly">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker [startAt]="date" #picker1></ngx-mat-datetime-picker>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="one_half">
+        <mat-label>Dátum do: </mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker2" formControlName="entry_date_to" [readonly]="readonly">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker [startAt]="date" #picker2></ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="one_half first" appearance="fill">
+        <mat-label>Miesto výkonu:</mat-label>
+        <input matInput type="text" formControlName="place" [readonly]="readonly">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="one_half">
+      <mat-label>Typ kontaktu:</mat-label>
+      <mat-select formControlName="contact_type" [disabled]="readonly">
+          <mat-option *ngFor="let contact of contactTypes" [value]="contact">
+            {{ContractEnum2LabelMapping[contact]}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="one_half first">
+      <mat-label>Typ kampane:</mat-label>
+      <mat-select formControlName="campaign" [disabled]="readonly">
+          <mat-option *ngFor="let campaign of campaigns" [value]="campaign">
+            {{campaign.name}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="one_half">
+      <mat-label>Program:</mat-label>
+      <mat-select formControlName="program_type" [disabled]="readonly">
+          <mat-option *ngFor="let program of programs" [value]="program">
+            {{program.name}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="one_half first" appearance="fill">
+        <mat-label>Metódy práce:</mat-label>
+        <mat-select formControlName="work_methods" [disabled]="readonly">
+          <mat-option *ngFor="let method of methods" [value]="method">
+            {{method.name}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <chips-input title = "Ďalší pracovníci:" [parentForm]="formGroup" [dataSet]="contacts" #coworkersInput></chips-input>
+    </div>
+    <div class="divider5"></div>
+    <div class="row">
+      <mat-form-field class="example-form-field textarea" appearance="fill">
+        <mat-label>Popis dôležitých udalostí:</mat-label>
+        <textarea matInput type="text" formControlName="event_description" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-form-field textarea" appearance="fill">
+        <mat-label>Rýchla správa:</mat-label>
+        <textarea matInput type="text" formControlName="fast_message" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="divider5"></div>
+    <div class="button-row">
+      <button type="submit" mat-flat-button color="primary" >Pridať</button>
+    </div>
+  </form>
+</mat-card>

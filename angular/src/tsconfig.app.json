@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "outDir": "../out-tsc/app",
+    "baseUrl": "",
+    "types": []
+  },
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

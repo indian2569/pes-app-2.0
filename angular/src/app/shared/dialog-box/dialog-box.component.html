@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{descriptionText}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="reportForm" *ngIf="action != 'Delete'; else elseTemplate">
+    <mat-form-field class="field-name" appearance="fill">
+      <mat-label>Názov:</mat-label>
+      <input matInput type="text" formControlName="name"/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field class="field-description" appearance="fill">
+      <mat-label>Popis:</mat-label>
+      <textarea matInput type="text" formControlName="description" rows="9" maxlength="1500"></textarea>
+    </mat-form-field>
+  </form>       
+  <ng-template #elseTemplate>
+      Nazaj chceš vymazať tento objekt <b>{{data.name}}</b>?
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="doAction()">{{buttonText}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Zrušiť</button>
+</div>

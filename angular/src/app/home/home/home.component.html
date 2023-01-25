@@ -1,0 +1,14 @@
+<div class="home-public" *ngIf="!isLoggedIn()">
+  <h1 >Program Evidencie Služieb</h1>
+  <h3 >Pre začiatok práce s programom sa prosím prihláste.</h3>
+<div >Mám email v rámci domény organizácie: <button (click)="redirectLoginUrl()">Prihlasiť sa</button></div>
+<div >Chcem použiť alebo registrovať vlastný email: <button  (click)="redirectLoginUrl()">Prihlásiť</button> <button  (click)="redirectRegisterUrl()"> Registrovať sa</button></div>
+</div>
+<div class="home-private" *ngIf="isLoggedIn()">
+  	<h1 >Program Evidencie Služieb</h1>
+  	<h3 >Statistiky</h3>
+	<div >Naposledy pridané zaznami</div>
+	<app-table-records tableData = ""></app-table-records>
+</div>
+
+

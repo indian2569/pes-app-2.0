@@ -1,0 +1,47 @@
+<table mat-table [dataSource]="dataSource" #mytable class="simple-table mat-elevation-z8">
+
+    <!-- entry_date_from Column -->
+    <ng-container matColumnDef="entry_date_from" class="table-entry_date_from">
+      <th mat-header-cell *matHeaderCellDef> Datum </th>
+      <td mat-cell *matCellDef="let element"> {{element.entry_date_from}} </td>
+    </ng-container>
+
+    <!-- place Column -->
+    <ng-container matColumnDef="place"  class="table-place">
+      <th mat-header-cell *matHeaderCellDef> Miesto: </th>
+      <td mat-cell *matCellDef="let element"> {{element.place}} </td>
+    </ng-container>
+
+    <!-- duration Column -->
+    <ng-container matColumnDef="duration" class="table-duration">
+      <th mat-header-cell *matHeaderCellDef> Trvanie </th>
+      <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+    </ng-container>
+
+    <!-- createdBy Column -->
+    <ng-container  matColumnDef="createdBy" class="table-createdBy">
+      <th mat-header-cell *matHeaderCellDef> Pridal </th>
+      <td mat-cell *matCellDef="let element"> {{element.createdBy}} </td>
+    </ng-container>
+    <!-- program_type Column -->
+    <ng-container  matColumnDef="program_type" class="table-program_type">
+      <th mat-header-cell *matHeaderCellDef> Program </th>
+      <td mat-cell *matCellDef="let element"> {{element.program_type}} </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action"  class="table-action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element" class="action-link"> 
+        <button type="button" (click)="openDialog('Update',element)" class="btn btn-link btn-sm btn-rounded">
+          Upraviť
+        </button>
+        <button type="button" (click)="openDialog('Delete',element)" class="btn btn-link btn-sm btn-rounded">
+          Vymazať
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

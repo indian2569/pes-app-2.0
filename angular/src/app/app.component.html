@@ -1,0 +1,64 @@
+<div id="hgroup">
+        <img src="assets/images/pes-logo-header.png" alt="PES" class="logo-view"/>
+</div>
+<div class="navbar">
+    <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+    <div class="dropdown">
+       <button class="dropbtn">Zaznamy 
+          <i class="fa fa-caret-down"></i>
+       </button>
+       <div class="dropdown-content">
+          <a [routerLink]="['entry_line/add_entry']" routerLinkActive="active">Pridať záznam o kontakte</a>
+          <a [routerLink]="['entry_line/all_entry']" routerLinkActive="active">Zobraziť všetky záznamy</a>
+       </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Karty 
+          <i class="fa fa-caret-down"></i>
+       </button>
+       <div class="dropdown-content">
+          <a [routerLink]="['card_line/add_card']" routerLinkActive="active">Nová karta klienta</a>
+          <a [routerLink]="['card_line/all_cards']" routerLinkActive="active">Zobraziť všetky karty</a>
+       </div>
+    </div>
+    <a routerLink="/report" routerLinkActive="active" class="nav-link">Štatistiky</a>
+	  <div class="dropdown">
+      <button class="dropbtn">O Programe
+          <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+          <a [routerLink]="['info/support']" routerLinkActive="active">Podpora / Problémy</a>
+          <a [routerLink]="['info/about_statistic']" routerLinkActive="active">Nápoveda pre štatistiku</a>
+          <a [routerLink]="['info/about_program']" routerLinkActive="active">Informácie o programe</a>
+      </div>
+	  </div>
+	  <div class="dropdown">
+      <button class="dropbtn">Nastavenia
+          <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+          <a [routerLink]="['setting/other_institutions']" routerLinkActive="active">Iných inštitúcií</a>
+          <a [routerLink]="['setting/campaigns']" routerLinkActive="active">Kampane</a>
+          <a [routerLink]="['setting/methods']" routerLinkActive="active">Metódy práce</a>
+          <a [routerLink]="['setting/programs']" routerLinkActive="active">Programy</a>
+          <a [routerLink]="['setting/coworkers']" routerLinkActive="active">Spolupracovníci</a>
+          <a [routerLink]="['setting/events']" routerLinkActive="active">Udalosti</a>
+      </div>
+    </div>
+    <a href="/admin" class="nav-link right" routerLink="admin" *ngIf="showAdminBoard">Admin Board</a>
+    <a href="/mod" class="nav-link right" routerLink="mod" *ngIf="showModeratorBoard">Moderator Board</a>
+	<div class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+      <a href="/register" class="nav-link right" routerLink="register">Zaregistrovať sa</a>
+      <a href="/login" class="nav-link  right" routerLink="login">Prihlásiť sa</a>
+    </div>
+    <div class="navbar-nav ml-auto right" *ngIf="isLoggedIn">
+        <a href="/profile" class="nav-link right" routerLink="profile">Prihlasení ako: {{ username }}</a>
+        <a href class="nav-link right" (click)="logout()">Odhlásiť sa</a>
+    </div>
+</div>
+
+  <div class="container mt-3">
+    <router-outlet></router-outlet>
+  </div>
+
+

@@ -1,0 +1,34 @@
+<div class="one_half">
+	<h2>Štatistiky</h2>
+	<div id="respond">
+		<form id="stat-form" class="rnd5">
+			<div class="form-input clear">
+				<div class="row">
+					<label class="one_half first" for="stat-date-from">Za obdobie od: <span class="red">*</span><br> 
+						<input type="text" name="stat-date-from" id="stat-date-from" data-parsley-required="true" pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" data-parsley-group="block1" class="tooltip hasDatepicker tooltipstered" data-parsley-id="7839">
+					</label>
+					<label class="one_half" for="stat-date-to">do: <span class="red">*</span><br> 
+						<input type="text" name="stat-date-to" id="stat-date-to" data-parsley-required="true" pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" data-parsley-group="block1" class="tooltip hasDatepicker tooltipstered" data-parsley-id="1963">
+					</label>
+				</div>
+			</div>
+			<div class="form-input clear">
+				<label for="s2id_autogen1" class="select2-offscreen">Typ štatistiky: 
+				<select name="stat-type" id="stat-type" class="full_width tooltip select2-offscreen tooltipstered" data-parsley-required="true" data-parsley-group="block1" data-parsley-id="4479" tabindex="-1">
+									<option></option>
+									<option value="stat-specific-kaspian">Kaspian špecifická štatistika</option>
+									<option value="stat-bsk">Štatistika pre BSK - aktuálny rok</option>
+									<option value="stat-bsk-past">Štatistika pre BSK - predošlé roky</option>
+									<option value="stat-export">Export štatistiky</option>
+								</select><ul class="parsley-errors-list" id="parsley-id-4479"></ul>
+				</label>						
+			</div>					
+			<div class="push15"></div>
+			<p>
+				<input type="submit" id="stat-submit" value="Zobraziť" class="button small orange">
+				<img src="/images/spinner-sb.gif" style="display: none; margin-left: 5px;" id="loading_image">
+			</p>
+		</form>
+	</div>
+
+</div>

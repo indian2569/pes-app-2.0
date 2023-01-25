@@ -1,0 +1,151 @@
+<div class="flex-container wrap">
+<div class="flex-item">
+	<div class="mainComponent centered">
+	<h3> {{title}}</h3>
+	<mat-card>
+		<form  [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+			<div class = "row">
+				<mat-form-field class="example-form-field half_width" appearance="fill">
+	        		<mat-label>Klient</mat-label>
+	        		<input matInput type="text" formControlName="client_nick" [readonly]="readonly">
+	      		</mat-form-field>
+			</div>
+			<div class = "row">
+				<mat-form-field class="example-form-field half_width" appearance="fill">
+	        		<mat-label>Rok narodenia</mat-label>
+	        		<input matInput type="text" formControlName="client_birth_year" [readonly]="readonly">
+				</mat-form-field>
+				<mat-form-field class="example-form-field half_width" appearance="fill">
+	        		<mat-label>Pohlavie</mat-label>
+	        		<input matInput type="text" formControlName="client_gender" [readonly]="readonly">
+	      		</mat-form-field>
+			</div>
+			<div class = "row">
+				<mat-form-field class="example-form-field textarea" appearance="fill">
+	        		<mat-label>Anamnéza</mat-label>
+	        		<textarea matInput type="text" formControlName="client_anamnesis" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
+	      		</mat-form-field>
+			</div>
+			<div class = "row">
+				<mat-form-field class="example-form-field textarea" appearance="fill">
+	        		<mat-label>Plán rozvoja klienta</mat-label>
+	        		<textarea matInput type="text" formControlName="client_dev_plan" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
+	      		</mat-form-field>
+			</div>
+			<div class="divider6"></div>
+			<mat-tab-group>
+			<mat-tab label="Doplňujúce informácie">	
+				<div class="accordion-content" style="display: block;">
+					<div class="form-input clear">
+						<mat-form-field class="one_half first" appearance="fill">
+							<mat-label>Meno:</mat-label>
+							<input matInput type="text" formControlName="client_name" class="tooltip tooltipstered" [readonly]="readonly">
+						</mat-form-field>
+						<mat-form-field class="one_half" appearance="fill">
+							<mat-label>Priezvisko:</mat-label>
+							<input matInput type="text" formControlName="client_surname" class="tooltip tooltipstered" [readonly]="readonly">
+						</mat-form-field>
+					</div>
+					<div class="form-input clear">
+						<mat-form-field class="one_half first" appearance="fill">
+							<mat-label>Dátum narodenia:</mat-label>
+							<input matInput type="text" formControlName="client_birth_date" class="tooltip tooltipstered" [readonly]="readonly">
+						</mat-form-field>
+						<mat-form-field class="one_half" appearance="fill">
+							<mat-label>Rodinný stav:</mat-label>
+								<mat-select formControlName="client_family_status" class="tooltip tooltipstered" [disabled]="readonly">
+									<mat-option value="single">slobodný / slobodná</mat-option>
+									<mat-option value="merried">ženatý / vydatá</mat-option>
+									<mat-option value="divorced">rozvedený / rozvedená</mat-option>
+									<mat-option value="widower">vdovec / vdova</mat-option>
+								</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="form-input clear">
+						<mat-form-field class="one_half first" appearance="fill">
+							<mat-label>Občianstvo:</mat-label>
+							<input matInput type="text" formControlName="client_citizenship" class="tooltip tooltipstered" [readonly]="readonly">
+						</mat-form-field>	
+					</div>
+				</div>
+			</mat-tab>
+			<mat-tab label="Kontaktné údaje">
+			<div class="accordion-content" style="display: block;">
+				<div class="form-input clear">
+					<mat-form-field class="one_half first" appearance="fill">
+	        			<mat-label>Adresa:</mat-label>
+	        			<input matInput type="text" formControlName="client_address" [readonly]="readonly">
+					</mat-form-field>
+					<mat-form-field class="one_half" appearance="fill">
+	        			<mat-label>Telefón:</mat-label>
+	        			<input matInput type="text" formControlName="client_phone" [readonly]="readonly">
+					</mat-form-field>
+				</div>
+				<div class="divider9"></div>
+				<div class="push10"></div>
+				<div class="form-input clear">
+					<mat-form-field class="one_half first" appearance="fill">
+	        			<mat-label>Email:</mat-label>
+	        			<input matInput type="text" formControlName="client_email" [readonly]="readonly">
+					</mat-form-field>
+					<mat-form-field class="one_half" appearance="fill">
+	        			<mat-label>Sociálne siete:</mat-label>
+	        			<input matInput type="text" formControlName="client_socnet" [readonly]="readonly">
+					</mat-form-field>
+				</div>
+			</div>
+			</mat-tab>
+			<mat-tab label="Iné údaje">
+			<div class="accordion-content" style="display: block;">
+				<div class="form-input clear">
+					<mat-form-field class="full_width" appearance="fill">
+	        			<mat-label>Zdravotný stav:</mat-label>
+	        			<textarea matInput type="text" formControlName="client_health" cols="25" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
+	      			</mat-form-field>
+				</div>
+				<div class="divider9"></div>
+				<div class="push10"></div>
+				<div class="form-input clear">
+					<mat-form-field class="full_width" appearance="fill">
+	        			<mat-label>Príjmy:</mat-label>
+	        			<textarea matInput type="text" formControlName="client_income" cols="25" rows="3" maxlength="200" [readonly]="readonly"></textarea>
+	      			</mat-form-field>
+				</div>
+				<div class="divider9"></div>
+				<div class="push10"></div>
+				<div class="form-input clear">
+					<mat-form-field class="full_width" appearance="fill">
+	        			<mat-label>Majetok:</mat-label>
+	        			<textarea matInput type="text" formControlName="client_belongings" cols="25" rows="3" maxlength="200" [readonly]="readonly"></textarea>
+	      			</mat-form-field>
+				</div>
+			</div>
+			</mat-tab>
+			<mat-tab label="Pracovné údaje">
+			<div class="accordion-content" style="display: block;">
+				<div class="form-input clear">
+					<mat-form-field appearance="fill">
+	      				<mat-label>Iné inštitúcie:</mat-label>
+						<mat-select formControlName="client_other_institutes" class="full_width" [disabled]="readonly">
+							<mat-option [value]="1">Asociácia NPDM</mat-option>
+							<mat-option [value]="2">Mestská časť Bratislava - Petržalka</mat-option>
+						</mat-select>
+	      			</mat-form-field>
+				</div>
+			</div>
+			</mat-tab>
+			</mat-tab-group>
+	
+			<div class="divider6"></div>
+			<div class="button-row">
+	      		<button type="submit" mat-flat-button class="button-card"><mat-icon></mat-icon>Pridať</button>
+	    	</div>
+		</form>
+	</mat-card>
+	</div>
+</div>
+<div class="flex-item">
+    <h3 class="mainComponent centered">Zaznamy o kontakte</h3>
+    <app-table-records tableData = ""></app-table-records>
+</div>
+</div>

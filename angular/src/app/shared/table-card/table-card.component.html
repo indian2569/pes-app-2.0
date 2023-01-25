@@ -1,0 +1,58 @@
+<div class="container text-center">
+  <table mat-table [dataSource]="tableData" #mytable class="my-table mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- name Column -->
+    <ng-container matColumnDef="client_nick" class="table-name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.client_nick}} </td>
+    </ng-container>
+
+    <!-- gender Column -->
+    <ng-container matColumnDef="client_gender"  class="table-gender">
+      <th mat-header-cell *matHeaderCellDef> Pohlavie </th>
+      <td mat-cell *matCellDef="let element"> {{element.client_gender}} </td>
+    </ng-container>
+
+    <!-- Age Column -->
+    <ng-container matColumnDef="clint_age"  class="table-clint_age">
+      <th mat-header-cell *matHeaderCellDef> Popis </th>
+      <td mat-cell *matCellDef="let element"> {{element.clint_age}} </td>
+    </ng-container>
+
+    <!-- birth_year Column -->
+    <ng-container matColumnDef="client_birth_year" class="table-birth_year">
+      <th mat-header-cell *matHeaderCellDef> Rok narodenia </th>
+      <td mat-cell *matCellDef="let element"> {{element.client_birth_year}} </td>
+    </ng-container>
+
+    <!-- cratedBy Column -->
+    <ng-container matColumnDef="cratedBy"  class="table-cratedBy">
+      <th mat-header-cell *matHeaderCellDef> Pridal: </th>
+      <td mat-cell *matCellDef="let element"> {{element.cratedBy}} </td>
+    </ng-container>
+
+        <!-- status Column -->
+    <ng-container matColumnDef="status" class="table-status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action"  class="table-action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element" class="action-link"> 
+        <button type="button" (click)="redirectUrl(element)" class="btn btn-link btn-sm btn-rounded">Upraviť</button>
+        <button type="button" (click)="activateTogle(element)" class="btn btn-link btn-sm btn-rounded">Deaktivovať</button>
+        <button type="button" (click)="openDialog('Delete',element)" class="btn btn-link btn-sm btn-rounded">Vymazať</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>

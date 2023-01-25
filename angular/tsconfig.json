@@ -1,0 +1,12 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compilerOptions": {
+    "outDir": "./dist" ,
+    "rootDir": "./src",
+    /* Experimental Options */
+    "experimentalDecorators": true, 
+    "emitDecoratorMetadata": true, 
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true 
+  }
+}

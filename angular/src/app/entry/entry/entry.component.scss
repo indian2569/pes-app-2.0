@@ -1,0 +1,48 @@
+.one_half {
+	width: 47.5%;
+}
+
+.mainComponent {
+	max-width: 720px;
+	vertical-align: middle;
+}
+
+.red{
+	color: #ff0000;
+}
+
+.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_fifth, .two_fifth, .three_fifth, .four_fifth, .one_sixth, .two_sixth, .three_sixth, .four_sixth, .five_sixth {
+    display: inline;
+    float: left;
+    margin: 0 0 0 5%;
+        margin-bottom: 0px;
+        margin-left: 5%;
+    list-style: none;
+}
+
+#container {
+    font-size: 1em;
+    line-height: 1.4em;
+}
+
+.first {
+    clear: left;
+}
+
+.one_half:first-child, .one_third:first-child, .two_third:first-child, .one_quarter:first-child, .two_quarter:first-child, .three_quarter:first-child, .one_fifth:first-child, .two_fifth:first-child, .three_fifth:first-child, .four_fifth:first-child, .one_sixth:first-child, .two_sixth:first-child, .three_sixth:first-child, .four_sixth:first-child, .five_sixth:first-child {
+    margin-left: 0;
+}
+
+.clear {
+    display: block;
+    clear: both;
+}
+
+h3 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin-bottom: 0px;
+}
+
+.textarea {
+    width: 100%;
+}
