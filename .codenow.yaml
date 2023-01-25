@@ -1,0 +1,12 @@
+build:
+  pipelines:
+    triggers: []
+    preview:
+      pipeline: docker-app-preview
+    release:
+      pipeline: docker-app-release
+  environmentVariables: []
+runtime:
+  endpoints:
+    external:
+      enabled: true
