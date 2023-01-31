@@ -7,7 +7,7 @@ x-global-envs: &env_variables
     POSTGRES_PASSWORD: Passw0rd
 
     # https://github.com/indian2569/pes-app-angular/blob/master/backend/src/main/resources/application-postgres.yaml
-    DB_JDBC_URL: "jdbc:postgresql://db/pes?currentSchema=pes"
+    DB_JDBC_URL: "jdbc:postgresql://db/pes_prod?currentSchema=pes"
     # XXX fix the application and use DB_USER_APP for application and DB_USER_OWN for flyway
     DB_USERNAME: postgres
     DB_PASSWORD: Passw0rd
@@ -30,34 +30,42 @@ x-build-args: &build_args
 #   Application
 #
 services:
-    postgres:
+    db:
         # Global env variables
         << : *env_variables
         image: postgres:14.1-alpine
-
-        # Push in admin script
         volumes:
           - ./pes-spring/src/main/resources/db/admin_script:/docker-entrypoint-initdb.d
-        
         # Expose ports
         ports:
-          - "5434:5432"
-        networks:
-         - backendNetwork
+         - "5434:5432"
  
-    spring-boot-ems:
+    maven:
+        image: maven:3.8.2-eclipse-temurin-17
+        volumes:
+          - .:/pes-spring/src
+          - ./tmp:/root/.m2
+        working_dir: /pes-spring
+        links:
+          - db:db
+        command:
+          - mvn
+          - '-DskipTests=true'
+          - clean
+          - package
+          - e
+
+    app:
         image: maven:3.6.3-jdk-11
-        container_name: spring-boot-ems
         ports:
           - 8080:8080
+        links:
+          - db:db
         depends_on:
-          - postgres
+          - db
         volumes:
           - ./pes-spring/target/pes-1.0.0-SNAPSHOT.jar:/pes-app.jar
         command: ["java", "-jar", "pes-app.jar"]
-        networks:
-          - backendNetwork
-          - frontendNetwork
 
     angular:
         image: nginx:alpine
@@ -65,17 +73,8 @@ services:
         ports: 
           - 4200:80
         depends_on:
-          - spring-boot-ems
+          - app
         volumes:
           - ./nginx.conf:/etc/nginx/nginx.conf
           - ./angular/dist/angular/:/usr/share/nginx/html
-        networks:
-          - frontendNetwork
 
-
-volumes:
-  dockerPessData:
-  
-networks:
-  backendNetwork:
-  frontendNetwork:

@@ -52,4 +52,4 @@ logging:
 bezkoder:
   app:
     jwtSecret: bezKoderSecretKey
-    jwtExpirationMs: 86400000
+    jwtExpirationMs: 900000

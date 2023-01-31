@@ -3,3 +3,8 @@ angular/node/node_modules/npm/docs/content/commands/npm-team.md
 angular/node/node/*
 angular/node/node_modules/*
 angular/node/*
+angular/.editorconfig
+*.bak
+angular/.vscode/extensions.json
+angular/.vscode/launch.json
+angular/.vscode/tasks.json

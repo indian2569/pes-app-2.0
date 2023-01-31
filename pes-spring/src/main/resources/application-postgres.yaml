@@ -5,13 +5,9 @@ spring:
       settings.web-allow-others: false
   datasource:
     driver-class-name: org.postgresql.Driver 
-    url: ${DB_JDBC_URL:jdbc:postgresql://localhost:5434/pes_prod?currentSchema=pes}
+    url: ${DB_JDBC_URL:jdbc:postgresql://${DB_JDBC_HOST:db}:${DB_JDBC_PORT:5434}/${DB_JDBC_NAME:pes_prod}?currentSchema=${DB_JDBC_SCHEMA:pes}}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:Passw0rd}
-    hikari:
-      idleTimeout: 30000
-      minimumIdle: 2
-      maximumPoolSize: 10
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     show-sql: ${DB_SHOW_SQL:false}
