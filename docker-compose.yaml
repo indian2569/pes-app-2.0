@@ -1,4 +1,4 @@
-version: '3'
+version: "3.4"
 
 # Global configurations that 
 x-global-envs: &env_variables
