@@ -33,7 +33,7 @@ services:
     db:
         # Global env variables
         << : *env_variables
-        image: postgres:14.1-alpine
+        image: postgres:13.4-alpine
         volumes:
           - ./pes-spring/src/main/resources/db/admin_script:/docker-entrypoint-initdb.d
         # Expose ports
