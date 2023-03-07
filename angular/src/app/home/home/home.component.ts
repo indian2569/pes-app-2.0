@@ -13,6 +13,10 @@ export class HomeComponent implements OnInit {
 
   title = 'Demo';
   content?: string;
+  boxName1 = 'Nedavno pridane';
+  boxName2 = 'Pridane tento mesiac';
+  boxName3 = 'Vytvorene celkom';
+  records = [];
 
   constructor(private userService: UserService,
               private tokenStorageService: TokenStorageService,

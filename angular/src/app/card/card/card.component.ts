@@ -21,13 +21,14 @@ export class CardComponent implements OnInit {
   formGroup: FormGroup;
   title: string;
   readonly: boolean;
+  entrySet = [];
 
   @Input() editId: string;
 
   constructor(private cardService: CardService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {}
 
   ngOnInit(): void {
     this.route.url

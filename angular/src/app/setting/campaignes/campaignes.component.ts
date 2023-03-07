@@ -22,7 +22,6 @@ export class CampaignesComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshTable();
-    console.log(this.campaignesData);
   }
 
   openDialog() {

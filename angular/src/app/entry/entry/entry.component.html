@@ -2,10 +2,10 @@
   <h3> {{title}}</h3>
   <form class="mainComponent" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div class="row">
-      <chips-input title = "Klienti:" [dataSet]="cards"
-      [parentForm]="formGroup" #client></chips-input>
-      <chips-input title = "Klienti na službe:" [dataSet]="cards"
-      [parentForm]="formGroup" #otherClientsInput></chips-input>
+      <app-chips-input title = "Klienti:" [dataSet]="cards" [type]= "1"
+      [parentForm]="formGroup" #client></app-chips-input>
+      <app-chips-input title = "Klienti na službe:" [dataSet]="cards" [type]= "1"
+      [parentForm]="formGroup" #otherClientsInput></app-chips-input>
     </div>
     <div class="row">
       <mat-form-field appearance="fill" class="one_half first">
@@ -28,7 +28,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill" class="one_half">
       <mat-label>Typ kontaktu:</mat-label>
-      <mat-select formControlName="contact_type" [disabled]="readonly">
+      <mat-select formControlName="contact_type" [attr.disabled]="readonly">
           <mat-option *ngFor="let contact of contactTypes" [value]="contact">
             {{ContractEnum2LabelMapping[contact]}}
           </mat-option>
@@ -38,7 +38,7 @@
     <div class="row">
       <mat-form-field appearance="fill" class="one_half first">
       <mat-label>Typ kampane:</mat-label>
-      <mat-select formControlName="campaign" [disabled]="readonly">
+      <mat-select formControlName="campaign" [attr.disabled]="readonly" [(value)]="selectedCampagne">
           <mat-option *ngFor="let campaign of campaigns" [value]="campaign">
             {{campaign.name}}
           </mat-option>
@@ -46,7 +46,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill" class="one_half">
       <mat-label>Program:</mat-label>
-      <mat-select formControlName="program_type" [disabled]="readonly">
+      <mat-select formControlName="program_type" [attr.disabled]="readonly" [(value)]="selectedProgram">
           <mat-option *ngFor="let program of programs" [value]="program">
             {{program.name}}
           </mat-option>
@@ -56,13 +56,13 @@
     <div class="row">
       <mat-form-field class="one_half first" appearance="fill">
         <mat-label>Metódy práce:</mat-label>
-        <mat-select formControlName="work_methods" [disabled]="readonly">
+        <mat-select formControlName="work_methods" [attr.disabled]="readonly">
           <mat-option *ngFor="let method of methods" [value]="method">
             {{method.name}}
           </mat-option>
       </mat-select>
       </mat-form-field>
-      <chips-input title = "Ďalší pracovníci:" [parentForm]="formGroup" [dataSet]="contacts" #coworkersInput></chips-input>
+      <app-chips-input title = "Ďalší pracovníci:" [parentForm]="formGroup" [dataSet]="contacts" [type]= "2" #coworkersInput></app-chips-input>
     </div>
     <div class="divider5"></div>
     <div class="row">

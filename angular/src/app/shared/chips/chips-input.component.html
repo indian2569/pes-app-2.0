@@ -4,13 +4,13 @@
     <mat-chip
       *ngFor="let chip of selectedChips"
       (removed)="remove(chip)">
-      {{chip.client_nick}}
+      {{chipDisplayName(chip)}}
       <button matChipRemove>
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip>
     <input
-      placeholder="Pridaj klienta"
+      placeholder="{{inputPlaceholder}}"
       #chipsInput
       [formControl]="inputControl"
       [matAutocomplete]="auto"
@@ -20,7 +20,7 @@
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     <mat-option *ngFor="let chip of filteredChips | async" [value]="chip">
-      {{chip.client_nick}}
+      {{chipDisplayName(chip)}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

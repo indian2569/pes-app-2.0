@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         this.roles = this.tokenStorage.getUser().roles;
         this.user = this.tokenStorage.getUser();
 
-        this.reloadPage();
+        //this.reloadPage();
       },
       err => {
         this.errorMessage = err.error.message;

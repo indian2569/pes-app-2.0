@@ -15,7 +15,7 @@ export interface Fruit {
  * @title Chips with input
  */
 @Component({
-  selector: 'chips-input',
+  selector: 'app-chips-input',
   templateUrl: 'chips-input.component.html',
   styleUrls: ['chips-input.component.scss'],
 })
@@ -25,6 +25,7 @@ export class ChipsInputComponent {
   filteredChips: Observable<string[]>;
   selectedChips: any[] = [];
   allAvaliableChips: any[] = [];
+  inputPlaceholder = 'Pridaj';
 
   @ViewChild('chipsInput') chipsInput: ElementRef<HTMLInputElement>;
   @Input() title: string;
@@ -40,7 +41,13 @@ export class ChipsInputComponent {
       startWith(null),
       map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allAvaliableChips)),
     );
-
+    if (this.type === 1) {
+        this.inputPlaceholder = 'Pridaj klienta';
+    } else if (this.type === 2) {
+        this.inputPlaceholder = 'Pridaj spolupracovníka';
+    } else if (this.type === 3) {
+        this.inputPlaceholder = 'Pridaj metódu';
+    }
   }
 
   add(event: MatChipInputEvent): void {
@@ -72,12 +79,29 @@ export class ChipsInputComponent {
   }
 
   private _filter(value: any): string[] {
-    const filterValue = typeof value  === 'string' ? value.toLowerCase() : value.client_nick.toLowerCase();
-    if (_.isNil(this.allAvaliableChips)) {
-          return [];
-    } else {
-          console.log(value, this.allAvaliableChips.filter(fruit => fruit.client_nick.toLowerCase().includes(filterValue)));
-          return this.allAvaliableChips.filter(fruit => fruit.client_nick.toLowerCase().includes(filterValue));
-          }
+        let filterObjectValue = '';
+        if (this.type === 1 && typeof value !== 'string') {
+                filterObjectValue = value.client_nick.toLowerCase();
+        } else if (typeof value !== 'string') {
+                filterObjectValue = value.name.toLowerCase();
+        }
+        const filterValue = typeof value === 'string' ? value.toLowerCase() : filterObjectValue.toLowerCase();
+        if (_.isNil(this.allAvaliableChips)) {
+            return [];
+        } else {
+            if (this.type === 1) {
+                return this.allAvaliableChips.filter(chip => chip.client_nick.toLowerCase().includes(filterValue));
+            } else {
+                return this.allAvaliableChips.filter(chip => chip.name.toLowerCase().includes(filterValue));
+            }
+        }
+    }
+
+  chipDisplayName(chip: any): String {
+     if (this.type === 1 ) {
+                return chip.client_nick;
+        } else {
+                return chip.name;
+        }
   }
 }

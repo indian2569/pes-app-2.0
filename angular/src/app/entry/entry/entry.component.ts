@@ -21,8 +21,6 @@ import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
 import { Observable } from 'rxjs';
 
-
-
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.component.html',
@@ -44,6 +42,10 @@ export class EntryComponent implements OnInit {
   filteredClients: Observable<CardBasicDTO[]>;
   title: string;
   readonly: boolean;
+  selectedCampagne: CampaignDTO;
+  selectedProgram: ProgramDTO;
+  selectedMethod: MethodsDTO;
+
   public ContractEnum2LabelMapping = ContractEnum2LabelMapping;
   public contactTypes = Object.values(ContractEnum);
 
@@ -100,6 +102,7 @@ export class EntryComponent implements OnInit {
     this.settingService.getAllCoworkers().subscribe({
         next: (data) => {
           this.contacts = data;
+          this.coworkersControl.allAvaliableChips = this.contacts;
         },
         error: (e) => console.error(e)
       });
@@ -152,7 +155,7 @@ export class EntryComponent implements OnInit {
     if (!_.isNil(this.coworkersControl)) {
         ret.other_workers = this.coworkersControl.selectedChips;
     }
-    var contatcts : Array<MethodsDTO> = [];
+    const contatcts: Array<MethodsDTO> = [];
     contatcts.push(this.formGroup.get('work_methods').value);
     ret.work_methods = contatcts;
     return ret;
@@ -185,6 +188,14 @@ export class EntryComponent implements OnInit {
       fast_message: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.fast_message),
       createdBy: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.createdBy)
     });
+    if (!_.isNil(this.entryEdit)) {
+        this.clientsControl.selectedChips = this.entryEdit.client;
+        this.otherClientsControl.selectedChips = this.entryEdit.clients_on_site;
+        this.coworkersControl.selectedChips = this.entryEdit.other_workers;
+        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);
+        this.selectedCampagne = this.entryEdit.campaign;
+        this.selectedProgram = this.entryEdit.program_type;
+    }
   }
 
   transformToMoment = (value: string | moment.Moment): moment.Moment => {

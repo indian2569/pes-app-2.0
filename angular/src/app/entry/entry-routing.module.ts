@@ -5,10 +5,10 @@ import { AllEntryComponent } from './all-entry/all-entry.component';
 
 
 const routes: Routes = [
+  { path: '', component: AllEntryComponent},
   { path: 'add_entry', component: EntryComponent },
-  { path: 'all_entry', component: AllEntryComponent },
   { path: ':id', component: EntryComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full'}
+  { path: 'error', redirectTo: '/home', pathMatch: 'full'}
 ];
 
 @NgModule({

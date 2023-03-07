@@ -26,7 +26,7 @@ import { SettingService } from '../../setting/setting.service';
     dataSource: InstitutionDTO[];
     columnsToDisplay = ['name'];
     expandedElement: InstitutionDTO | null;
-    result: string = '';
+    result = '';
 
   constructor(private dialog: MatDialog,
               private settingService: SettingService) { }
@@ -34,7 +34,6 @@ import { SettingService } from '../../setting/setting.service';
     ngOnInit(): void {
       this.dataSource = this.tableData;
       this.columnsSetUpBaseOnType(this.typeNumber);
-      console.log(this.columnsToDisplay);
     }
 
     columnsSetUpBaseOnType(typeNumber: number) {
@@ -101,7 +100,6 @@ import { SettingService } from '../../setting/setting.service';
   }
 
   deleteItem(id: number) {
-    console.log(id);
      switch (this.typeNumber) {
         case 1:
           this.settingService.deleteInstitution(id.toString()).subscribe();

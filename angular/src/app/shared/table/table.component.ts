@@ -108,7 +108,6 @@ export class TableComponent implements OnInit {
 
 
   addRowData(row_obj: any) {
-    console.log(row_obj);
     var d = new Date();
     this.dataSource.push({
       name: row_obj.name,

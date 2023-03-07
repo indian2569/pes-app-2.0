@@ -62,17 +62,12 @@ export class DialogBoxComponent implements OnInit {
   }
 
   fillInputData(userInput): any {
-    console.log(this.actionType, userInput.client_nick, userInput);
     if (this.actionType === 7) {
       return {
       id: userInput.id,
       name: userInput.client_nick
     };
     } else if (this.actionType === 8) {
-      console.log( {
-        id: userInput.id,
-        name: userInput.place + ' ' + (_.isNil(userInput.program_type) ? '' : userInput.program_type.name) + ' ' + userInput.entry_date_from
-      });
       return {
         id: userInput.id,
         name: userInput.place + ' ' + (_.isNil(userInput.program_type) ? '' : userInput.program_type.name) + ' ' + userInput.entry_date_from

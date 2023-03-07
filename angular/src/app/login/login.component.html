@@ -68,10 +68,12 @@
       </div>
     </form>
 
-    <div class="alert alert-success" *ngIf="isLoggedIn">
+    <div *ngIf="isLoggedIn">
+      <div class="alert alert-success">
       Uspešne ste prihlásení ako užívateľ: {{ user }} <br/> ktorý ma priradené role: {{ roles }}.
       <br/>
-      <button (click)="runHome()">Domaca obrazovka</button>
+      </div>
+      <button (click)="runHome()" class="btn">Domaca obrazovka</button>
     </div>
   </div>
 </div>
