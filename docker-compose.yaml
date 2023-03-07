@@ -40,6 +40,20 @@ services:
         ports:
          - "5434:5432"
 
+    maven:
+        image: maven:3.6.3-jdk-11
+        volumes:
+          - .:/pes-spring/src
+          - ./pes-spring/tmp:/root/.m2
+        working_dir: /pes-spring/src
+        links:
+          - db:db
+        command:
+          - mvn
+          - '-DskipTests=true'
+          - clean
+          - install
+
     app:
         image: maven:3.6.3-jdk-11
         ports:
@@ -48,6 +62,7 @@ services:
           - db:db
         depends_on:
           - db
+          - maven
         volumes:
           - ./pes-spring/target/pes-1.0.0-SNAPSHOT.jar:/pes-app.jar
         command: ["java", "-jar", "pes-app.jar"]
