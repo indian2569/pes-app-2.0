@@ -13,7 +13,7 @@ import sk.kaspian.pes.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-	@NonNull
+	@Autowired
 	UserRepository userRepository;
 
 	@Override
