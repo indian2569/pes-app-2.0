@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM --platform=$BUILDPLATFORM maven:3.6.3-jdk-11 AS builder
+FROM --platform=linux/amd64 maven:3.6.3-jdk-11 AS builder
 WORKDIR /workdir/server
 COPY pom.xml /workdir/server/pom.xml
 RUN mvn dependency:go-offline
