@@ -1,39 +1,22 @@
 # syntax=docker/dockerfile:1.4
 
-FROM --platform=linux/amd64 maven:3.6.3-jdk-11 AS builder
-WORKDIR /workdir/server
-COPY pom.xml /workdir/server/pom.xml
-RUN mvn dependency:go-offline
+FROM maven:3.6.3-jdk-11 AS buildstage
 
-COPY src /workdir/server/src
-RUN mvn install
+WORKDIR /pes-spring
 
-FROM builder AS dev-envs
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
+COPY . .
 
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-CMD ["mvn", "spring-boot:run"]
+RUN mvn package
 
-FROM builder as prepare-production
-RUN mkdir -p target/dependency
-WORKDIR /workdir/server/target/dependency
-RUN jar -xf ../*.jar
+FROM eclipse-temurin:11 AS runstage
 
-FROM eclipse-temurin:11
+COPY --from=buildstage /pes-spring/target/pes-1.0.0-SNAPSHOT.jar .
 
 EXPOSE 8080
-VOLUME /tmp
-ARG DEPENDENCY=/workdir/server/target/dependency
-COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.company.project.Application"]
+
+RUN adduser --system --group spring
+
+USER spring
+
+ENTRYPOINT ["java", "-jar", "pes-1.0.0-SNAPSHOT.jar"]
+
