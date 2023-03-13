@@ -8,7 +8,7 @@ COPY . .
 
 RUN mvn clean package -X
 
-FROM eclipse-temurin:11 AS runstage
+FROM openjdk:11.0-jre-slim AS runstage
 
 COPY --from=buildstage /pes-spring/target/pes-1.0.0-SNAPSHOT.jar .
 
