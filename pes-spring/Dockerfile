@@ -6,7 +6,7 @@ WORKDIR /pes-spring
 
 COPY . .
 
-RUN mvn package
+RUN mvn clean package -X
 
 FROM eclipse-temurin:11 AS runstage
 
