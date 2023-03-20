@@ -165,6 +165,9 @@ export class TableComponent implements OnInit {
       if (value.id === row_obj.id) {
         value.name = row_obj.name;
         value.description = row_obj.description;
+        if (this.typeNumber === 5) {
+           value.position = row_obj.position;
+        }
       }
       return true;
     });
@@ -202,7 +205,7 @@ export class TableComponent implements OnInit {
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description,
-          position: row_obj.havePosition
+          position: row_obj.position
         }).subscribe((sub: any) => this.table.renderRows());
       break;
     case 6:
@@ -219,7 +222,26 @@ export class TableComponent implements OnInit {
     this.dataSource = this.dataSource.filter((value, key) => {
       return value.id !== row_obj.id;
     });
-    this.settingService.deleteCampaign(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+    switch (this.typeNumber) {
+        case 1:
+        this.settingService.deleteInstitution(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+        case 2:
+        this.settingService.deleteCampaign(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+        case 3:
+        this.settingService.deleteMethod(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+        case 4:
+        this.settingService.deleteProgram(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+        case 5:
+        this.settingService.deleteCoworker(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+        case 6:
+        this.settingService.deleteEvent(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        break;
+    }
   }
 
   activateTogle(row_obj: any) {
@@ -268,7 +290,7 @@ export class TableComponent implements OnInit {
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description,
-          position: row_obj.havePosition,
+          position: row_obj.position,
           active: !row_obj.active
         }).subscribe((sub: any) => this.table.renderRows());
       break;

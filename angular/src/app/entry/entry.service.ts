@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EntryService {
-  public static readonly ENTRY_API_URL = 'entry';
+  public static readonly ENTRY_API_URL = 'http://localhost:8080/entry';
   programData: ProgramDTO[] = [];
   methodsData: MethodsDTO[] = [];
   campaignesData: CampaignDTO[] = [];
@@ -50,19 +50,19 @@ export class EntryService {
   }
 
   public saveEntry(entry: EntryDTO):  Observable<EntryDTO> {
-    return this.http.post<EntryDTO>(`${EntryService.ENTRY_API_URL}/save`, entry, { context: this.CONTEXT });
+    return this.http.post<EntryDTO>(EntryService.ENTRY_API_URL + '/save', entry, { context: this.CONTEXT });
   }
 
   public getEntry(code: string):  Observable<EntryDTO> {
-    return this.http.get<EntryDTO>(`${EntryService.ENTRY_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`, { context: this.CONTEXT });
   }
 
   deleteEntry(code: string): Observable<EntryDTO> {
-    return this.http.delete<EntryDTO>(`${EntryService.ENTRY_API_URL}/${code}`);
+    return this.http.delete<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 
   public getAllEntrys():  Observable<EntryDTO[]> {
-    return this.http.get<EntryDTO[]>(`${EntryService.ENTRY_API_URL}/allEntrys`, { context: this.CONTEXT });
+    return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { context: this.CONTEXT });
   }
 
   getContats(): CoworkerDTO[] {

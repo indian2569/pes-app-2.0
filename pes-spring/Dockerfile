@@ -6,7 +6,7 @@ WORKDIR /pes-spring
 
 COPY . .
 
-RUN mvn clean package -X
+RUN mvn clean package
 
 FROM openjdk:11.0-jre-slim AS runstage
 

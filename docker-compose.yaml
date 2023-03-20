@@ -43,6 +43,7 @@ services:
     app:
         build:
             context: ./pes-spring
+        container_name: app
         ports:
           - 8080:8080
         links:
@@ -54,8 +55,11 @@ services:
         build:
           context: angular
           target: builder
+        container_name: angular
         ports: 
           - 4200:4200
+        links:
+          - app
         depends_on:
           - app
         volumes:

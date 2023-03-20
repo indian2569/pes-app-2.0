@@ -8,3 +8,6 @@ angular/.editorconfig
 angular/.vscode/extensions.json
 angular/.vscode/launch.json
 angular/.vscode/tasks.json
+/angular/.vscode
+/pes-spring/tmp
+/tmp

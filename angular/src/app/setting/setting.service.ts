@@ -1,4 +1,4 @@
-import { Injectable, ɵɵtrustConstantResourceUrl } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpContext, HttpContextToken, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CampaignDTO } from '../model/CampaignDTO';
@@ -14,62 +14,62 @@ import { ProgramDTO } from '../model/ProgramDTO';
 })
 export class SettingService {
 
-  public static readonly CAMAPAIGNE_API_URL = 'campaign';
-  public static readonly COWORKERS_API_URL = 'coworker';
-  public static readonly EVENTS_API_URL = 'event';
-  public static readonly INSTITUTION_API_URL = 'institution';
-  public static readonly METHODS_API_URL = 'method';
-  public static readonly PROGRAMS_API_URL = 'program';
+  public static readonly CAMAPAIGNE_API_URL = 'http://localhost:8080/campaign';
+  public static readonly COWORKERS_API_URL = 'http://localhost:8080/coworker';
+  public static readonly EVENTS_API_URL = 'http://localhost:8080/event';
+  public static readonly INSTITUTION_API_URL = 'http://localhost:8080/institution';
+  public static readonly METHODS_API_URL = 'http://localhost:8080/method';
+  public static readonly PROGRAMS_API_URL = 'http://localhost:8080/program';
 
   private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
 
   constructor(protected http: HttpClient) { }
   /**Campaigne call for services */
   public saveCampaign(entry: CampaignDTO):  Observable<CampaignDTO> {
-    return this.http.post<CampaignDTO>(`${SettingService.CAMAPAIGNE_API_URL}/save`, entry);
+    return this.http.post<CampaignDTO>(SettingService.CAMAPAIGNE_API_URL + '/save', entry);
   }
 
   public getCampaign(code: string):  Observable<CampaignDTO> {
-    return this.http.get<CampaignDTO>(`${SettingService.CAMAPAIGNE_API_URL}/${code}`);
+    return this.http.get<CampaignDTO>(SettingService.CAMAPAIGNE_API_URL + `${code}`);
   }
 
   public deleteCampaign(code: string): Observable<CampaignDTO> {
-    return this.http.delete<CampaignDTO>(`${SettingService.CAMAPAIGNE_API_URL}/${code}`);
+    return this.http.delete<CampaignDTO>(SettingService.CAMAPAIGNE_API_URL + `/${code}`);
   }
 
   public getAllCampaigns():  Observable<CampaignDTO[]> {
     const headersSet = new HttpHeaders();
-    return this.http.get<CampaignDTO[]>(`${SettingService.CAMAPAIGNE_API_URL}/allCampaigns`, { headers: headersSet});
+    return this.http.get<CampaignDTO[]>(SettingService.CAMAPAIGNE_API_URL + '/allCampaigns', { headers: headersSet});
   }
 
   /** Events call for services*/
   public saveEvent(entry: EventDTO):  Observable<EventDTO> {
-    return this.http.post<EventDTO>(`${SettingService.EVENTS_API_URL}/save`, entry, { context: this.CONTEXT });
+    return this.http.post<EventDTO>(SettingService.EVENTS_API_URL + '/save', entry, { context: this.CONTEXT });
   }
 
   public getEvent(code: string):  Observable<EventDTO> {
-    return this.http.get<EventDTO>(`${SettingService.EVENTS_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<EventDTO>(SettingService.EVENTS_API_URL + `/${code}`, { context: this.CONTEXT });
   }
 
   public deleteEvent(code: string): Observable<EventDTO> {
-    return this.http.delete<EventDTO>(`${SettingService.EVENTS_API_URL}/${code}`);
+    return this.http.delete<EventDTO>(SettingService.EVENTS_API_URL + `/${code}`);
   }
 
   public getAllEvents():  Observable<EventDTO[]> {
-    return this.http.get<EventDTO[]>(`${SettingService.EVENTS_API_URL}/allEvents`, { context: this.CONTEXT });
+    return this.http.get<EventDTO[]>(SettingService.EVENTS_API_URL + '/allEvents', { context: this.CONTEXT });
   }
 
   /**Institution call for services  */
   public saveInstitution(entry: InstitutionDTO):  Observable<InstitutionDTO> {
-    return this.http.post<InstitutionDTO>(`${SettingService.INSTITUTION_API_URL}/save`, entry, { context: this.CONTEXT });
+    return this.http.post<InstitutionDTO>(SettingService.INSTITUTION_API_URL + '/save', entry, { context: this.CONTEXT });
   }
 
   public getInstitution(code: string): Observable<InstitutionDTO> {
-    return this.http.get<InstitutionDTO>(`${SettingService.INSTITUTION_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<InstitutionDTO>(SettingService.INSTITUTION_API_URL + `/${code}`, { context: this.CONTEXT });
   }
 
   public deleteInstitution(code: string): Observable<InstitutionDTO> {
-    return this.http.delete<InstitutionDTO>(`${SettingService.INSTITUTION_API_URL}/${code}`);
+    return this.http.delete<InstitutionDTO>(SettingService.INSTITUTION_API_URL + `/${code}`);
   }
 
   public getAllInstitutions(): Observable<InstitutionDTO[]> {
@@ -82,11 +82,11 @@ export class SettingService {
   }
 
   public getCoworker(code: string): Observable<CoworkerDTO> {
-    return this.http.get<CoworkerDTO>(`${SettingService.COWORKERS_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<CoworkerDTO>(SettingService.COWORKERS_API_URL + '/' + `${code}`, { context: this.CONTEXT });
   }
 
   public deleteCoworker(code: string): Observable<CoworkerDTO> {
-    return this.http.delete<CoworkerDTO>(`${SettingService.COWORKERS_API_URL}/${code}`);
+    return this.http.delete<CoworkerDTO>(SettingService.COWORKERS_API_URL + '/' + `${code}`);
   }
 
   public getAllCoworkers(): Observable<CoworkerDTO[]> {
@@ -99,11 +99,11 @@ export class SettingService {
   }
 
   public getMethod(code: string): Observable<MethodsDTO> {
-    return this.http.get<MethodsDTO>(`${SettingService.METHODS_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<MethodsDTO>(SettingService.METHODS_API_URL + '/' + `${code}`, { context: this.CONTEXT });
   }
 
   public deleteMethod(code: string): Observable<MethodsDTO> {
-    return this.http.delete<MethodsDTO>(`${SettingService.METHODS_API_URL}/${code}`);
+    return this.http.delete<MethodsDTO>(SettingService.METHODS_API_URL + '/' + `${code}`);
   }
 
   public getAllMethods(): Observable<MethodsDTO[]> {
@@ -112,18 +112,18 @@ export class SettingService {
 
   /** Programs call for services */
   public saveProgram(entry: ProgramDTO):  Observable<ProgramDTO> {
-    return this.http.post<ProgramDTO>(`${SettingService.PROGRAMS_API_URL}/save`, entry, { context: this.CONTEXT });
+    return this.http.post<ProgramDTO>(SettingService.PROGRAMS_API_URL + '/save', entry, { context: this.CONTEXT });
   }
 
   public getProgram(code: string): Observable<ProgramDTO> {
-    return this.http.get<ProgramDTO>(`${SettingService.PROGRAMS_API_URL}/${code}`, { context: this.CONTEXT });
+    return this.http.get<ProgramDTO>(SettingService.PROGRAMS_API_URL + `/${code}`, { context: this.CONTEXT });
   }
 
   public deleteProgram(code: string): Observable<ProgramDTO> {
-    return this.http.delete<ProgramDTO>(`${SettingService.PROGRAMS_API_URL}/${code}`);
+    return this.http.delete<ProgramDTO>(SettingService.PROGRAMS_API_URL + `/${code}`);
   }
 
   public getAllPrograms(): Observable<ProgramDTO[]> {
-    return this.http.get<ProgramDTO[]>(`${SettingService.PROGRAMS_API_URL}/allPrograms`, { context: this.CONTEXT });
+    return this.http.get<ProgramDTO[]>(SettingService.PROGRAMS_API_URL + '/allPrograms', { context: this.CONTEXT });
   }
 }

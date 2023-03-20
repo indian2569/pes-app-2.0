@@ -10,6 +10,10 @@
       <mat-label>Popis:</mat-label>
       <textarea matInput type="text" formControlName="description" rows="9" maxlength="1500"></textarea>
     </mat-form-field>
+    <mat-form-field class="field-position" appearance="fill" *ngIf="actionType === 5">
+      <mat-label>Pozicia:</mat-label>
+      <input matInput type="text" formControlName="position"/>
+    </mat-form-field>
   </form>       
   <ng-template #elseTemplate>
       Nazaj chceš vymazať tento objekt <b>{{data.name}}</b>?

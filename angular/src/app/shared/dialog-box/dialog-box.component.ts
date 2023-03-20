@@ -1,4 +1,4 @@
-import { Component, Inject, Optional, Input, OnInit } from '@angular/core';
+import { Component, Inject, Optional, Input, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import * as _ from "lodash";
@@ -30,12 +30,14 @@ export class DialogBoxComponent implements OnInit {
     this.action = this.local_data.action;
     this.actionType = this.local_data.actionType;
     this.data = this.fillInputData(this.local_data);
+
   }
 
   ngOnInit(): void {
     this.reportForm = this.generateFormGroup(this.actionType);
     this.initButtonText(this.actionType);
     this.initDescriptionText(this.actionType);
+        console.log(this.actionType);
   }
 
   doAction() {
@@ -47,7 +49,7 @@ export class DialogBoxComponent implements OnInit {
   }
 
   generateFormGroup(type: number): FormGroup {
-    if (!_.isNil(type) && type === 4) {
+    if (!_.isNil(type) && type === 5) {
       return new FormGroup ({
       id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
       name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
@@ -71,6 +73,13 @@ export class DialogBoxComponent implements OnInit {
       return {
         id: userInput.id,
         name: userInput.place + ' ' + (_.isNil(userInput.program_type) ? '' : userInput.program_type.name) + ' ' + userInput.entry_date_from
+      };
+    } else if (this.actionType === 5) {
+      return {
+        id: userInput.id,
+        name: userInput.name,
+        position: userInput.position,
+        description: userInput.description
       };
     } else {
       return {
