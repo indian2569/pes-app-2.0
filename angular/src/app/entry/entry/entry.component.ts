@@ -31,6 +31,7 @@ export class EntryComponent implements OnInit {
   @ViewChild('client', {static: false}) clientsControl: ChipsInputComponent;
   @ViewChild('otherClientsInput', {static: false}) otherClientsControl: ChipsInputComponent;
   @ViewChild('coworkersInput', {static: false}) coworkersControl: ChipsInputComponent;
+  @ViewChild('methodsInput', {static: false}) methodsControl: ChipsInputComponent;
 
   programs: ProgramDTO[];
   methods: MethodsDTO[] ;
@@ -90,6 +91,7 @@ export class EntryComponent implements OnInit {
     this.settingService.getAllMethods().subscribe({
         next: (data) => {
           this.methods = data;
+          this.methodsControl.allAvaliableChips = this.methods;
         },
         error: (e) => console.error(e)
       });
@@ -144,7 +146,7 @@ export class EntryComponent implements OnInit {
   getSaveObject(): EntryDTO {
     const ret: EntryDTO = this.formGroup.getRawValue();
 
-    ret.entry_date_from = this.transformToMoment(ret.entry_date_from).toISOString().slice(0, 19);
+    ret.entry_date_from = this.transformToMoment(this.formGroup.get('entry_date_from').value).toISOString().slice(0, 19);
     ret.entry_date_to = this.transformToMoment(this.formGroup.get('entry_date_to').value).toISOString().slice(0, 19);
     if (!_.isNil(this.clientsControl)) {
         ret.client = this.clientsControl.selectedChips;
@@ -155,9 +157,10 @@ export class EntryComponent implements OnInit {
     if (!_.isNil(this.coworkersControl)) {
         ret.other_workers = this.coworkersControl.selectedChips;
     }
-    const contatcts: Array<MethodsDTO> = [];
-    contatcts.push(this.formGroup.get('work_methods').value);
-    ret.work_methods = contatcts;
+    if (!_.isNil(this.methodsControl)) {
+        ret.work_methods = this.methodsControl.selectedChips;
+    }
+    console.log(ret);
     return ret;
   }
 
@@ -192,6 +195,7 @@ export class EntryComponent implements OnInit {
         this.clientsControl.selectedChips = this.entryEdit.client;
         this.otherClientsControl.selectedChips = this.entryEdit.clients_on_site;
         this.coworkersControl.selectedChips = this.entryEdit.other_workers;
+        this.methodsControl.selectedChips = this.entryEdit.work_methods;
         this.formGroup.get('campaign').setValue(this.entryEdit.campaign);
         this.selectedCampagne = this.entryEdit.campaign;
         this.selectedProgram = this.entryEdit.program_type;
