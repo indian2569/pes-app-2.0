@@ -58,8 +58,6 @@ services:
         container_name: angular
         ports: 
           - 4200:4200
-        links:
-          - app
         depends_on:
           - app
         volumes:
