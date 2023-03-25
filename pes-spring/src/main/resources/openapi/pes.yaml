@@ -1038,13 +1038,19 @@ paths:
       security:
         - bearerAuth: []
       operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         200:
           description: Identity successfully logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuditIdentity'
+                $ref: '#/components/schemas/JwtResponse'
         400:
           $ref: '#/components/responses/InvalidRequest'
         401:
@@ -1053,21 +1059,27 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         500:
           $ref: '#/components/responses/SystemException'
-  /auth/access:
-    get:
+  /auth/register:
+    post:
       tags:
         - Authentication
       summary: Get authenticated informations
       security:
-        - authSessionToken: []
-      operationId: checkAccess
+        - bearerAuth: []
+      operationId: registerAcess
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
       responses:
         200:
           description: Identity successfully authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuditIdentity'
+                $ref: '#/components/schemas/MessageResponse'
         400:
           $ref: '#/components/responses/InvalidRequest'
         401:
@@ -1312,32 +1324,26 @@ components:
       properties: 
         message: 
           type: string
-    AuditIdentity:
+    JwtResponse:
       type: object
-      required:
-        - sid
-        - provider
       properties:
-        sid:
+        token:
           type: string
-          description: Unique identity identificator
-        name:
+          description: Access token string.
+        id:
+          type: number
+          description: User ID.
+        username:
           type: string
-          description: Common readable name
-        provider:
+          description: Username of the authenticated user.
+        email:
           type: string
-          description: Authentication provider identification
-        expressNbr:
-          type: string
-          description: Special identification for FT
-        session:
-          $ref: "#/components/schemas/SessionInfo"
-      description: Identification of Identity (User)
-      readOnly: true
-      example:
-        sid: 96009540
-        name: Chris Thorthon
-        provider: authority.com
+          description: Email of the authenticated user.
+        roles:
+          type: array
+          items:
+            type: string
+          description: List of roles assigned to the authenticated user.
     SessionInfo:
       type: object
       properties:

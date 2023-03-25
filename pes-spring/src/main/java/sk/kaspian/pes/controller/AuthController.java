@@ -1,5 +1,7 @@
 package sk.kaspian.pes.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,28 +17,28 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.annotation.Timed;
+import lombok.RequiredArgsConstructor;
 import sk.kaspian.pes.model.ERole;
 import sk.kaspian.pes.model.Role;
 import sk.kaspian.pes.model.User;
+import sk.kaspian.pes.openapi.model.v1.JwtResponse;
+import sk.kaspian.pes.openapi.model.v1.MessageResponse;
+import sk.kaspian.pes.openapi.model.v1.SignUpRequest;
+import sk.kaspian.pes.openapi.server.controller.v1.AuthApi;
 import sk.kaspian.pes.service.impl.UserDetailsImpl;
-import sk.kaspian.pes.test.JwtResponse;
-import sk.kaspian.pes.test.LoginRequest;
-import sk.kaspian.pes.test.MessageResponse;
-import sk.kaspian.pes.test.SignupRequest;
 import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.repository.RoleRepository;
 import sk.kaspian.pes.security.JwtUtils;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+@Timed
 
-public class AuthController {
+public class AuthController implements AuthApi {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
@@ -52,39 +54,21 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
-												 roles));
-	}
-
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	@Override
+	public ResponseEntity<sk.kaspian.pes.openapi.model.v1.MessageResponse> registerAcess(@Valid SignUpRequest signUpRequest) {
+		MessageResponse response = new MessageResponse();
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+			response.setMessage("Error: Username is already taken!");
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+					.body(response);
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+			response.setMessage("Error: Email is already in use!");
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+					.body(response);
 		}
 
 		// Create new user's account
@@ -92,10 +76,13 @@ public class AuthController {
 							 signUpRequest.getEmail(),
 							 encoder.encode(signUpRequest.getPassword()));
 
-		Set<String> strRoles = signUpRequest.getRole();
+		Set<String> strRoles = new HashSet<>();
+		if (signUpRequest.getRoles()!= null) {
+			strRoles.addAll(signUpRequest.getRoles());
+		}
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles == null) {
+		if (!strRoles.isEmpty()) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			roles.add(userRole);
@@ -124,7 +111,31 @@ public class AuthController {
 
 		user.setRoles(roles);
 		userRepository.save(user);
-
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		response.setMessage("User registered successfully!");
+		return ResponseEntity.ok(response);
 	}
+
+	@Override
+	public ResponseEntity<JwtResponse> login(sk.kaspian.pes.openapi.model.v1.@Valid LoginRequest loginRequest) {
+
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtUtils.generateJwtToken(authentication);
+			
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
+			List<String> roles = userDetails.getAuthorities().stream()
+					.map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+			JwtResponse jwtRespo = new JwtResponse();
+			jwtRespo.setToken(jwt);
+			jwtRespo.setId(BigDecimal.valueOf(userDetails.getId()));
+			jwtRespo.setUsername(userDetails.getUsername());
+			jwtRespo.setEmail(userDetails.getEmail());
+			jwtRespo.setRoles(roles);
+			return ResponseEntity.ok(jwtRespo);
+	}
+
+
 }
