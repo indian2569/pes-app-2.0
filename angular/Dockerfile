@@ -1,31 +1,27 @@
-# syntax=docker/dockerfile:1.4
+# Use the official Node.js image as the base image
+FROM node:latest
 
-FROM --platform=linux/amd64 node:17.0.1-bullseye-slim as builder
+# Set a working directory inside the container for your Angular application
+WORKDIR /angular/src/app
 
-RUN mkdir /project
-WORKDIR /project
+# Copy package.json and package-lock.json into the container
+COPY package*.json ./
 
+# Install Angular CLI and dependencies
 RUN npm install -g @angular/cli@13
+RUN npm install
 
-COPY package.json package-lock.json ./
-RUN npm ci
-
+# Copy the entire Angular application into the container
 COPY . .
-CMD ["ng", "serve", "--host", "0.0.0.0"]
 
-FROM builder as dev-envs
+# Copy the proxy configuration file into the container
+COPY proxy.conf.json .
 
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
+# Set an environment variable to specify the HTTP proxy to be used inside the container (if needed)
+ENV http_proxy http://<proxy_host>:<proxy_port>
 
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
+# Expose the port that the Angular application listens on
+EXPOSE 4200
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# Start the Angular application with the specified proxy configuration
+CMD ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json
