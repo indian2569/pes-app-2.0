@@ -14,12 +14,12 @@ import { ProgramDTO } from '../model/ProgramDTO';
 })
 export class SettingService {
 
-  public static readonly CAMAPAIGNE_API_URL = 'http://localhost:8080/campaign';
-  public static readonly COWORKERS_API_URL = 'http://localhost:8080/coworker';
-  public static readonly EVENTS_API_URL = 'http://localhost:8080/event';
-  public static readonly INSTITUTION_API_URL = 'http://localhost:8080/institution';
-  public static readonly METHODS_API_URL = 'http://localhost:8080/method';
-  public static readonly PROGRAMS_API_URL = 'http://localhost:8080/program';
+  public static readonly CAMAPAIGNE_API_URL = '/api/campaign';
+  public static readonly COWORKERS_API_URL = '/api/coworker';
+  public static readonly EVENTS_API_URL = '/api/event';
+  public static readonly INSTITUTION_API_URL = '/api/institution';
+  public static readonly METHODS_API_URL = '/api/method';
+  public static readonly PROGRAMS_API_URL = '/api/program';
 
   private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
 

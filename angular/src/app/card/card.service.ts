@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class CardService {
 
   constructor(protected http: HttpClient) { }
-  public static readonly CARD_API_URL = 'http://localhost:8080/card';
+  public static readonly CARD_API_URL = '/api/card';
 
   public saveCard(card: CardBasicDTO):  Observable<CardBasicDTO> {
     return this.http.post<CardBasicDTO>(CardService.CARD_API_URL + '/save', card);
