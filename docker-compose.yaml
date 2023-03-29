@@ -60,6 +60,8 @@ services:
           - 4200:4200
         depends_on:
           - app
+        links:
+          - app
         volumes:
           - ./angular:/project
           - /project/node_modules
