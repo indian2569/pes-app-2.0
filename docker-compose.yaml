@@ -50,6 +50,8 @@ services:
           - db:db
         depends_on:
           - db
+        networks:
+          - backend-net
 
     angular:
         build:
@@ -61,8 +63,12 @@ services:
         depends_on:
           - app
         links:
-          - app
+          - app:app
         volumes:
           - ./angular:/project
           - /project/node_modules
-
+        networks:
+          - backend-net
+networks:
+  backend-net:
+    driver: bridge

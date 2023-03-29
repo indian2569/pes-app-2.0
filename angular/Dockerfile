@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-EXPOSE 4200
+
 CMD ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
 
 FROM builder as dev-envs
@@ -28,5 +28,7 @@ usermod -aG docker vscode
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
+
+EXPOSE 4200
 
 CMD ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
