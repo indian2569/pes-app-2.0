@@ -39,6 +39,8 @@ services:
         # Expose ports
         ports:
          - "5434:5432"
+        networks:
+          - backend-net
 
     app:
         build:
