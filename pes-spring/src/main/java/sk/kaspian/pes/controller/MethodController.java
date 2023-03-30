@@ -19,7 +19,7 @@ import sk.kaspian.pes.service.MethodService;
 @RestController
 @RequiredArgsConstructor
 @Timed
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://64.226.108.218:4200"})
 public class MethodController implements MethodApi {
 
 	@NonNull

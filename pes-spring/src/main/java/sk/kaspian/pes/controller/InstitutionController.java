@@ -19,7 +19,7 @@ import sk.kaspian.pes.service.InstitutionService;
 @RestController
 @RequiredArgsConstructor
 @Timed
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://64.226.108.218:4200"})
 public class InstitutionController implements InstitutionApi {
 
 	@NonNull

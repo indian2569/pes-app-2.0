@@ -18,7 +18,7 @@ import sk.kaspian.pes.openapi.model.v1.Entry;
 import sk.kaspian.pes.openapi.server.controller.v1.EntryApi;
 import sk.kaspian.pes.service.EntryService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://64.226.108.218:4200"})
 @RestController
 @RequiredArgsConstructor
 @Timed

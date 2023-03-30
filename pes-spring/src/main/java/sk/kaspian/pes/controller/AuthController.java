@@ -33,7 +33,7 @@ import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.repository.RoleRepository;
 import sk.kaspian.pes.security.JwtUtils;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:4200", "http://64.226.108.218:4200"}, maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 @Timed
