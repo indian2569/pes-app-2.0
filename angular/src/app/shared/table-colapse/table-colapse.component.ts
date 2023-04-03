@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
-import { TableHeaderDTO } from '../../model/TableHeaderDTO';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { SettingService } from '../../setting/setting.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-table-colapse',
@@ -19,7 +21,7 @@ import { SettingService } from '../../setting/setting.service';
   ],
 })
 
-  export class TableColapseComponent implements OnInit {
+  export class TableColapseComponent implements OnInit, OnDestroy {
 
     @Input() tableData: InstitutionDTO[];
     @Input() typeNumber: number;
@@ -27,12 +29,13 @@ import { SettingService } from '../../setting/setting.service';
     columnsToDisplay = ['name'];
     expandedElement: InstitutionDTO | null;
     result = '';
+    onDestroy$ = new Subject();
 
   constructor(private dialog: MatDialog,
               private settingService: SettingService) { }
 
     ngOnInit(): void {
-      this.dataSource = this.tableData;
+      this.dataSource = _.isNil(this.tableData) ? [] : this.tableData;
       this.columnsSetUpBaseOnType(this.typeNumber);
     }
 
@@ -59,29 +62,35 @@ import { SettingService } from '../../setting/setting.service';
      }
   }
 
-  editItem(id: number) {
-    let editItem;
-     switch (this.typeNumber) {
-        case 1:
-          this.settingService.getInstitution(id.toString()).subscribe((item) => editItem = item);
-          break;
-        case 2:
-          this.settingService.getCampaign(id.toString()).subscribe((item) => editItem = item);
-          break;
-        case 3:
-          this.settingService.getMethod(id.toString()).subscribe((item) => editItem = item);
-          break;
-        case 4:
-          this.settingService.getProgram(id.toString()).subscribe((item) => editItem = item);
-          break;
-        case 5:
-          this.settingService.getCoworker(id.toString()).subscribe((item) => editItem = item);
-          break;
-        case 6:
-          this.settingService.getEvent(id.toString()).subscribe((item) => editItem = item);
-          break;
-     }
-  }
+    editItem(id: number) {
+        let editItem;
+        switch (this.typeNumber) {
+            case 1:
+                this.settingService.getInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+            case 2:
+                this.settingService.getCampaign(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+            case 3:
+                this.settingService.getMethod(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+            case 4:
+                this.settingService.getProgram(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+            case 5:
+                this.settingService.getCoworker(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+            case 6:
+                this.settingService.getEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe((item) => editItem = item);
+                break;
+        }
+    }
 
   confirmDialog(id: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -91,7 +100,8 @@ import { SettingService } from '../../setting/setting.service';
     dialogRef.componentInstance.message = 'Naozaj chceš vymazať túto položku?';
     dialogRef.componentInstance.btnOkText = 'Vymazať'; 
     dialogRef.componentInstance.btnCancelText = 'Spať';
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$))
+      .subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result) {
         this.deleteItem(id);
@@ -99,26 +109,37 @@ import { SettingService } from '../../setting/setting.service';
     });
   }
 
-  deleteItem(id: number) {
-     switch (this.typeNumber) {
-        case 1:
-          this.settingService.deleteInstitution(id.toString()).subscribe();
-          break;
-        case 2:
-          this.settingService.deleteCampaign(id.toString()).subscribe();
-          break;
-        case 3:
-          this.settingService.deleteMethod(id.toString()).subscribe();
-          break;
-        case 4:
-          this.settingService.deleteProgram(id.toString()).subscribe();
-          break;
-        case 5:
-          this.settingService.deleteCoworker(id.toString()).subscribe();
-          break;
-        case 6:
-          this.settingService.deleteEvent(id.toString()).subscribe();
-          break;
-     }
+    deleteItem(id: number) {
+        switch (this.typeNumber) {
+            case 1:
+                this.settingService.deleteInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 2:
+                this.settingService.deleteCampaign(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 3:
+                this.settingService.deleteMethod(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 4:
+                this.settingService.deleteProgram(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 5:
+                this.settingService.deleteCoworker(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 6:
+                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+        }
+    }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

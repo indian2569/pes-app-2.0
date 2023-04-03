@@ -37,7 +37,6 @@ export class DialogBoxComponent implements OnInit {
     this.reportForm = this.generateFormGroup(this.actionType);
     this.initButtonText(this.actionType);
     this.initDescriptionText(this.actionType);
-        console.log(this.actionType);
   }
 
   doAction() {

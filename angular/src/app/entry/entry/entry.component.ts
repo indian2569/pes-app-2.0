@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,  Input } from '@angular/core';
+import { Component, OnInit, ViewChild,  Input, OnDestroy } from '@angular/core';
 import { FormControl,  Validators, FormBuilder } from '@angular/forms';
 import { map,  startWith} from 'rxjs/operators';
 
@@ -19,14 +19,15 @@ import { CoworkerDTO } from '../../model/CoworkerDTO';
 import { EntryDTO } from '../../model/EntryDTO';
 import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.component.html',
   styleUrls: ['./entry.component.scss']
 })
-export class EntryComponent implements OnInit {
+export class EntryComponent implements OnInit, OnDestroy {
 
   @ViewChild('client', {static: false}) clientsControl: ChipsInputComponent;
   @ViewChild('otherClientsInput', {static: false}) otherClientsControl: ChipsInputComponent;
@@ -46,6 +47,7 @@ export class EntryComponent implements OnInit {
   selectedCampagne: CampaignDTO;
   selectedProgram: ProgramDTO;
   selectedMethod: MethodsDTO;
+  onDestroy$ = new Subject();
 
   public ContractEnum2LabelMapping = ContractEnum2LabelMapping;
   public contactTypes = Object.values(ContractEnum);
@@ -76,39 +78,44 @@ export class EntryComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.route.url
+    this.route.url.pipe(takeUntil(this.onDestroy$))
       .subscribe((params: any) => {
         if (params[0].path !== 'add_entry' && params.length > 0) {
           this.editId = params[0].path;
         }
       });
-    this.settingService.getAllPrograms().subscribe({
+    this.settingService.getAllPrograms().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
         next: (data) => {
           this.programs = data;
         },
         error: (e) => console.error(e)
       });
-    this.settingService.getAllMethods().subscribe({
+    this.settingService.getAllMethods().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
         next: (data) => {
           this.methods = data;
           this.methodsControl.allAvaliableChips = this.methods;
         },
         error: (e) => console.error(e)
       });
-    this.settingService.getAllCampaigns().subscribe({
+    this.settingService.getAllCampaigns().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
         next: (data) => {
           this.campaigns = data;
         },
         error: (e) => console.error(e)
       });
-    this.settingService.getAllCoworkers().subscribe({
+    this.settingService.getAllCoworkers().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
         next: (data) => {
           this.contacts = data;
           this.coworkersControl.allAvaliableChips = this.contacts;
         },
         error: (e) => console.error(e)
       });
-    this.cardService.getAllCards().subscribe({
+    this.cardService.getAllCards().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
         next: (data) => {
           this.cards = data;
           this.otherClientsControl.allAvaliableChips = this.cards;
@@ -123,7 +130,8 @@ export class EntryComponent implements OnInit {
       );
     }
     if (!_.isNil(this.editId)) {
-      this.entryService.getEntry(this.editId).subscribe(card => {
+      this.entryService.getEntry(this.editId).pipe(takeUntil(this.onDestroy$))
+      .subscribe(card => {
         this.entryEdit = card;
         this.formSetUp();
         this.title = 'Záznam';
@@ -137,7 +145,8 @@ export class EntryComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.entryService.saveEntry(this.getSaveObject()).subscribe(ent => {
+    this.entryService.saveEntry(this.getSaveObject()).pipe(takeUntil(this.onDestroy$))
+      .subscribe(ent => {
       this.entryEdit = ent;
       this.router.navigate([`/entry_line/` + ent.id]);
     });
@@ -211,5 +220,10 @@ export class EntryComponent implements OnInit {
       date = moment.utc(value);
     }
     return date;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

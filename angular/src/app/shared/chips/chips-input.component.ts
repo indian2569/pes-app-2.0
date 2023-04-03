@@ -7,10 +7,6 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import * as _ from 'lodash';
 
-export interface Fruit {
-  name: string;
-}
-
 /**
  * @title Chips with input
  */

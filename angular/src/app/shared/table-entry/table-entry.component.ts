@@ -1,10 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { EntryDTO } from '../../model/EntryDTO';
 import { Router } from '@angular/router';
 import { MatTable } from '@angular/material/table';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryService } from '../../entry/entry.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table-entry',
@@ -12,11 +14,12 @@ import { EntryService } from '../../entry/entry.service';
   styleUrls: ['./table-entry.component.scss'],
 })
 
-export class TableEntryComponent implements OnInit  {
+export class TableEntryComponent implements OnInit, OnDestroy {
   @Input() tableData: EntryDTO[];
   displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'cratedBy', 'action'];
   dataSource: EntryDTO[];
   expandedElement: EntryDTO | null;
+  onDestroy$ = new Subject();
 
   @ViewChild(MatTable, {static: true} ) table: MatTable<any>;
   constructor(private router: Router, public dialog: MatDialog,
@@ -24,7 +27,7 @@ export class TableEntryComponent implements OnInit  {
 
   ngOnInit(): void {
       this.dataSource = this.tableData;
-    }
+  }
 
   redirectUrl(obj_row): void {
      this.router.navigate([`/entry_line/` + obj_row.id]);
@@ -39,17 +42,26 @@ export class TableEntryComponent implements OnInit  {
       data: obj
   });
 
-  dialogRef.afterClosed().subscribe(result => {
+  dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
       if (result.event === 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
 
-  deleteRowData(row_obj) {
-    this.dataSource = this.dataSource.filter((value, key) => {
-      return value.id !== row_obj.id;
-    });
-    this.entryService.deleteEntry(row_obj.id).subscribe(sub => this.table.renderRows());
+    deleteRowData(row_obj: any) {
+        this.entryService.deleteEntry(row_obj.id).pipe(takeUntil(this.onDestroy$))
+            .subscribe(sub => {
+                this.dataSource = this.dataSource.filter((value, key) => {
+                    return value.id !== row_obj.id;
+                });
+                this.table.renderRows();
+            });
+    }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
-  }
+}
+

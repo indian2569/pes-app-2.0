@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +7,8 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import * as _ from "lodash";
 import { InstitutionDTO } from '../../model/InstitutionDTO';
 import { SettingService } from '../../setting/setting.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export interface UsersData {
   name: string;
@@ -18,10 +20,11 @@ export interface UsersData {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnDestroy {
 
   dataSource: any[];
   havePosition = false;
+  onDestroy$ = new Subject();
 
   @ViewChild(MatTable, {static: true} ) table: MatTable<any>;
   @Input() tableData: InstitutionDTO[];
@@ -32,10 +35,10 @@ export class TableComponent implements OnInit {
               private settingService: SettingService) {}
 
   ngOnInit(): void {
-    this.displayedColumns = this.typeNumber === 5 ? ['name', 'description', 'position' , 'action'] : ['name', 'description', 'action'];
     switch (this.typeNumber) {
     case 1:
-      this.settingService.getAllInstitutions().subscribe((camp: any) => {
+      this.settingService.getAllInstitutions().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         if (this.dataSource.length > 0) {
           this.table.renderRows();
@@ -43,7 +46,8 @@ export class TableComponent implements OnInit {
       });
       break;
     case 2:
-      this.settingService.getAllCampaigns().subscribe((camp: any) => {
+      this.settingService.getAllCampaigns().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         if (this.dataSource.length > 0) {
           this.table.renderRows();
@@ -51,7 +55,8 @@ export class TableComponent implements OnInit {
       });
       break;
     case 3:
-      this.settingService.getAllMethods().subscribe((camp: any) => {
+      this.settingService.getAllMethods().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         if (this.dataSource.length > 0) {
           this.table.renderRows();
@@ -59,7 +64,8 @@ export class TableComponent implements OnInit {
       });
       break;
     case 4:
-      this.settingService.getAllPrograms().subscribe((camp: any) => {
+      this.settingService.getAllPrograms().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         if (this.dataSource.length > 0) {
           this.table.renderRows();
@@ -67,7 +73,8 @@ export class TableComponent implements OnInit {
       });
       break;
     case 5:
-      this.settingService.getAllCoworkers().subscribe((camp: any) => {
+      this.settingService.getAllCoworkers().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         this.havePosition = true;
         if (this.dataSource.length > 0) {
@@ -76,7 +83,8 @@ export class TableComponent implements OnInit {
       });
       break;
     case 6:
-      this.settingService.getAllEvents().subscribe((camp: any) => {
+      this.settingService.getAllEvents().pipe(takeUntil(this.onDestroy$))
+      .subscribe((camp: any) => {
         this.dataSource = camp;
         if (this.dataSource.length > 0) {
           this.table.renderRows();
@@ -84,6 +92,7 @@ export class TableComponent implements OnInit {
       });
       break;
     }
+    this.displayedColumns = this.typeNumber === 5 ? ['name', 'description', 'position' , 'action'] : ['name', 'description', 'action'];
   }
 
   openDialog (action: any, obj: any) {
@@ -95,7 +104,7 @@ export class TableComponent implements OnInit {
       data: obj
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((result: any) => {
       if (result.event === 'Add') {
         this.addRowData(result.data);
       } else if (result.event === 'Update') {
@@ -106,41 +115,52 @@ export class TableComponent implements OnInit {
     });
   }
 
-
   addRowData(row_obj: any) {
-    var d = new Date();
-    this.dataSource.push({
-      name: row_obj.name,
-      description: row_obj.description
-    });
+
     switch (this.typeNumber) {
     case 1:
-      this.settingService.saveInstitution({
-          id: row_obj.id,
-          name: row_obj.name,
-          description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.saveInstitution({
+                id: row_obj.id,
+                name: row_obj.name,
+                description: row_obj.description
+            }).pipe(takeUntil(this.onDestroy$))
+              .subscribe((sub: any) => {
+                    this.addToDataSource(sub);
+                    this.table.renderRows()
+              });
       break;
     case 2:
       this.settingService.saveCampaign({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+          .subscribe((sub: any) => {
+              this.addToDataSource(sub);
+              this.table.renderRows()
+          });
       break;
     case 3:
       this.settingService.saveMethod({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+          .subscribe((sub: any) => {
+              this.addToDataSource(sub);
+              this.table.renderRows()
+          });
       break;
     case 4:
       this.settingService.saveProgram({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+          .subscribe((sub: any) => {
+              this.addToDataSource(sub);
+              this.table.renderRows()
+          });
       break;
     case 5:
       this.settingService.saveCoworker({
@@ -148,57 +168,99 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           position: row_obj.position
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+          .subscribe((sub: any) => {
+              this.addToDataSource(sub);
+              this.table.renderRows()
+          });
       break;
     case 6:
       this.settingService.saveEvent({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+          .subscribe((sub: any) => {
+              this.addToDataSource(sub);
+              this.table.renderRows()
+          });
       break;
     }
   }
 
-  updateRowData(row_obj: any) {
-    this.dataSource = this.dataSource.filter((value, key) => {
-      if (value.id === row_obj.id) {
-        value.name = row_obj.name;
-        value.description = row_obj.description;
-        if (this.typeNumber === 5) {
-           value.position = row_obj.position;
-        }
-      }
-      return true;
+  addToDataSource(row_obj: any) {
+    this.dataSource.push({
+      id: row_obj.id,
+      name: row_obj.name,
+      description: row_obj.description
     });
+  }
+
+  updateDataSource(row_obj: any) {
+        this.dataSource = this.dataSource.filter((value, key) => {
+            if (value.id === row_obj.id) {
+                value.name = row_obj.name;
+                value.description = row_obj.description;
+                value.active = row_obj.active;
+                if (this.typeNumber === 5) {
+                    value.position = row_obj.position;
+                }
+            }
+            return true;
+        });
+    }
+
+  removeDataFromDataSource(row_obj: any) {
+    this.dataSource = this.dataSource.filter((value, key) => {
+      return value.id !== row_obj.id;
+    });
+  }
+
+  updateRowData(row_obj: any) {
     switch (this.typeNumber) {
     case 1:
       this.settingService.saveInstitution({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 2:
       this.settingService.saveCampaign({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 3:
       this.settingService.saveMethod({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 4:
       this.settingService.saveProgram({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 5:
       this.settingService.saveCoworker({
@@ -206,52 +268,74 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           position: row_obj.position
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 6:
       this.settingService.saveEvent({
           id: row_obj.id,
           name: row_obj.name,
           description: row_obj.description
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     }
   }
 
   deleteRowData(row_obj: any) {
-    this.dataSource = this.dataSource.filter((value, key) => {
-      return value.id !== row_obj.id;
-    });
     switch (this.typeNumber) {
         case 1:
-        this.settingService.deleteInstitution(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteInstitution(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
         case 2:
-        this.settingService.deleteCampaign(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteCampaign(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
         case 3:
-        this.settingService.deleteMethod(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteMethod(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
         case 4:
-        this.settingService.deleteProgram(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteProgram(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
         case 5:
-        this.settingService.deleteCoworker(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteCoworker(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
         case 6:
-        this.settingService.deleteEvent(row_obj.id).subscribe((sub: any) => this.table.renderRows());
+        this.settingService.deleteEvent(row_obj.id).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) => {
+            this.removeDataFromDataSource(row_obj);
+            this.table.renderRows();
+        });
         break;
     }
   }
 
   activateTogle(row_obj: any) {
-     this.dataSource = this.dataSource.filter((value, key) => {
-      if (value.id === row_obj.id) {
-        value.name = row_obj.name;
-        value.description = row_obj.description;
-      }
-      return true;
-    });
     switch (this.typeNumber) {
     case 1:
       this.settingService.saveInstitution({
@@ -259,7 +343,11 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 2:
       this.settingService.saveCampaign({
@@ -267,7 +355,11 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 3:
       this.settingService.saveMethod({
@@ -275,7 +367,11 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 4:
       this.settingService.saveProgram({
@@ -283,7 +379,11 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 5:
       this.settingService.saveCoworker({
@@ -292,7 +392,11 @@ export class TableComponent implements OnInit {
           description: row_obj.description,
           position: row_obj.position,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     case 6:
       this.settingService.saveEvent({
@@ -300,8 +404,17 @@ export class TableComponent implements OnInit {
           name: row_obj.name,
           description: row_obj.description,
           active: !row_obj.active
-        }).subscribe((sub: any) => this.table.renderRows());
+        }).pipe(takeUntil(this.onDestroy$))
+        .subscribe((sub: any) =>  {
+            this.updateDataSource(sub);
+            this.table.renderRows();
+        });
       break;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

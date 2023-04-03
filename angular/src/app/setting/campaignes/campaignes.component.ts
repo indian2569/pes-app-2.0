@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CampaignDTO } from '../../model/CampaignDTO';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {SettingService} from './../setting.service';
@@ -11,7 +11,7 @@ import { EntityDialogComponent } from '../../shared/entity-dialog/entity-dialog.
   templateUrl: './campaignes.component.html',
   styleUrls: ['./campaignes.component.scss']
 })
-export class CampaignesComponent implements OnInit {
+export class CampaignesComponent implements OnInit, OnDestroy {
 
   campaignesData: CampaignDTO[] = [];
   campaignesSelected: CampaignDTO;
@@ -25,19 +25,15 @@ export class CampaignesComponent implements OnInit {
   }
 
   openDialog() {
-
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.height = '400px';
     dialogConfig.width = '600px';
 
     this.dialog.open(EntityDialogComponent, dialogConfig);
-
     const dialogRef = this.dialog.open(EntityDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe((data:any) => this.saveObject(data));
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((data:any) => this.saveObject(data));
   }
 
   saveObject(data: any) {
@@ -46,8 +42,13 @@ export class CampaignesComponent implements OnInit {
   }
 
   refreshTable() {
-    this.settingService.getAllCampaigns().subscribe((camp: any) => {
+    this.settingService.getAllCampaigns().pipe(takeUntil(this.onDestroy$)).subscribe((camp: any) => {
       this.campaignesData = camp;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

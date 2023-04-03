@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   form: any = {
     username: null,
     password: null
@@ -18,6 +20,8 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   user: string = '';
+  
+  onDestroy$ = new Subject();
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService,
               private router: Router) { }
@@ -32,7 +36,8 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     const { username, password } = this.form;
 
-    this.authService.login(username, password).subscribe(
+    this.authService.login(username, password)
+      .pipe(takeUntil(this.onDestroy$)).subscribe(
       data => {
 
         this.tokenStorage.saveToken(data.token);
@@ -57,5 +62,10 @@ export class LoginComponent implements OnInit {
 
   runHome(): void {
      this.router.navigate([`/home`]);
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

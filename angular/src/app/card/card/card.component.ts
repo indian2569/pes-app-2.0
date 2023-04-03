@@ -1,17 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { CardService } from '../card.service';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnDestroy {
 
   basicInfo = false;
   contactInfo = false;
@@ -22,6 +23,8 @@ export class CardComponent implements OnInit {
   title: string;
   readonly: boolean;
   entrySet = [];
+  
+  onDestroy$ = new Subject();
 
   @Input() editId: string;
 
@@ -32,17 +35,19 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.url
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((params: any) => {
         if (params[0].path !== 'add_card' && params.length > 0) {
           this.editId = params[0].path;
         }
       });
     if (!_.isNil(this.editId)) {
-      this.cardService.getCard(this.editId).subscribe(card => {
-        this.insertCard = card;
-        this.formSetUp();
-        this.title = 'Karta klienta';
-        this.readonly = true;
+      this.cardService.getCard(this.editId)
+        .pipe(takeUntil(this.onDestroy$)).subscribe(card => {
+            this.insertCard = card;
+            this.formSetUp();
+            this.title = 'Karta klienta';
+            this.readonly = true;
       });
     } else {
       this.formSetUp();
@@ -98,12 +103,17 @@ formSetUp() {
         this.formGroup.markAsUntouched();
         this.formGroup.markAsPristine();
         this.formGroup.reset();
-      }))
+      }),takeUntil(this.onDestroy$))
       .subscribe(card => this.router.navigate([`/card/` + card.id]));
   }
 
   createSaveObject(): CardBasicDTO {
     const ret: CardBasicDTO = this.formGroup.getRawValue();
     return ret;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }
