@@ -1,5 +1,7 @@
 package sk.kaspian.pes.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,25 +40,34 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	@Transactional
 	public Entry createEntry(Entry entryInput) {
-		return entryMapper.map(entryRepository.save(entryMapper.map(entryInput)));
+		sk.kaspian.pes.model.Entry mapp = entryMapper.map(entryInput);
+		Entry create =  entryMapper.map(entryRepository.save(mapp));
+		return create;
 	}
 
 	@Override
 	@Transactional
 	public Entry updateEntry(Entry entryInput) {
-		sk.kaspian.pes.model.Entry save = entryRepository.save(entryMapper.map(entryInput));
+		sk.kaspian.pes.model.Entry map = entryMapper.map(entryInput);
+		sk.kaspian.pes.model.Entry save = entryRepository.save(map);
 		return entryMapper.map(save);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Entry getEntryById(Long id) {
-		return entryMapper.map(entryRepository.getOne(id));
+		sk.kaspian.pes.model.Entry one = entryRepository.getReferenceById(id);
+		return entryMapper.map(one);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Entry> getAllForCard(Card card) {
-		return entryMapper.map(entryRepository.getAllByCard(card.getId()));
+		List<Long> entryIds = new ArrayList<>();
+		//entryIds.addAll(entryRepository.getAllEntrysIdByCardForClients(card.getId().longValue()));
+		//entryIds.addAll(entryRepository.getAllEntrysIdByCardForClientsOnSite(card.getId().longValue()));
+		//return entryMapper.map(entryRepository.getAllEntrysMatchingListOfIds(entryIds));
+		return entryIds;
 	}
 
 	@Override

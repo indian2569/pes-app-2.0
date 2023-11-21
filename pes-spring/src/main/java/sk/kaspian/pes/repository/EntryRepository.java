@@ -15,10 +15,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EntryRepository extends JpaSpecificationExecutor<Entry>, JpaRepository<Entry, Long>{
 
-	@Query("select e from Entry e")
-	List<Entry> getAllByCard(@Param("id") BigDecimal id);
+	@Query("SELECT e FROM Entry e WHERE e.id IN (:cardId)")
+	List<Entry> getAllEntrysMatchingListOfIds(@Param("cardId") List<Long> ids);
 
 	@Query("select q from Entry q")
 	List<Entry> getFiveNewestEntryForUser(@Param("id") Long id);
+
+	@Query(value = "SELECT c.entry_id FROM pes_entry_clients c WHERE c.card_id = :cardId", nativeQuery = true)
+	List<Long> getAllEntrysIdByCardForClients(@Param("cardId") Long id);
+
+	@Query(value = "SELECT c.entry_id FROM pes_entry_card c WHERE c.card_id = :cardId", nativeQuery = true)
+	List<Long> getAllEntrysIdByCardForClientsOnSite(@Param("cardId") Long id);
 
 }

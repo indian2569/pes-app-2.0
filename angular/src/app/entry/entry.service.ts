@@ -76,4 +76,8 @@ export class EntryService {
     .then((cardSub: any) => this.cardData = cardSub);
     return this.cardData;
   }
+  
+  public getAllEntrysByCard(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
+    return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrys', card);
+  }
 }

@@ -1177,7 +1177,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Card'
-        client_on_site:
+        clients_on_site:
           type: array
           items:
             $ref: '#/components/schemas/Card'

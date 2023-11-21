@@ -59,5 +59,4 @@ public class CardServiceImpl implements CardService {
 	public sk.kaspian.pes.openapi.model.v1.Card getCardById(Long id) {
 		return cardMapper.map(cardRepository.getOne(id));
 	}
-
 }

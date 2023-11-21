@@ -39,5 +39,4 @@ public interface CardService {
 	 * @return {@link Card} base on id
 	 */
 	Card getCardById(Long id);
-
 }

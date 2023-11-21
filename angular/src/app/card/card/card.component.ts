@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { CardService } from '../card.service';
+import { EntryService} from '../../entry/entry.service';
 import { map, tap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -29,6 +30,7 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() editId: string;
 
   constructor(private cardService: CardService,
+			  private entryService: EntryService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router) {}
@@ -48,7 +50,10 @@ export class CardComponent implements OnInit, OnDestroy {
             this.formSetUp();
             this.title = 'Karta klienta';
             this.readonly = true;
+			this.entryService.getAllEntrysByCard(this.insertCard).pipe(takeUntil(this.onDestroy$))
+			.subscribe(entrys => this.entrySet = entrys);
       });
+
     } else {
       this.formSetUp();
       this.title = 'Vytvorenie karty klienta';
