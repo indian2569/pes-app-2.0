@@ -63,7 +63,7 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Entry> getAllForCard(Card card) {
-		List<Long> entryIds = new ArrayList<>();
+		List<Entry> entryIds = new ArrayList<>();
 		//entryIds.addAll(entryRepository.getAllEntrysIdByCardForClients(card.getId().longValue()));
 		//entryIds.addAll(entryRepository.getAllEntrysIdByCardForClientsOnSite(card.getId().longValue()));
 		//return entryMapper.map(entryRepository.getAllEntrysMatchingListOfIds(entryIds));
