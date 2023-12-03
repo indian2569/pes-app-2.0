@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "http://159.89.97.84:8080",
+    "target": "http://134.209.248.186:8080",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
