@@ -12,7 +12,8 @@ RUN npm ci
 
 COPY . .
 
-CMD ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+# CMD line moved to the next stage, so it doesn't affect the final image
+CMD ["ng", "serve", "--host", "0.0.0.0", "--proxy-config", "proxy.conf.json"]
 
 FROM builder as dev-envs
 
@@ -28,6 +29,9 @@ usermod -aG docker vscode
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
+
+# Copy the necessary artifacts from the builder stage to the final stage
+COPY --from=builder /project/proxy.conf.json /project/
 
 EXPOSE 4200
 
