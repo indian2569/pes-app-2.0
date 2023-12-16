@@ -58,7 +58,6 @@ services:
     angular:
         build:
           context: angular
-          target: builder
         container_name: angular
         ports: 
           - 4200:4200
