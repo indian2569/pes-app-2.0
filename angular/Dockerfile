@@ -17,16 +17,12 @@ CMD ["ng", "serve", "--host", "0.0.0.0", "--proxy-config", "proxy.conf.json"]
 
 FROM builder as dev-envs
 
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
+    useradd -s /bin/bash -m vscode && \
+    groupadd docker && \
+    usermod -aG docker vscode
 
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
 
@@ -35,4 +31,4 @@ COPY --from=builder /project/proxy.conf.json /project/
 
 EXPOSE 4200
 
-CMD ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+CMD ng serve --host 0.0.0.0 --proxy-config /project/proxy.conf.json
