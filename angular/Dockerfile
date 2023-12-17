@@ -5,7 +5,7 @@ FROM --platform=linux/amd64 node:17.0.1-bullseye-slim as builder
 RUN mkdir /project
 WORKDIR /project
 
-RUN npm install -g @angular/cli@13
+RUN npm install -g @angular/cli@13.3.11
 
 COPY package.json package-lock.json ./
 RUN npm ci
