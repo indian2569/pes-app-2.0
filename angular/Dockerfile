@@ -31,4 +31,4 @@ COPY --from=builder /project/proxy.conf.json /project/
 
 EXPOSE 4200
 
-CMD ng serve --host 0.0.0.0 --proxy-config /project/proxy.conf.json
+CMD ng serve --host 0.0.0.0 --disable-host-check --proxy-config /project/proxy.conf.json
