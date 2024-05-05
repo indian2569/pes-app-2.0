@@ -11,9 +11,9 @@ info:
   version: "1.0"
 externalDocs:
   description: Find out more
-  url: http://kapian.com/pes
+  url: http://kapian-pes.online
 servers:
-  - url: https://pes.kaspian.sk/v1
+  - url: http://kapian-pes.online/
 tags:
   - name: Authentication
     description: Authentication 
@@ -34,7 +34,7 @@ tags:
   - name: Programs
     description: Tools for Programs
 paths:
-  /card/save:
+  /api/card/save:
     post: 
       security:
         - bearerAuth: []
@@ -65,7 +65,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /card/{code}:
+  /api/card/{code}:
     get: 
       security:
         - bearerAuth: []
@@ -124,7 +124,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /card/allCards:
+  /api/card/allCards:
     get:
       security:
         - bearerAuth: []
@@ -151,7 +151,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /entry/save:
+  /api/entry/save:
     post:
       security:
         - bearerAuth: []
@@ -182,7 +182,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /entry/{code}:
+  /api/entry/{code}:
     get:
       security:
         - bearerAuth: []
@@ -241,7 +241,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /entry/allEntrys:
+  /api/entry/allEntrys:
     get:
       security:
         - bearerAuth: []
@@ -268,7 +268,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /entry/allCardEntrys:
+  /api/entry/allCardEntrys:
     post:
       security:
         - bearerAuth: []
@@ -301,7 +301,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /entry/newUserEntrys:
+  /api/entry/newUserEntrys:
     get:
       security:
         - bearerAuth: []
@@ -328,7 +328,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /event/save:
+  /api/event/save:
     post:
       security:
         - bearerAuth: []
@@ -359,7 +359,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /event/{code}:
+  /api/event/{code}:
     get: 
       security:
         - bearerAuth: []
@@ -418,7 +418,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /event/allEvents:
+  /api/event/allEvents:
     get:
       security:
         - bearerAuth: []
@@ -445,7 +445,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /campaign/save:
+  /api/campaign/save:
     post:
       security:
         - bearerAuth: []
@@ -476,7 +476,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /campaign/{code}:
+  /api/campaign/{code}:
     get:
       security:
         - bearerAuth: []
@@ -535,7 +535,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /campaign/allCampaigns:
+  /api/campaign/allCampaigns:
     get:
       security:
         - bearerAuth: []
@@ -562,7 +562,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /coworker/save:
+  /api/coworker/save:
     post:
       security:
         - bearerAuth: []
@@ -593,7 +593,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /coworker/{code}:
+  /api/coworker/{code}:
     get:
       security:
         - bearerAuth: []
@@ -652,7 +652,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /coworker/allCoworkers:
+  /api/coworker/allCoworkers:
     get:
       security:
         - bearerAuth: []
@@ -679,7 +679,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /institution/save:
+  /api/institution/save:
     post:
       security:
         - bearerAuth: []
@@ -710,7 +710,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /institution/{code}:
+  /api/institution/{code}:
     get:
       security:
         - bearerAuth: []
@@ -769,7 +769,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /institution/allInstitutions:
+  /api/institution/allInstitutions:
     get:
       security:
         - bearerAuth: []
@@ -796,7 +796,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /method/save:
+  /api/method/save:
     post:
       security:
         - bearerAuth: []
@@ -827,7 +827,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /method/{code}:
+  /api/method/{code}:
     get:
       security:
         - bearerAuth: []
@@ -886,7 +886,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /method/allMethods:
+  /api/method/allMethods:
     get:
       security:
         - bearerAuth: []
@@ -913,7 +913,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /program/save:
+  /api/program/save:
     post:
       security:
         - bearerAuth: []
@@ -944,7 +944,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /program/{code}:
+  /api/program/{code}:
     get:
       security:
         - bearerAuth: []
@@ -1003,7 +1003,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /program/allPrograms:
+  /api/program/allPrograms:
     get:
       security:
         - bearerAuth: []
@@ -1030,7 +1030,7 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /auth/login:
+  /api/auth/login:
     post:
       tags:
         - Authentication
@@ -1059,7 +1059,7 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         500:
           $ref: '#/components/responses/SystemException'
-  /auth/register:
+  /api/auth/register:
     post:
       tags:
         - Authentication
