@@ -14,12 +14,12 @@ import { ProgramDTO } from '../model/ProgramDTO';
 })
 export class SettingService {
 
-  public static readonly CAMAPAIGNE_API_URL = '/api/campaign';
-  public static readonly COWORKERS_API_URL = '/api/coworker';
-  public static readonly EVENTS_API_URL = '/api/event';
-  public static readonly INSTITUTION_API_URL = '/api/institution';
-  public static readonly METHODS_API_URL = '/api/method';
-  public static readonly PROGRAMS_API_URL = '/api/program';
+  public static readonly CAMAPAIGNE_API_URL = 'https://kaspian-pes.online/api/campaign';
+  public static readonly COWORKERS_API_URL = 'https://kaspian-pes.online/api/coworker';
+  public static readonly EVENTS_API_URL = 'https://kaspian-pes.online/api/event';
+  public static readonly INSTITUTION_API_URL = 'https://kaspian-pes.online/api/institution';
+  public static readonly METHODS_API_URL = 'https://kaspian-pes.online/api/method';
+  public static readonly PROGRAMS_API_URL = 'https://kaspian-pes.online/api/program';
 
   private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
 

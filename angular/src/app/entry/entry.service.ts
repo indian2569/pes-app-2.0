@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EntryService {
-  public static readonly ENTRY_API_URL = '/api/entry';
+  public static readonly ENTRY_API_URL = 'https://kaspian-pes.online/api/entry';
   programData: ProgramDTO[] = [];
   methodsData: MethodsDTO[] = [];
   campaignesData: CampaignDTO[] = [];
