@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, OnInit, OnDestroy } from '@angular/core';
 
-import { MatTable } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 import * as _ from "lodash";

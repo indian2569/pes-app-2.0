@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CampaignDTO } from '../../model/CampaignDTO';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import {SettingService} from './../setting.service';
 import { throwError, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';

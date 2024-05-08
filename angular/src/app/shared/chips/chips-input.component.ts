@@ -1,8 +1,8 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component, ElementRef, ViewChild, Input, ɵɵtrustConstantResourceUrl} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
+import {MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent} from '@angular/material/legacy-autocomplete';
+import {MatLegacyChipInputEvent as MatChipInputEvent} from '@angular/material/legacy-chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -17,7 +17,7 @@ import * as _ from 'lodash';
 })
 export class ChipsInputComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  inputControl = new FormControl('');
+  inputControl = new UntypedFormControl('');
   filteredChips: Observable<string[]>;
   selectedChips: any[] = [];
   allAvaliableChips: any[] = [];
@@ -26,7 +26,7 @@ export class ChipsInputComponent {
   @ViewChild('chipsInput') chipsInput: ElementRef<HTMLInputElement>;
   @Input() title: string;
   @Input() dataSet: any[];
-  @Input() parentForm: FormGroup;
+  @Input() parentForm: UntypedFormGroup;
   @Input() selectedData: any[];
   @Input() type: number;
 

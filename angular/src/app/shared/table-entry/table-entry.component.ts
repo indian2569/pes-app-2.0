@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { EntryDTO } from '../../model/EntryDTO';
 import { Router } from '@angular/router';
-import { MatTable } from '@angular/material/table';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EntryService } from '../../entry/entry.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

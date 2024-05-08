@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { CardService } from '../card.service';
 import { EntryService} from '../../entry/entry.service';
 import { map, tap, takeUntil } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class CardComponent implements OnInit, OnDestroy {
   otherInfo = false;
   workInfo = false;
   insertCard: CardBasicDTO;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   title: string;
   readonly: boolean;
   entrySet = [];
@@ -31,7 +31,7 @@ export class CardComponent implements OnInit, OnDestroy {
 
   constructor(private cardService: CardService,
 			  private entryService: EntryService,
-              private formBuilder: FormBuilder,
+              private formBuilder: UntypedFormBuilder,
               private route: ActivatedRoute,
               private router: Router) {}
 
@@ -79,26 +79,26 @@ export class CardComponent implements OnInit, OnDestroy {
 
 formSetUp() {
   this.formGroup = this.formBuilder.group({
-    id: new FormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.id),
-    client_nick: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_nick),
-    client_gender: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender),
-    client_anamnesis: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
-    client_dev_plan: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan, [Validators.required]),
-    clint_age: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.clint_age),
-    client_birth_year: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year),
-    client_name: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
-    client_surname: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),
-    client_birth_date: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_date),
-    client_family_status: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_family_status),
-    client_citizenship: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_citizenship),
-    client_address: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_address),
-    client_phone: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_phone),
-    client_email: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_email),
-    client_socnet: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_socnet),
-    client_health: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
-    client_income: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
-    client_belongings: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
-    client_other_institutes: new FormControl(_.isNil(this.insertCard) ? [] : this.insertCard.client_other_institutes),
+    id: new UntypedFormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.id),
+    client_nick: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_nick),
+    client_gender: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender),
+    client_anamnesis: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
+    client_dev_plan: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan, [Validators.required]),
+    clint_age: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.clint_age),
+    client_birth_year: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year),
+    client_name: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
+    client_surname: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),
+    client_birth_date: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_date),
+    client_family_status: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_family_status),
+    client_citizenship: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_citizenship),
+    client_address: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_address),
+    client_phone: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_phone),
+    client_email: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_email),
+    client_socnet: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_socnet),
+    client_health: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
+    client_income: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
+    client_belongings: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
+    client_other_institutes: new UntypedFormControl(_.isNil(this.insertCard) ? [] : this.insertCard.client_other_institutes),
   });
 }
 

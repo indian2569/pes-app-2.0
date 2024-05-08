@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild,  Input, OnDestroy } from '@angular/core';
-import { FormControl,  Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormControl,  Validators, UntypedFormBuilder } from '@angular/forms';
 import { map,  startWith} from 'rxjs/operators';
 
 import { MethodsDTO } from '../../model/MethodsDTO';
@@ -53,18 +53,18 @@ export class EntryComponent implements OnInit, OnDestroy {
   public contactTypes = Object.values(ContractEnum);
 
   public formGroup =  this.formBuilder.group({
-    client: new FormControl(),
-    clint_on_site: new FormControl(),
-    entry_date_from: new FormControl(this.date),
-    entry_date_to: new FormControl(this.date),
-    place: new FormControl(),
-    contact_type: new FormControl(),
-    campaign: new FormControl(),
-    program_type: new FormControl(),
-    work_methods: new FormControl(),
-    other_workers: new FormControl(),
-    event_description: new FormControl(),
-    fast_message: new FormControl(),
+    client: new UntypedFormControl(),
+    clint_on_site: new UntypedFormControl(),
+    entry_date_from: new UntypedFormControl(this.date),
+    entry_date_to: new UntypedFormControl(this.date),
+    place: new UntypedFormControl(),
+    contact_type: new UntypedFormControl(),
+    campaign: new UntypedFormControl(),
+    program_type: new UntypedFormControl(),
+    work_methods: new UntypedFormControl(),
+    other_workers: new UntypedFormControl(),
+    event_description: new UntypedFormControl(),
+    fast_message: new UntypedFormControl(),
   });
 
   @Input() editId: string;
@@ -72,7 +72,7 @@ export class EntryComponent implements OnInit, OnDestroy {
   constructor(private entryService: EntryService,
               private settingService: SettingService,
               private cardService: CardService,
-              private formBuilder: FormBuilder,
+              private formBuilder: UntypedFormBuilder,
               private route: ActivatedRoute,
               private router: Router) {
    }
@@ -184,21 +184,21 @@ export class EntryComponent implements OnInit, OnDestroy {
 
   formSetUp() {
     this.formGroup = this.formBuilder.group({
-      id: new FormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.id),
-      client: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.client),
-      clients_on_site: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.clients_on_site),
-      entry_date_from: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_from, [Validators.required]),
-      entry_date_to: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_to, [Validators.required]),
-      duration: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.duration),
-      place: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.place),
-      contact_type: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.contact_type),
-      campaign: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.campaign),
-      program_type: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.program_type),
-      work_methods: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.work_methods),
-      other_workers: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.other_workers),
-      event_description: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.event_description),
-      fast_message: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.fast_message),
-      createdBy: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.createdBy)
+      id: new UntypedFormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.id),
+      client: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.client),
+      clients_on_site: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.clients_on_site),
+      entry_date_from: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_from, [Validators.required]),
+      entry_date_to: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_to, [Validators.required]),
+      duration: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.duration),
+      place: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.place),
+      contact_type: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.contact_type),
+      campaign: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.campaign),
+      program_type: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.program_type),
+      work_methods: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.work_methods),
+      other_workers: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.other_workers),
+      event_description: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.event_description),
+      fast_message: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.fast_message),
+      createdBy: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.createdBy)
     });
     if (!_.isNil(this.entryEdit)) {
         this.clientsControl.selectedChips = this.entryEdit.client;

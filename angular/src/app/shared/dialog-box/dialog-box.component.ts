@@ -1,8 +1,8 @@
 import { Component, Inject, Optional, Input, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 
 import * as _ from "lodash";
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 export interface UsersData {
   name: string;
@@ -20,7 +20,7 @@ export class DialogBoxComponent implements OnInit {
   @Input() action: string;
   @Input() data: any;
   @Input() actionType: number;
-  reportForm: FormGroup;
+  reportForm: UntypedFormGroup;
   buttonText: string;
   descriptionText: string;
   constructor(
@@ -47,18 +47,18 @@ export class DialogBoxComponent implements OnInit {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  generateFormGroup(type: number): FormGroup {
+  generateFormGroup(type: number): UntypedFormGroup {
     if (!_.isNil(type) && type === 5) {
-      return new FormGroup ({
-      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
-      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
-      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description),
-      position: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.position)});
+      return new UntypedFormGroup ({
+      id: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.id),
+      name: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.name),
+      description: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.description),
+      position: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.position)});
     } else {
-    return new FormGroup ({
-      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
-      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
-      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description)});
+    return new UntypedFormGroup ({
+      id: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.id),
+      name: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.name),
+      description: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.description)});
     }
   }
 
