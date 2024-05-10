@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild,  Input, OnDestroy } from '@angular/core';
 import { UntypedFormControl,  Validators, UntypedFormBuilder } from '@angular/forms';
-import { map,  startWith} from 'rxjs/operators';
+import { map,  startWith, takeUntil} from 'rxjs/operators';
 
 import { MethodsDTO } from '../../model/MethodsDTO';
 import { ProgramDTO } from '../../model/ProgramDTO';
@@ -20,7 +20,6 @@ import { EntryDTO } from '../../model/EntryDTO';
 import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entry',

@@ -6,6 +6,7 @@
     /* Experimental Options */
     "experimentalDecorators": true, 
     "emitDecoratorMetadata": true, 
+	"target": "ES2022",
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true 
   }

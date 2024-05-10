@@ -20,11 +20,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+			"tsConfig": "src/tsconfig.app.json",
             "outputPath": "dist/angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -38,7 +38,8 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+			"allowedCommonJsDependencies": [ "lodash" ]
           },
           "configurations": {
             "development": {
@@ -76,14 +77,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular:build"
+            "buildTarget": "angular:build"
           },
           "configurations": {
             "development": {
-              "browserTarget": "angular:build:development"
+              "buildTarget": "angular:build:development"
             },
             "production": {
-              "browserTarget": "angular:build:production"
+              "buildTarget": "angular:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -91,7 +92,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular:build"
+            "buildTarget": "angular:build"
           }
         },
         "test": {
