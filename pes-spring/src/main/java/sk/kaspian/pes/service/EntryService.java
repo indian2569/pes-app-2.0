@@ -43,11 +43,20 @@ public interface EntryService {
 	Entry getEntryById(Long id);
 
 	/**
-	 * Return all entry's that have contains input card
+	 * Return all entry's main that have contains input card
 	 * @param @ {@link Card} find entry with use this card object
 	 * @return {@link List} {@link Entry} list of entry
 	 */
-	List<Entry> getAllForCard(Card card);
+	List<Entry> getAllEntrysForCardMain(Card card);
+
+
+	/**
+	 * Return all entry's on site that have contains input card
+	 * @param @ {@link Card} find entry with use this card object
+	 * @return {@link List} {@link Entry} list of entry
+	 */
+	List<Entry> getAllEntrysForCardOnSite(Card card);
+
 
 	/**
 	 * Return all entry's that have contains input card

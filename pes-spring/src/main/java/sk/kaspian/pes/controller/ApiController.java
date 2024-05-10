@@ -135,7 +135,7 @@ public class ApiController implements ApiApi {
 
     @Override
     public ResponseEntity<List<Entry>> getAllCardEntrys(Card card) {
-        return ResponseEntity.ok(entryService.getAllForCard(card));
+        return ResponseEntity.ok(entryService.getAllEntrysForCardMain(card));
     }
 
     @Override
