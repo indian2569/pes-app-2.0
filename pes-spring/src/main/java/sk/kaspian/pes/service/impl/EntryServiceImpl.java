@@ -3,7 +3,9 @@ package sk.kaspian.pes.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +83,12 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	public List<Entry> getLastFiveEntrysForUser(User user) {
 		return entryMapper.map(entryRepository.getFiveNewestEntryForUser(user.getId()));
+	}
+
+	@Override
+	public List<Entry> getListOfNewEntrys(Optional<Integer> pageSize) {
+		PageRequest pageable = PageRequest.of(0, pageSize.isPresent() ? pageSize.get() : 5);
+		return entryMapper.map(entryRepository.findTopByOrderByCreateDateDesc(pageable));
 	}
 
 }

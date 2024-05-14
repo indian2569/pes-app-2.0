@@ -268,14 +268,47 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
-  /api/entry/allCardEntrys:
+  /api/entry/allCardEntrysMain:
     post:
       security:
         - bearerAuth: []
       tags: 
         - Events
       summary: Return all entrys for selected card
-      operationId: getAllCardEntrys
+      operationId: getAllCardEntrysMain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+      responses:
+        200:
+          description: "Successfully get All cards entrys"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /api/entry/allCardEntrysOnSite:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Events
+      summary: Return all entrys for selected card
+      operationId: getallCardEntrysOnSite
       requestBody:
         required: true
         content:
@@ -328,6 +361,35 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/entry/getListNewEntrys:
+            get:
+              security:
+                - bearerAuth: [ ]
+              tags:
+                - Events
+              summary: Return 5 newest events for user
+              operationId: getListNewEntrys
+              parameters:
+                - $ref: '#/components/parameters/PageSize'
+              responses:
+                200:
+                  description: "Successfully get All entrys"
+                  content:
+                    application/json:
+                      schema:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Entry'
+                400:
+                  $ref: '#/components/responses/InvalidRequest'
+                401:
+                  $ref: '#/components/responses/UnauthorizedError'
+                403:
+                  $ref: '#/components/responses/AccessDenied'
+                404:
+                  $ref: '#/components/responses/URLNotExist'
+                500:
+                  $ref: '#/components/responses/SystemException'
   /api/event/save:
     post:
       security:
@@ -1098,7 +1160,20 @@ components:
       type: apiKey
       in: header
       name: X-Auth-Token
-      description: Include the `X-Auth-Token` header for session identification.    
+      description: Include the `X-Auth-Token` header for session identification.
+  parameters:
+    PageSize:
+      name: page_size
+      in: query
+      description: Number of items in a page, default page size is `20`
+      x-pageable: true
+      x-default-value: 20
+      schema:
+        type: integer
+        #        minimum: 1
+        #        maximum: 100
+        default: 20
+      required: false
   responses:
     EntityNotFound:
       description: "Entity not found"

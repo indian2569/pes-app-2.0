@@ -77,7 +77,15 @@ export class EntryService {
     return this.cardData;
   }
   
-  public getAllEntrysByCard(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
-    return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrys', card);
+  public getAllEntrysByCardMain(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
+    return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysMain', card);
+  }
+
+  public getAllEntrysByCardOnSite(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
+    return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysOnSite', card);
+  }
+
+  public getAllEntrysByCard():  Observable<EntryDTO[]> {
+    return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/getListNewEntrys');
   }
 }

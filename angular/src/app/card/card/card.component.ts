@@ -24,6 +24,7 @@ export class CardComponent implements OnInit, OnDestroy {
   title: string;
   readonly: boolean;
   entrySet = [];
+  entryOnSiteSet = [];
   
   onDestroy$ = new Subject();
 
@@ -50,10 +51,12 @@ export class CardComponent implements OnInit, OnDestroy {
             this.formSetUp();
             this.title = 'Karta klienta';
             this.readonly = true;
-			this.entryService.getAllEntrysByCard(this.insertCard).pipe(takeUntil(this.onDestroy$))
+			this.entryService.getAllEntrysByCardMain(this.insertCard).pipe(takeUntil(this.onDestroy$))
 			.subscribe(entrys => this.entrySet = entrys);
-      });
 
+			this.entryService.getAllEntrysByCardOnSite(this.insertCard).pipe(takeUntil(this.onDestroy$))
+			.subscribe(entrys => this.entryOnSiteSet = entrys);
+      });
     } else {
       this.formSetUp();
       this.title = 'Vytvorenie karty klienta';

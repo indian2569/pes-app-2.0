@@ -27,6 +27,7 @@ import sk.kaspian.pes.service.impl.UserDetailsImpl;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -134,7 +135,7 @@ public class ApiController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<List<Entry>> getAllCardEntrys(Card card) {
+    public ResponseEntity<List<Entry>> getAllCardEntrysMain(Card card) {
         return ResponseEntity.ok(entryService.getAllEntrysForCardMain(card));
     }
 
@@ -199,6 +200,11 @@ public class ApiController implements ApiApi {
     }
 
     @Override
+    public ResponseEntity<List<Entry>> getListNewEntrys(Optional<Integer> pageSize) {
+        return ResponseEntity.ok(entryService.getListOfNewEntrys(pageSize));
+    }
+
+    @Override
     public ResponseEntity<Method> getMethods(String code) {
         return ResponseEntity.ok(methodService.getMethodById(Long.valueOf(code)));
     }
@@ -212,6 +218,11 @@ public class ApiController implements ApiApi {
     @Override
     public ResponseEntity<Program> getPrograms(String code) {
         return ResponseEntity.ok(programService.getProgramById(Long.valueOf(code)));
+    }
+
+    @Override
+    public ResponseEntity<List<Entry>> getallCardEntrysOnSite(Card card) {
+        return null;
     }
 
     @Override

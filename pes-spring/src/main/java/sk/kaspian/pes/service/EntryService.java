@@ -1,6 +1,7 @@
 package sk.kaspian.pes.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
@@ -65,4 +66,10 @@ public interface EntryService {
 	 */
 	List<Entry> getLastFiveEntrysForUser(User user);
 
+	/**
+	 * Return list of entrys that have newes create date a list be big base on parameter
+	 * @param pageSize @{@link Integer} number entry that should be in response default is 5
+	 * @return @{@link List} {@link Entry} list of entry
+	 */
+	List<Entry> getListOfNewEntrys(Optional<Integer> pageSize);
 }
