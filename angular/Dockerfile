@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1.4
 
-FROM --platform=linux/amd64 node:17.0.1-bullseye-slim as builder
+FROM --platform=linux/amd64 node:20.13.1-bullseye-slim as builder
 
 RUN mkdir /project
 WORKDIR /project
 
-RUN npm install -g @angular/cli@13.1.4
+RUN npm install -g @angular/cli
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --force
 
 COPY . .
 
