@@ -1,6 +1,5 @@
 package sk.kaspian.pes.service.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -88,7 +87,7 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	public List<Entry> getListOfNewEntrys(Optional<Integer> pageSize) {
 		PageRequest pageable = PageRequest.of(0, pageSize.isPresent() ? pageSize.get() : 5);
-		return entryMapper.map(entryRepository.findTopByOrderByCreateDateDesc(pageable));
+		return entryMapper.map(entryRepository.findAll(pageable).getContent());
 	}
 
 }

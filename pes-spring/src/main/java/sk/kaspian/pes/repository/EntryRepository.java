@@ -1,10 +1,9 @@
 package sk.kaspian.pes.repository;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -29,5 +28,6 @@ public interface EntryRepository extends JpaSpecificationExecutor<Entry>, JpaRep
 	@Query(value = "SELECT c.entry_id FROM pes_entry_card c WHERE c.card_id = :cardId", nativeQuery = true)
 	List<Long> getAllEntrysIdByCardForClientsOnSite(@Param("cardId") Long id);
 
-    List<Entry> findTopByOrderByCreateDateDesc(Pageable pageable);;
+	Page<Entry> findAll(Pageable pageable);
+    //List<Entry> findTopByOrderByCreateDateDesc(Pageable pageable);
 }

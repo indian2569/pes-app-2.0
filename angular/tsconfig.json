@@ -6,8 +6,12 @@
     /* Experimental Options */
     "experimentalDecorators": true, 
     "emitDecoratorMetadata": true, 
+	"moduleResolution": "node",
+    "importHelpers": true,
+    "module": "ES2022",
 	"target": "ES2022",
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true 
   }
 }
+
