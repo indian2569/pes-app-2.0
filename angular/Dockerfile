@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM --platform=linux/amd64 node:20.13.1-bullseye-slim as builder
+FROM --platform=linux/amd64 node:18-bullseye-slim as builder
 
 RUN mkdir /project
 WORKDIR /project
