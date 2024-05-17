@@ -26,4 +26,4 @@ RUN apt-get update && \
 
 EXPOSE 4200
 
-CMD ng serve --host 0.0.0.0 --disable-host-check
+CMD ng serve --host 0.0.0.0
