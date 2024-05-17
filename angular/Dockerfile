@@ -23,7 +23,12 @@ RUN apt-get update && \
     groupadd docker && \
     usermod -aG docker vscode
 
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+
+# Copy the necessary artifacts from the builder stage to the final stage
+COPY --from=builder /project/proxy.conf.json /project/
 
 EXPOSE 4200
 
-CMD ng serve --host kaspian-pes.online
+CMD ng serve --host 0.0.0.0 --disable-host-check --proxy-config /project/proxy.conf.json
