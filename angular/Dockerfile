@@ -1,29 +1,34 @@
 # syntax=docker/dockerfile:1.4
-# Build stage
 FROM --platform=linux/amd64 node:18-bullseye-slim as builder
 
+# Set working directory
 WORKDIR /project
 
-# Install Angular CLI globally
+# Install Angular CLI
 RUN npm install -g @angular/cli@16
 
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
 RUN npm ci --force
 
-# Copy all project files
+# Copy all files and build the Angular project
 COPY . .
-
-# Build the Angular project
 RUN ng build --configuration production
 
-# Final stage
-FROM --platform=linux/amd64 node:18-bullseye-slim as runner
+# Use a lightweight Node.js image for the final stage
+FROM node:18-bullseye-slim as production
 
-WORKDIR /project
+# Set working directory
+WORKDIR /app
 
-# Copy the built files from the builder stage
-COPY --from=builder /project/dist /project/dist
+# Copy the build output from the builder stage
+COPY --from=builder /project/dist/angular ./
 
-# Set the default command to output the contents of the build directory
-CMD ["sh", "-c", "echo 'Build files are ready in /project/dist' && ls /project/dist"]
+# Install http-server to serve the static files
+RUN npm install -g http-server
+
+# Expose port 4200
+EXPOSE 4200
+
+# Serve the application
+CMD ["http-server", "-p", "4200"]
