@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { EntryDTO } from '../../model/EntryDTO';
 import { Router } from '@angular/router';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatTable } from '@angular/material/table';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { EntryService } from '../../entry/entry.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class TableEntryComponent implements OnInit, OnDestroy {
   @Input() tableData: EntryDTO[];
-  displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'cratedBy', 'action'];
+  displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'createdBy', 'action'];
   dataSource: EntryDTO[];
   expandedElement: EntryDTO | null;
   onDestroy$ = new Subject();
@@ -49,7 +49,7 @@ export class TableEntryComponent implements OnInit, OnDestroy {
     });
   }
 
-    deleteRowData(row_obj: any) {
+  deleteRowData(row_obj: any) {
         this.entryService.deleteEntry(row_obj.id).pipe(takeUntil(this.onDestroy$))
             .subscribe(sub => {
                 this.dataSource = this.dataSource.filter((value, key) => {

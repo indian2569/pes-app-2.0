@@ -4,20 +4,15 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Data
 @Entity
@@ -25,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Card implements Serializable {
+public class Card  extends SaveableObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,12 +87,7 @@ public class Card implements Serializable {
 	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
 	private List<Institution> clientOtherInstitutes;
 
-	@Column(name = "created_by")
-	private String createdBy;
-
 	@Column(name = "status")
 	private Boolean status;
 
-	@Column(name = "create_date")
-	private LocalDateTime createDate;
 }

@@ -31,13 +31,13 @@
     <!-- cratedBy Column -->
     <ng-container matColumnDef="cratedBy"  class="table-cratedBy">
       <th mat-header-cell *matHeaderCellDef> Pridal: </th>
-      <td mat-cell *matCellDef="let element"> {{element.cratedBy}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.createdBy.username}} </td>
     </ng-container>
 
         <!-- status Column -->
     <ng-container matColumnDef="status" class="table-status">
       <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.status === "true" ? "Aktivny" : "Neaktívny"}} </td>
     </ng-container>
 
 

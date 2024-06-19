@@ -221,8 +221,13 @@ public class ApiController implements ApiApi {
     }
 
     @Override
+    public ResponseEntity<Card> getToggleCard(String card_id) {
+        return ResponseEntity.ok(cardService.activateTogleCard(Long.valueOf(card_id)));
+    }
+
+    @Override
     public ResponseEntity<List<Entry>> getallCardEntrysOnSite(Card card) {
-        return null;
+        return ResponseEntity.ok(entryService.getAllEntrysForCardOnSite(card));
     }
 
     @Override
@@ -310,6 +315,7 @@ public class ApiController implements ApiApi {
 
     @Override
     public ResponseEntity<Campaign> saveCampaign(Campaign campaign) {
+        //String username = userDetails.getUsername();
         return ResponseEntity.ok(campaignService.updateCampaigne(campaign));
     }
 

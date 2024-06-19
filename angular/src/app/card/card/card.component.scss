@@ -149,3 +149,31 @@ h3 {
 .wrap li {
   background: gold;
 }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid silver;
+    width: 100%;
+}
+
+.title {
+    margin: 0;
+  }
+  
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.right {
+    float: right;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.right:hover {
+    background-color: #b3804b;
+}

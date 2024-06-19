@@ -39,4 +39,11 @@ public interface CardService {
 	 * @return {@link Card} base on id
 	 */
 	Card getCardById(Long id);
+
+	/**
+	 * Activate or deactivate base of actual state togle states base on id
+	 * @param id {@link Long} id of card that should be activated
+	 * @return {@link Card} base on id
+	 */
+	Card activateTogleCard(Long id);
 }

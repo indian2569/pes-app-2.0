@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild,  Input, OnDestroy } from '@angular/core';
-import { UntypedFormControl,  Validators, UntypedFormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { map,  startWith, takeUntil} from 'rxjs/operators';
 
 import { MethodsDTO } from '../../model/MethodsDTO';
@@ -19,7 +19,7 @@ import { CoworkerDTO } from '../../model/CoworkerDTO';
 import { EntryDTO } from '../../model/EntryDTO';
 import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, async } from 'rxjs';
 
 @Component({
   selector: 'app-entry',
@@ -47,33 +47,20 @@ export class EntryComponent implements OnInit, OnDestroy {
   selectedProgram: ProgramDTO;
   selectedMethod: MethodsDTO;
   onDestroy$ = new Subject();
-
+  formGroup: FormGroup;
   public ContractEnum2LabelMapping = ContractEnum2LabelMapping;
   public contactTypes = Object.values(ContractEnum);
-
-  public formGroup =  this.formBuilder.group({
-    client: new UntypedFormControl(),
-    clint_on_site: new UntypedFormControl(),
-    entry_date_from: new UntypedFormControl(this.date),
-    entry_date_to: new UntypedFormControl(this.date),
-    place: new UntypedFormControl(),
-    contact_type: new UntypedFormControl(),
-    campaign: new UntypedFormControl(),
-    program_type: new UntypedFormControl(),
-    work_methods: new UntypedFormControl(),
-    other_workers: new UntypedFormControl(),
-    event_description: new UntypedFormControl(),
-    fast_message: new UntypedFormControl(),
-  });
+  setUp = true;
 
   @Input() editId: string;
 
   constructor(private entryService: EntryService,
               private settingService: SettingService,
               private cardService: CardService,
-              private formBuilder: UntypedFormBuilder,
+              private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router) {
+    this.formSetUp();
    }
 
   ngOnInit(): void {
@@ -102,6 +89,7 @@ export class EntryComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.campaigns = data;
+
         },
         error: (e) => console.error(e)
       });
@@ -122,12 +110,6 @@ export class EntryComponent implements OnInit, OnDestroy {
         },
         error: (e) => console.error(e)
       });
-    if (!_.isNil(this.formGroup.get('clients_on_site'))) {
-      this.filteredClients = this.formGroup.get('clients_on_site').valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value || '')),
-      );
-    }
     if (!_.isNil(this.editId)) {
       this.entryService.getEntry(this.editId).pipe(takeUntil(this.onDestroy$))
       .subscribe(card => {
@@ -135,11 +117,30 @@ export class EntryComponent implements OnInit, OnDestroy {
         this.formSetUp();
         this.title = 'Záznam';
         this.readonly = true;
+        this.fillClientOnSite();
+        this.setUp = true;
+        this.selectedCampagne = this.entryEdit.campaign;
+        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);
+        this.selectedProgram = this.entryEdit.program_type;
+        this.formGroup.get('program_type').setValue(this.entryEdit.program_type);
+
       });
     } else {
       this.formSetUp();
       this.title = 'Vytvorenie záznamu';
-      this.readonly = false;
+      this.readonly = _.isNil(this.editId) ? false : true;
+      this.fillClientOnSite();
+      this.setUp = true;
+    }
+
+  }
+
+  private fillClientOnSite() {
+    if (!_.isNil(this.formGroup.get('clients_on_site'))) {
+      this.filteredClients = this.formGroup.get('clients_on_site').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || ''))
+      );
     }
   }
 
@@ -152,10 +153,11 @@ export class EntryComponent implements OnInit, OnDestroy {
   }
 
   getSaveObject(): EntryDTO {
-    const ret: EntryDTO = this.formGroup.getRawValue();
-
-    ret.entry_date_from = this.transformToMoment(this.formGroup.get('entry_date_from').value).toISOString().slice(0, 19);
-    ret.entry_date_to = this.transformToMoment(this.formGroup.get('entry_date_to').value).toISOString().slice(0, 19);
+    let ret: EntryDTO = {
+      ...this.formGroup.getRawValue(),
+      entry_date_from: this.formGroup.get('entry_date_from').value.toISOString().slice(0, 19),
+      entry_date_to: this.formGroup.get('entry_date_to').value.toISOString().slice(0, 19)
+  };
     if (!_.isNil(this.clientsControl)) {
         ret.client = this.clientsControl.selectedChips;
     }
@@ -168,7 +170,6 @@ export class EntryComponent implements OnInit, OnDestroy {
     if (!_.isNil(this.methodsControl)) {
         ret.work_methods = this.methodsControl.selectedChips;
     }
-    console.log(ret);
     return ret;
   }
 
@@ -183,34 +184,39 @@ export class EntryComponent implements OnInit, OnDestroy {
 
   formSetUp() {
     this.formGroup = this.formBuilder.group({
-      id: new UntypedFormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.id),
-      client: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.client),
-      clients_on_site: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.clients_on_site),
-      entry_date_from: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_from, [Validators.required]),
-      entry_date_to: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.entry_date_to, [Validators.required]),
-      duration: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.duration),
-      place: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.place),
-      contact_type: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.contact_type),
-      campaign: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.campaign),
-      program_type: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.program_type),
-      work_methods: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.work_methods),
-      other_workers: new UntypedFormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.other_workers),
-      event_description: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.event_description),
-      fast_message: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.fast_message),
-      createdBy: new UntypedFormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.createdBy)
+      id: new FormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.id),
+      client: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.client),
+      clients_on_site: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.clients_on_site),
+      entry_date_from: new FormControl(_.isNil(this.entryEdit) ? new Date() : new Date(this.entryEdit.entry_date_from), [Validators.required]),
+      entry_date_to: new FormControl(_.isNil(this.entryEdit) ? new Date() : new Date(this.entryEdit.entry_date_to), [Validators.required]),
+      //duration: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.duration),
+      place: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.place),
+      contact_type: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.contact_type),
+      campaign: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.campaign),
+      program_type: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.program_type),
+      work_methods: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.work_methods),
+      other_workers: new FormControl(_.isNil(this.entryEdit) ? [] : this.entryEdit.other_workers),
+      event_description: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.event_description),
+      fast_message: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.fast_message),
+      created: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.created),
+      updated: new FormControl(_.isNil(this.entryEdit) ? '' : this.entryEdit.updated),
+      last_change: new FormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.last_change),
+      createdBy: new FormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.createdBy)
+
     });
     if (!_.isNil(this.entryEdit)) {
-        this.clientsControl.selectedChips = this.entryEdit.client;
-        this.otherClientsControl.selectedChips = this.entryEdit.clients_on_site;
-        this.coworkersControl.selectedChips = this.entryEdit.other_workers;
-        this.methodsControl.selectedChips = this.entryEdit.work_methods;
-        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);
+        this.clientsControl.selectedChips =  _.isNil(this.entryEdit.client) ? [] : this.entryEdit.client;
+        this.otherClientsControl.selectedChips = _.isNil(this.entryEdit.clients_on_site) ? [] : this.entryEdit.clients_on_site;
+        this.coworkersControl.selectedChips = _.isNil(this.entryEdit.other_workers) ? [] : this.entryEdit.other_workers;
+        this.methodsControl.selectedChips = _.isNil(this.entryEdit.work_methods) ? [] : this.entryEdit.work_methods;
         this.selectedCampagne = this.entryEdit.campaign;
+        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);   
         this.selectedProgram = this.entryEdit.program_type;
+        this.formGroup.get('program_type').setValue(this.entryEdit.program_type);
     }
   }
 
-  transformToMoment = (value: string | moment.Moment): moment.Moment => {
+  transformToMoment = (value: any): moment.Moment => {
     if (_.isNil(value)) {
       return null;
     }
@@ -221,8 +227,13 @@ export class EntryComponent implements OnInit, OnDestroy {
     return date;
   }
 
+  onMakeEditable () {
+    this.readonly = !this.readonly;
+  }
+
   ngOnDestroy(): void {
     this.onDestroy$.next(null);
     this.onDestroy$.complete();
   }
+
 }

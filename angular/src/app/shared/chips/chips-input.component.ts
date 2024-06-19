@@ -1,8 +1,8 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component, ElementRef, ViewChild, Input, ɵɵtrustConstantResourceUrl} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
-import {MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent} from '@angular/material/legacy-autocomplete';
-import {MatLegacyChipInputEvent as MatChipInputEvent} from '@angular/material/legacy-chips';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -17,7 +17,7 @@ import * as _ from 'lodash';
 })
 export class ChipsInputComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  inputControl = new UntypedFormControl('');
+  inputControl = new FormControl('');
   filteredChips: Observable<string[]>;
   selectedChips: any[] = [];
   allAvaliableChips: any[] = [];
@@ -26,7 +26,7 @@ export class ChipsInputComponent {
   @ViewChild('chipsInput') chipsInput: ElementRef<HTMLInputElement>;
   @Input() title: string;
   @Input() dataSet: any[];
-  @Input() parentForm: UntypedFormGroup;
+  @Input() parentForm: FormGroup;
   @Input() selectedData: any[];
   @Input() type: number;
 
@@ -34,7 +34,7 @@ export class ChipsInputComponent {
     this.allAvaliableChips = this.dataSet;
     this.selectedChips = _.isNil(this.selectedData) ? [] : this.selectedData;
     this.filteredChips = this.inputControl.valueChanges.pipe(
-      startWith(null),
+      startWith<string | null>(null),
       map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allAvaliableChips)),
     );
     if (this.type === 1) {
@@ -49,7 +49,7 @@ export class ChipsInputComponent {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
+    // Add our selected chip
     if (value) {
       this.selectedChips.push(value);
     }

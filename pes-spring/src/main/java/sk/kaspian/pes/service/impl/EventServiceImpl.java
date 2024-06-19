@@ -1,15 +1,22 @@
 package sk.kaspian.pes.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.EventMapper;
+import sk.kaspian.pes.model.Campaigne;
+import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Event;
 import sk.kaspian.pes.repository.EventRepository;
+import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.EventService;
 
 @Service
@@ -18,6 +25,9 @@ public class EventServiceImpl implements EventService {
 
 	@NonNull
 	private EventRepository eventRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	private EventMapper eventMapper ;
 
@@ -36,13 +46,17 @@ public class EventServiceImpl implements EventService {
 	@Override
 	@Transactional
 	public Event createEvent(Event event) {
-		return eventMapper.map(eventRepository.save(eventMapper.map(event)));
+		sk.kaspian.pes.model.Event map = eventMapper.map(event);
+		map.setActive(Boolean.TRUE);
+		fillSavableFields(map);
+		return eventMapper.map(eventRepository.save(map));
 	}
 
 	@Override
 	@Transactional
-	public Event updateEvent(Event event) {
-		return eventMapper.map(eventRepository.save(eventMapper.map(event)));
+	public Event updateEvent(Event event) {		sk.kaspian.pes.model.Event map = eventMapper.map(event);
+		fillSavableFields(map);
+		return eventMapper.map(eventRepository.save(map));
 	}
 
 	@Override
@@ -59,4 +73,16 @@ public class EventServiceImpl implements EventService {
 		return eventMapper.map(eventRepository.save(event));
 	}
 
+	private void fillSavableFields(sk.kaspian.pes.model.Event updatable) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		Long id = userDetails.getId();
+		User changedPerson = userRepository.getReferenceById(id);
+		if (updatable.getCreated() == null) {
+			updatable.setCreated(LocalDateTime.now());
+			updatable.setCreatedBy(changedPerson);
+		}
+		updatable.setUpdated(LocalDateTime.now());
+		updatable.setLastChange(changedPerson);
+	}
 }

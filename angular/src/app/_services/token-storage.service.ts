@@ -36,7 +36,7 @@ export class TokenStorageService {
       return JSON.parse(user);
     }
 
-    return {};
+    return user;
   }
 
   public isAutenticate(): boolean {

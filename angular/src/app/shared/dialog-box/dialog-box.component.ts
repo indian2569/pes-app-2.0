@@ -1,8 +1,7 @@
 import { Component, Inject, Optional, Input, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import * as _ from "lodash";
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import {  FormGroup, FormControl } from '@angular/forms';
 
 export interface UsersData {
   name: string;
@@ -20,7 +19,7 @@ export class DialogBoxComponent implements OnInit {
   @Input() action: string;
   @Input() data: any;
   @Input() actionType: number;
-  reportForm: UntypedFormGroup;
+  reportForm: FormGroup;
   buttonText: string;
   descriptionText: string;
   constructor(
@@ -47,18 +46,18 @@ export class DialogBoxComponent implements OnInit {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  generateFormGroup(type: number): UntypedFormGroup {
+  generateFormGroup(type: number): FormGroup {
     if (!_.isNil(type) && type === 5) {
-      return new UntypedFormGroup ({
-      id: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.id),
-      name: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.name),
-      description: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.description),
-      position: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.position)});
+      return new FormGroup ({
+      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
+      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
+      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description),
+      position: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.position)});
     } else {
-    return new UntypedFormGroup ({
-      id: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.id),
-      name: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.name),
-      description: _.isNil(this.data) ?  new UntypedFormControl() :  new UntypedFormControl(this.data.description)});
+    return new FormGroup ({
+      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
+      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
+      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description)});
     }
   }
 
@@ -110,6 +109,12 @@ export class DialogBoxComponent implements OnInit {
     case 6:
       this.buttonText = startOfText + ' udalosť';
       break;
+    case 7:
+        this.descriptionText = startOfText + 'carty';
+        break;
+    case 8:
+      this.descriptionText = startOfText + 'záznamu';
+      break;
     default:
       this.buttonText = 'Odoslať';
     }
@@ -135,6 +140,12 @@ export class DialogBoxComponent implements OnInit {
       break;
     case 6:
       this.descriptionText = startOfText + 'udalosťi';
+      break;
+    case 7:
+        this.descriptionText = startOfText + 'carty';
+        break;
+    case 8:
+      this.descriptionText = startOfText + 'záznamu';
       break;
     default:
       if (this.action === 'Add') {

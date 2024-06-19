@@ -1,6 +1,7 @@
 package sk.kaspian.pes.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "roles")
@@ -36,4 +37,5 @@ public class Role {
 	public void setName(ERole name) {
 		this.name = name;
 	}
+
 }

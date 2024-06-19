@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 @Repository
-public interface EntryRepository extends JpaSpecificationExecutor<Entry>, JpaRepository<Entry, Long>{
+public interface EntryRepository extends JpaRepository<Entry, Long> {
 
 	@Query("SELECT e FROM Entry e WHERE e.id IN (:cardId)")
 	List<Entry> getAllEntrysMatchingListOfIds(@Param("cardId") List<Long> ids);

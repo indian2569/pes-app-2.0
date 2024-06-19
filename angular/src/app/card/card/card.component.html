@@ -1,9 +1,24 @@
 <div class="flex-container wrap">
-<div class="flex-item">
+	<div class="container"><h3 class="title"> {{title}}</h3>
+		<div class="buttons">
+		<button mat-flat-button type="submit" form="formGroup" class="button-card right" >Pridať</button>
+		<button mat-flat-button type="submit" form="formGroup" class="button-card right" >Uložiť</button>
+		<button mat-flat-button (click)='onMakeEditable()' class="button-card right">Zmeniť</button>
+	    </div>
+	</div>
+<div *ngIf="!formGroup">
+			Loading...
+</div>
+<div class="flex-item" *ngIf="formGroup">
 	<div class="mainComponent centered">
-	<h3> {{title}}</h3>
 	<mat-card>
-		<form  [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+		<div *ngIf="errorMessages.length > 0">
+			<h3>Chyby:</h3>
+			<ul>
+			  <li *ngFor="let error of errorMessages">{{ error }}</li>
+			</ul>
+		  </div>
+		<form  [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="formGroup">
 			<div class = "row">
 				<mat-form-field class="example-form-field half_width" appearance="fill">
 	        		<mat-label>Klient</mat-label>
@@ -17,7 +32,10 @@
 				</mat-form-field>
 				<mat-form-field class="example-form-field half_width" appearance="fill">
 	        		<mat-label>Pohlavie</mat-label>
-	        		<input matInput type="text" formControlName="client_gender" [readonly]="readonly">
+					<mat-select formControlName="client_gender" class="tooltip tooltipstered" [disabled]="readonly">
+						<mat-option value="man">mužské</mat-option>
+						<mat-option value="woman">ženské</mat-option>
+					</mat-select>
 	      		</mat-form-field>
 			</div>
 			<div class = "row">
@@ -127,26 +145,22 @@
 					<mat-form-field appearance="fill">
 	      				<mat-label>Iné inštitúcie:</mat-label>
 						<mat-select formControlName="client_other_institutes" class="full_width" [disabled]="readonly">
-							<mat-option [value]="1">Asociácia NPDM</mat-option>
-							<mat-option [value]="2">Mestská časť Bratislava - Petržalka</mat-option>
+							<mat-option *ngFor="let institution of institutions" [value]="institution">
+								{{institution.name}}
+							</mat-option>
 						</mat-select>
 	      			</mat-form-field>
 				</div>
 			</div>
 			</mat-tab>
 			</mat-tab-group>
-	
-			<div class="divider6"></div>
-			<div class="button-row">
-	      		<button type="submit" mat-flat-button class="button-card"><mat-icon></mat-icon>Pridať</button>
-	    	</div>
 		</form>
 	</mat-card>
 	</div>
 </div>
 <div class="flex-item">
     <h3 class="mainComponent centered">Zaznamy o kontakte s klientom</h3>
-    <app-table-entry  [tableData] = "entrySet"></app-table-entry>
+    <app-table-entry [tableData] = "entrySet"></app-table-entry>
 
 	<h3 class="mainComponent centered">Zaznamy s on site kontakte</h3>
     <app-table-entry [tableData] = "entryOnSiteSet"></app-table-entry>

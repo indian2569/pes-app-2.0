@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID, APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
-import localeSk from '@angular/common/locales/sk';
-import localeSkExtra from '@angular/common/locales/extra/sk';
-import { registerLocaleData } from '@angular/common';
+
 import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
@@ -19,10 +17,11 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 
-registerLocaleData(localeSk, localeSkExtra);
+
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { errorInterceptorProviders } from './_helpers/error.interceptor';
 import { HomeModule } from './home/home.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -34,7 +33,7 @@ import { HomeModule } from './home/home.module';
     UnauthorizedComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +42,7 @@ import { HomeModule } from './home/home.module';
     HttpClientModule,
     BrowserAnimationsModule,
     HomeModule,
+    FontAwesomeModule
   ],
   providers: [authInterceptorProviders,
              errorInterceptorProviders],

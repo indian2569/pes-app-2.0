@@ -1,7 +1,11 @@
 package sk.kaspian.pes.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,8 +13,11 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.CampaigneMapper;
 import sk.kaspian.pes.model.Campaigne;
+import sk.kaspian.pes.model.Card;
+import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Campaign;
 import sk.kaspian.pes.repository.CampaigneRepository;
+import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.CampaigneService;
 
 @Service
@@ -19,6 +26,10 @@ public class CampaigneServiceImpl implements CampaigneService{
 
 	@NonNull
 	private CampaigneRepository campaigneRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
 
 	private CampaigneMapper campaigneMapper;
 
@@ -37,13 +48,18 @@ public class CampaigneServiceImpl implements CampaigneService{
 	@Override
 	@Transactional
 	public Campaign createCampaigne(Campaign campaigne) {
-		return campaigneMapper.map(campaigneRepository.save(campaigneMapper.map(campaigne)));
+		Campaigne map = campaigneMapper.map(campaigne);
+		map.setActive(Boolean.TRUE);
+		fillSavableFields(map);
+		return campaigneMapper.map(campaigneRepository.save(map));
 	}
 
 	@Override
 	@Transactional
 	public Campaign updateCampaigne(Campaign campaigne) {
-		return campaigneMapper.map(campaigneRepository.save(campaigneMapper.map(campaigne)));
+		Campaigne map = campaigneMapper.map(campaigne);
+		fillSavableFields(map);
+		return campaigneMapper.map(campaigneRepository.save(map));
 	}
 
 	@Override
@@ -60,4 +76,16 @@ public class CampaigneServiceImpl implements CampaigneService{
 		campaigneRepository.save(campaine);
 	}
 
+	private void fillSavableFields(Campaigne updatable) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		Long id = userDetails.getId();
+		User changedPerson = userRepository.getReferenceById(id);
+		if (updatable.getCreated() == null) {
+			updatable.setCreated(LocalDateTime.now());
+			updatable.setCreatedBy(changedPerson);
+		}
+		updatable.setUpdated(LocalDateTime.now());
+		updatable.setLastChange(changedPerson);
+	}
 }

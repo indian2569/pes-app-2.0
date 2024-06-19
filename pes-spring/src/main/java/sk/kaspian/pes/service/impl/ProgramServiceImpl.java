@@ -1,15 +1,22 @@
 package sk.kaspian.pes.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.ProgramMapper;
+import sk.kaspian.pes.model.Campaigne;
+import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Program;
 import sk.kaspian.pes.repository.ProgramRepository;
+import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.ProgramService;
 
 @Service
@@ -18,6 +25,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@NonNull
 	private ProgramRepository programRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	private ProgramMapper programMapper;
 
@@ -36,13 +46,18 @@ public class ProgramServiceImpl implements ProgramService {
 	@Override
 	@Transactional
 	public sk.kaspian.pes.openapi.model.v1.Program createProgram(Program program) {
-		return programMapper.map(programRepository.save(programMapper.map(program)));
+		sk.kaspian.pes.model.Program map = programMapper.map(program);
+		map.setActive(Boolean.TRUE);
+		fillSavableFields(map);
+		return programMapper.map(programRepository.save(map));
 	}
 
 	@Override
 	@Transactional
 	public sk.kaspian.pes.openapi.model.v1.Program updateProgram(Program program) {
-		return programMapper.map(programRepository.save(programMapper.map(program)));
+		sk.kaspian.pes.model.Program map = programMapper.map(program);
+		fillSavableFields(map);
+		return programMapper.map(programRepository.save(map));
 	}
 
 	@Override
@@ -59,4 +74,16 @@ public class ProgramServiceImpl implements ProgramService {
 		return programMapper.map(programRepository.save(program));
 	}
 
+	private void fillSavableFields(sk.kaspian.pes.model.Program updatable) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		Long id = userDetails.getId();
+		User changedPerson = userRepository.getReferenceById(id);
+		if (updatable.getCreated() == null) {
+			updatable.setCreated(LocalDateTime.now());
+			updatable.setCreatedBy(changedPerson);
+		}
+		updatable.setUpdated(LocalDateTime.now());
+		updatable.setLastChange(changedPerson);
+	}
 }

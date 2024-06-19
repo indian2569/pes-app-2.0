@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { CardService } from '../card.service';
 import { EntryService} from '../../entry/entry.service';
 import { map, tap, takeUntil } from 'rxjs/operators';
@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
 import { Subject } from 'rxjs';
+import { SettingService } from '../../setting/setting.service';
+import { InstitutionDTO } from '../../model/InstitutionDTO';
 
 @Component({
   selector: 'app-card',
@@ -20,11 +22,15 @@ export class CardComponent implements OnInit, OnDestroy {
   otherInfo = false;
   workInfo = false;
   insertCard: CardBasicDTO;
-  formGroup: UntypedFormGroup;
+  formGroup: FormGroup;
   title: string;
   readonly: boolean;
+  haveObject$: boolean;
+  institutions: InstitutionDTO[];
+  selectedInstitution: InstitutionDTO;
   entrySet = [];
   entryOnSiteSet = [];
+  errorMessages: string[] = [];
   
   onDestroy$ = new Subject();
 
@@ -32,8 +38,9 @@ export class CardComponent implements OnInit, OnDestroy {
 
   constructor(private cardService: CardService,
 			  private entryService: EntryService,
-              private formBuilder: UntypedFormBuilder,
+              private formBuilder: FormBuilder,
               private route: ActivatedRoute,
+              private settingService: SettingService,
               private router: Router) {}
 
   ngOnInit(): void {
@@ -43,25 +50,34 @@ export class CardComponent implements OnInit, OnDestroy {
         if (params[0].path !== 'add_card' && params.length > 0) {
           this.editId = params[0].path;
         }
+        this.settingService.getAllInstitutions().pipe(takeUntil(this.onDestroy$))
+        .subscribe({
+          next: (data) => {
+            this.institutions = data;
+          },
+          error: (e) => console.error(e)
+        });
+        if (!_.isNil(this.editId)) {
+          this.cardService.getCard(this.editId)
+            .pipe(takeUntil(this.onDestroy$)).subscribe(card => {
+                this.insertCard = card;
+                this.formSetUp();
+                this.title = 'Karta klienta';
+                this.readonly = true;
+                this.haveObject$ = false;
+          this.entryService.getAllEntrysByCardMain(this.insertCard).pipe(takeUntil(this.onDestroy$))
+          .subscribe(entrys => this.entrySet = entrys);
+    
+          this.entryService.getAllEntrysByCardOnSite(this.insertCard).pipe(takeUntil(this.onDestroy$))
+          .subscribe(entrys => this.entryOnSiteSet = entrys);
+          });
+        } else {
+          this.formSetUp();
+          this.title = 'Vytvorenie karty klienta';
+          this.readonly = false;
+          this.haveObject$= true;
+        }
       });
-    if (!_.isNil(this.editId)) {
-      this.cardService.getCard(this.editId)
-        .pipe(takeUntil(this.onDestroy$)).subscribe(card => {
-            this.insertCard = card;
-            this.formSetUp();
-            this.title = 'Karta klienta';
-            this.readonly = true;
-			this.entryService.getAllEntrysByCardMain(this.insertCard).pipe(takeUntil(this.onDestroy$))
-			.subscribe(entrys => this.entrySet = entrys);
-
-			this.entryService.getAllEntrysByCardOnSite(this.insertCard).pipe(takeUntil(this.onDestroy$))
-			.subscribe(entrys => this.entryOnSiteSet = entrys);
-      });
-    } else {
-      this.formSetUp();
-      this.title = 'Vytvorenie karty klienta';
-      this.readonly = false;
-    }
   }
 
   onClickBasicInfo () {
@@ -80,39 +96,50 @@ export class CardComponent implements OnInit, OnDestroy {
     this.workInfo = !this.workInfo;
   }
 
+  onMakeEditable () {
+    this.readonly = !this.readonly;
+  }
+
 formSetUp() {
   this.formGroup = this.formBuilder.group({
-    id: new UntypedFormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.id),
-    client_nick: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_nick),
-    client_gender: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender),
-    client_anamnesis: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
-    client_dev_plan: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan, [Validators.required]),
-    clint_age: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.clint_age),
-    client_birth_year: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year),
-    client_name: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
-    client_surname: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),
-    client_birth_date: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_date),
-    client_family_status: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_family_status),
-    client_citizenship: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_citizenship),
-    client_address: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_address),
-    client_phone: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_phone),
-    client_email: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_email),
-    client_socnet: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_socnet),
-    client_health: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
-    client_income: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
-    client_belongings: new UntypedFormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
-    client_other_institutes: new UntypedFormControl(_.isNil(this.insertCard) ? [] : this.insertCard.client_other_institutes),
+    id: new FormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.id),
+    client_nick: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_nick, [Validators.required]),
+    client_gender: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender, [Validators.required]),
+    client_anamnesis: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
+    client_dev_plan: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan),
+    clint_age: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.clint_age),
+    client_birth_year: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year, [Validators.required]),
+    client_name: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
+    client_surname: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),
+    client_birth_date: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_date),
+    client_family_status: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_family_status),
+    client_citizenship: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_citizenship),
+    client_address: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_address),
+    client_phone: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_phone),
+    client_email: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_email),
+    client_socnet: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_socnet),
+    client_health: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
+    client_income: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
+    client_belongings: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
+    client_other_institutes: new FormControl(_.isNil(this.insertCard) ? [] : this.insertCard.client_other_institutes),
   });
 }
 
   onSubmit(): void {
-    this.cardService.saveCard(this.createSaveObject()).pipe(
-      tap(() => {
-        this.formGroup.markAsUntouched();
-        this.formGroup.markAsPristine();
-        this.formGroup.reset();
-      }),takeUntil(this.onDestroy$))
-      .subscribe(card => this.router.navigate([`/card/` + card.id]));
+    this.errorMessages = this.getFormValidationErrors(this.formGroup);
+
+    if (this.formGroup.valid) {
+      this.cardService.saveCard(this.createSaveObject()).pipe(
+        tap(() => {
+          this.formGroup.markAsUntouched();
+          this.formGroup.markAsPristine();
+          if (_.isNil(this.insertCard)) {
+            this.formGroup.reset();
+          }
+          this.onMakeEditable();
+        }),takeUntil(this.onDestroy$))
+        .subscribe(card => this.router.navigate([`/card_line/` + card.id]));
+    }
   }
 
   createSaveObject(): CardBasicDTO {
@@ -124,4 +151,44 @@ formSetUp() {
     this.onDestroy$.next(null);
     this.onDestroy$.complete();
   }
+
+  getFormValidationErrors(form: FormGroup): string[] {
+    const errors: string[] = [];
+    Object.keys(form.controls).forEach(key => {
+      const controlErrors = form.get(key).errors;
+      const keyTranslate = translateKey(key);
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(errorKey => {
+          let errorMessage = '';
+          switch (errorKey) {
+            case 'required':
+              errorMessage = `${keyTranslate} je povinné pole na vyplnenie.`;
+              break;
+          }
+          errors.push(errorMessage);
+        });
+      }
+    });
+    return errors;
+  }
 }
+
+function translateKey(key: string): string {
+  let translate =''
+  switch (key) {
+    case 'client_nick':
+      translate = `Klient`;
+      break;
+    case 'client_gender':
+        translate = `Pohlavie`;
+        break;
+    case 'client_birth_year':
+        translate = `Rok narodenia`;
+        break;
+    case 'client_anamnesis':
+        translate = `Anamnéza`;
+        break;
+  }
+  return translate;
+}
+

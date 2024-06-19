@@ -27,4 +27,8 @@ export class CardService {
   public getAllCards(): Observable<CardBasicDTO[]> {
     return this.http.get<CardBasicDTO[]>(CardService.CARD_API_URL + '/allCards');
   }
+
+  public togleActivateCards(code: string): Observable<CardBasicDTO> {
+    return this.http.get<CardBasicDTO>(CardService.CARD_API_URL + '/activate/' + `${code}`);
+  }
 }

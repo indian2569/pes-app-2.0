@@ -1,12 +1,14 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { SettingService } from '../../setting/setting.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from "lodash";
+import { CardService } from '../../card/card.service';
+import { EntryService } from '../../entry/entry.service';
 
 @Component({
   selector: 'app-table-colapse',
@@ -32,7 +34,9 @@ import * as _ from "lodash";
     onDestroy$ = new Subject();
 
   constructor(private dialog: MatDialog,
-              private settingService: SettingService) { }
+              private settingService: SettingService,
+              private cardService: CardService,
+              private entryService: EntryService) { }
 
     ngOnInit(): void {
       this.dataSource = _.isNil(this.tableData) ? [] : this.tableData;
@@ -132,6 +136,14 @@ import * as _ from "lodash";
                     .subscribe();
                 break;
             case 6:
+                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 7:
+                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
+                    .subscribe();
+                break;
+            case 8:
                 this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
                     .subscribe();
                 break;

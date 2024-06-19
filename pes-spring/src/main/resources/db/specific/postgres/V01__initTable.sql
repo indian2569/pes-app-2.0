@@ -4,6 +4,10 @@ CREATE TABLE IF NOT EXISTS campaigne (
 ,	name	text		NOT NULL UNIQUE
 ,	description	text
 ,	active BOOLEAN NOT NULL
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 
 );
 COMMENT ON TABLE campaigne	IS 'Collection of campaigne';
@@ -13,7 +17,10 @@ CREATE TABLE IF NOT EXISTS event (
 ,	name	text		NOT NULL UNIQUE
 ,	description	text
 ,	active BOOLEAN NOT NULL
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE event	IS 'Collection of event';
 
@@ -23,7 +30,10 @@ CREATE TABLE IF NOT EXISTS coworker (
 ,	description	text
 ,	position text
 ,	active BOOLEAN NOT NULL
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE coworker	IS 'Collection of coworker';
 
@@ -32,7 +42,10 @@ CREATE TABLE IF NOT EXISTS institution (
 ,	name	text		NOT NULL UNIQUE
 ,	description	text
 ,	active BOOLEAN NOT NULL
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE institution	IS 'Collection of institution';
 
@@ -41,7 +54,10 @@ CREATE TABLE IF NOT EXISTS method (
 ,	name	text		NOT NULL UNIQUE
 ,	description	text
 ,	active BOOLEAN NOT NULL
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE method	IS 'Collection of method';
 
@@ -50,7 +66,10 @@ CREATE TABLE IF NOT EXISTS program (
 ,	name	text		NOT NULL UNIQUE
 ,	description	text
 ,	active BOOLEAN NOT NULL
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE program	IS 'Collection of program';
 
@@ -65,7 +84,10 @@ CREATE TABLE IF NOT EXISTS entry (
 ,	program_type_id	bigserial
 ,	event_description	 text
 ,	fast_message	text
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE program	IS 'Collection of entry';
 
@@ -89,10 +111,11 @@ CREATE TABLE IF NOT EXISTS card (
 ,	client_health	text
 ,	client_income	text
 ,	client_belongings	text
-,	created_by	text
 ,	status	BOOLEAN
-,	create_date	timestamptz
-
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE program	IS 'Collection of card';
 
@@ -102,6 +125,10 @@ CREATE TABLE IF NOT EXISTS pes_users (
 ,	email	text
 ,	password	text
 ,	active BOOLEAN
+,   created_by bigserial
+,   created timestamptz
+,   updated timestamptz
+,   last_change bigserial
 );
 COMMENT ON TABLE pes_users	IS 'Collection of users';
 

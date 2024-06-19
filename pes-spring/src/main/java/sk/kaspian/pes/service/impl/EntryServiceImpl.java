@@ -1,10 +1,15 @@
 package sk.kaspian.pes.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +20,10 @@ import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
 import sk.kaspian.pes.repository.EntryRepository;
+import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.EntryService;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +33,9 @@ public class EntryServiceImpl implements EntryService {
 	private EntryRepository entryRepository;
 
 	private EntryMapper entryMapper;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -41,17 +52,17 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	@Transactional
 	public Entry createEntry(Entry entryInput) {
-		sk.kaspian.pes.model.Entry mapp = entryMapper.map(entryInput);
-		Entry create =  entryMapper.map(entryRepository.save(mapp));
-		return create;
+		sk.kaspian.pes.model.Entry map = entryMapper.map(entryInput);
+		fillSavableFields(map);
+		return entryMapper.map(entryRepository.save(map));
 	}
 
 	@Override
 	@Transactional
 	public Entry updateEntry(Entry entryInput) {
 		sk.kaspian.pes.model.Entry map = entryMapper.map(entryInput);
-		sk.kaspian.pes.model.Entry save = entryRepository.save(map);
-		return entryMapper.map(save);
+		fillSavableFields(map);
+		return entryMapper.map(entryRepository.save(map));
 	}
 
 	@Override
@@ -92,4 +103,16 @@ public class EntryServiceImpl implements EntryService {
 		return entryMapper.map(entryRepository.findAll(pageable).getContent());
 	}
 
+	private void fillSavableFields(sk.kaspian.pes.model.Entry updatable) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		Long id = userDetails.getId();
+		User changedPerson = userRepository.getReferenceById(id);
+		if (updatable.getCreated() == null) {
+			updatable.setCreated(LocalDateTime.now());
+			updatable.setCreatedBy(changedPerson);
+		}
+		updatable.setUpdated(LocalDateTime.now());
+		updatable.setLastChange(changedPerson);
+	}
 }

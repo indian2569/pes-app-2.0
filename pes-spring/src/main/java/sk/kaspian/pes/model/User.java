@@ -1,5 +1,6 @@
 package sk.kaspian.pes.model;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -86,4 +87,5 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
 }

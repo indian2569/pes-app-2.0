@@ -73,7 +73,7 @@ export class SettingService {
   }
 
   public getAllInstitutions(): Observable<InstitutionDTO[]> {
-    return this.http.get<InstitutionDTO[]>(`${SettingService.INSTITUTION_API_URL}/allInstitutions`, { context: this.CONTEXT });
+    return this.http.get<InstitutionDTO[]>(`${SettingService.INSTITUTION_API_URL}/allInstitutions`);
   }
 
   /** Coworkers call for services */

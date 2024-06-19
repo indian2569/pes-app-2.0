@@ -7,8 +7,8 @@
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 
-@include mat.all-legacy-component-typographies();
-@include mat.legacy-core();
+@include mat.all-component-typographies();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -32,7 +32,7 @@ $angular-theme: mat.define-light-theme((
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-legacy-component-themes($angular-theme);
+@include mat.all-component-themes($angular-theme);
 
 /* You can add global styles to this file, and also import other style files */
 

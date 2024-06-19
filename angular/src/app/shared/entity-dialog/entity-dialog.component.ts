@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-
+import { UntypedFormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-entity-dialog',
   templateUrl: './entity-dialog.component.html',
@@ -13,15 +12,15 @@ export class EntityDialogComponent implements OnInit {
   description: string;
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private dialogRef: MatDialogRef<EntityDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
   }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
-      name: new UntypedFormControl(),
-      description: new UntypedFormControl(),
+      name: new FormControl(),
+      description: new FormControl(),
     });
     this.description = 'Test';
   }

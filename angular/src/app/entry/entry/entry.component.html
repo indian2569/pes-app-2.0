@@ -1,6 +1,16 @@
-<mat-card>
-  <h3> {{title}}</h3>
-  <form class="mainComponent" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+<div class="flex-container wrap">
+<div class="container">
+    <h3 class="title"> {{title}}</h3>
+		<div class="buttons">
+		<button mat-flat-button type="submit" form="formGroup" color="primary" class="button-card right" >Uložiť</button>
+		<button mat-flat-button (click)='onMakeEditable()' color="primary" class="button-card right">Zmeniť</button>
+	  </div>
+</div>
+<div *ngIf="!formGroup">
+  Loading...
+</div>
+<mat-card *ngIf="formGroup">
+  <form class="mainComponent" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="formGroup">
     <div class="row">
       <app-chips-input title = "Klienti:" [dataSet]="cards" [type]= "1"
       [parentForm]="formGroup" #client></app-chips-input>
@@ -29,24 +39,24 @@
       <mat-form-field appearance="fill" class="one_half">
       <mat-label>Typ kontaktu:</mat-label>
       <mat-select formControlName="contact_type" [attr.disabled]="readonly">
-          <mat-option *ngFor="let contact of contactTypes" [value]="contact">
+          <mat-option *ngFor="let contact of contactTypes " [value]="contact">
             {{ContractEnum2LabelMapping[contact]}}
           </mat-option>
       </mat-select>
       </mat-form-field>
     </div>
     <div class="row">
-      <mat-form-field appearance="fill" class="one_half first">
+      <mat-form-field appearance="fill" class="one_half first" >
       <mat-label>Typ kampane:</mat-label>
-      <mat-select formControlName="campaign" [attr.disabled]="readonly" [(value)]="selectedCampagne">
-          <mat-option *ngFor="let campaign of campaigns" [value]="campaign">
+      <mat-select formControlName="campaign" [(value)]="selectedCampagne">
+          <mat-option *ngFor="let campaign of campaigns " [value]="campaign">
             {{campaign.name}}
           </mat-option>
       </mat-select>
       </mat-form-field>
       <mat-form-field appearance="fill" class="one_half">
       <mat-label>Program:</mat-label>
-      <mat-select formControlName="program_type" [attr.disabled]="readonly" [(value)]="selectedProgram">
+      <mat-select formControlName="program_type"  [(value)]="selectedProgram">
           <mat-option *ngFor="let program of programs" [value]="program">
             {{program.name}}
           </mat-option>
@@ -70,9 +80,6 @@
         <textarea matInput type="text" formControlName="fast_message" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
       </mat-form-field>
     </div>
-    <div class="divider5"></div>
-    <div class="button-row">
-      <button type="submit" mat-flat-button color="primary" >Pridať</button>
-    </div>
   </form>
 </mat-card>
+</div>

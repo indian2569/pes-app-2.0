@@ -4,6 +4,7 @@ import { CoworkerDTO } from './CoworkerDTO';
 import { ProgramDTO } from './ProgramDTO';
 import { CampaignDTO } from './CampaignDTO';
 import { EventDTO } from './EventDTO';
+import { UserDTO } from './UserDTO';
 
 export interface EntryDTO {
 id?: number;
@@ -21,5 +22,8 @@ work_methods: MethodsDTO[]; /** metody prace*/
 other_workers: CoworkerDTO[]; /** dalsi pracovnici*/
 event_description: string; /** popis udalosti*/
 fast_message: string;
-createdBy?: CoworkerDTO;
+createdBy: UserDTO;
+created?: string;
+updated?: string;
+last_change?: UserDTO;
 }

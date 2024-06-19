@@ -1,4 +1,5 @@
 import { InstitutionDTO } from './InstitutionDTO';
+import { UserDTO } from './UserDTO';
 
 export interface CardBasicDTO {
 id?: number;
@@ -21,7 +22,9 @@ client_health?: string;
 client_income?: string;
 client_belongings?: string;
 client_other_institutes?: InstitutionDTO[];
-createdBy?: string;
+createdBy?: UserDTO;
 status?: string;
-createDate?: string;
+created?: string;
+updated?: string;
+last_change?: UserDTO;
 }

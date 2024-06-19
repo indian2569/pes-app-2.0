@@ -30,11 +30,11 @@ public interface EntryMapper {
         if ( one.getId() != null ) {
             entry.setId( BigDecimal.valueOf( one.getId() ) );
         }
-        if (one.getClient() != null) {
-            entry.setClient(cardListToCardList1(one.getClient()));
-        }
         if (one.getClientsOnSite() != null) {
             entry.setClientsOnSite( cardListToCardList1( one.getClientsOnSite() ) );
+        }
+        if (one.getClient() != null) {
+            entry.setClient(cardListToCardList1(one.getClient()));
         }
         if ( one.getEntryDateFrom() != null ) {
             entry.setEntryDateFrom( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( one.getEntryDateFrom() ) );
@@ -60,6 +60,10 @@ public interface EntryMapper {
         }
         entry.setEventDescription( one.getEventDescription() );
         entry.setFastMessage( one.getFastMessage() );
+        entry.setCreatedBy(userToUser1(one.getCreatedBy()));
+        entry.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(one.getCreated()));
+        entry.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(one.getUpdated()));
+        entry.setLastChange(userToUser1(one.getLastChange()));
 
         return entry;
     }
@@ -132,7 +136,10 @@ public interface EntryMapper {
         coworker1.setDescription( coworker.getDescription() );
         coworker1.setPosition( coworker.getPosition() );
         coworker1.setActive( coworker.isActive() );
-
+        coworker1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(coworker.getCreated()));
+        coworker1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(coworker.getUpdated()));
+        coworker1.setLastChange(userToUser1(coworker.getLastChange()));
+        coworker1.setCreatedBy(userToUser1(coworker.getCreatedBy()));
         return coworker1;
     }
 
@@ -149,7 +156,10 @@ public interface EntryMapper {
         method1.setName( method.getName() );
         method1.setDescription( method.getDescription() );
         method1.setActive( method.isActive() );
-
+        method1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( method.getCreated()));
+        method1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( method.getUpdated()));
+        method1.setLastChange(userToUser1(method.getLastChange()));
+        method1.setCreatedBy(userToUser1(method.getCreatedBy()));
         return method1;
     }
 
@@ -179,7 +189,10 @@ public interface EntryMapper {
         campaign.setName( campaigne.getName() );
         campaign.setDescription( campaigne.getDescription() );
         campaign.setActive( campaigne.isActive() );
-
+        campaign.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( campaigne.getCreated()));
+        campaign.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( campaigne.getUpdated()));
+        campaign.setLastChange(userToUser1(campaigne.getLastChange()));
+        campaign.setCreatedBy(userToUser1(campaigne.getCreatedBy()));
         return campaign;
     }
 
@@ -196,7 +209,10 @@ public interface EntryMapper {
         program1.setName( program.getName() );
         program1.setDescription( program.getDescription() );
         program1.setActive( program.isActive() );
-
+        program1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( program.getCreated()));
+        program1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( program.getUpdated()));
+        program1.setLastChange(userToUser1(program.getLastChange()));
+        program1.setCreatedBy(userToUser1(program.getCreatedBy()));
         return program1;
     }
 
@@ -231,16 +247,25 @@ public interface EntryMapper {
           card1.setClientOtherInstitutes(
           institutionListToInstitutionList1(card.getClientOtherInstitutes()));
         }
-        card1.setCreatedBy( card.getCreatedBy() );
         if ( card.getStatus() != null ) {
             card1.setStatus( String.valueOf( card.getStatus() ) );
         }
-        if ( card.getCreateDate() != null ) {
-            card1.setCreateDate( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( card.getCreateDate() ) );
+        if ( card.getCreatedBy() != null) {
+            card1.setCreatedBy( userToUser1(card.getCreatedBy()));
         }
-
+        if ( card.getCreated() != null ) {
+            card1.setCreated( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( card.getCreated() ) );
+        }
+        if ( card.getUpdated() != null ) {
+            card1.setCreated( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( card.getUpdated()) );
+        }
+        if ( card.getLastChange() != null) {
+            card1.setLastChange( userToUser1(card.getLastChange()));
+        }
         return card1;
     }
+
+    sk.kaspian.pes.openapi.model.v1.User userToUser1(User createdBy);
 
     private List<sk.kaspian.pes.openapi.model.v1.Card> cardListToCardList1(List<sk.kaspian.pes.model.Card> list) {
         if ( list == null ) {
@@ -267,7 +292,10 @@ public interface EntryMapper {
         institution1.setName( institution.getName() );
         institution1.setDescription( institution.getDescription() );
         institution1.setActive( institution.isActive() );
-
+        institution1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( institution.getCreated()));
+        institution1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( institution.getUpdated()));
+        institution1.setLastChange(userToUser1(institution.getLastChange()));
+        institution1.setCreatedBy(userToUser1(institution.getCreatedBy()));
         return institution1;
     }
 

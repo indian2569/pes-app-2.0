@@ -19,19 +19,19 @@
     <!-- campaign Column -->
     <ng-container matColumnDef="campaign"  class="table-clint_age">
       <th mat-header-cell *matHeaderCellDef> Kampaň </th>
-      <td mat-cell *matCellDef="let element"> {{element.campaign.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.campaign?.name}} </td>
     </ng-container>
 
     <!-- program Column -->
     <ng-container matColumnDef="program_type" class="table-program_type">
       <th mat-header-cell *matHeaderCellDef> Program </th>
-      <td mat-cell *matCellDef="let element"> {{element.program_type.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.program_type?.name}} </td>
     </ng-container>
 
     <!-- cratedBy Column -->
-    <ng-container matColumnDef="cratedBy"  class="table-cratedBy">
+    <ng-container matColumnDef="createdBy"  class="table-cratedBy">
       <th mat-header-cell *matHeaderCellDef> Pridal: </th>
-      <td mat-cell *matCellDef="let element"> {{element.cratedBy}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.createdBy?.username}}</td>
     </ng-container>
 
     <!-- Action Column -->

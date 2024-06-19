@@ -31,15 +31,13 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import sk.kaspian.pes.model.enums.ContactEnum;
 
-
 @Data
 @Entity
 @Table(name = "entry")
 @EqualsAndHashCode(callSuper = false, of = "id")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@NoArgsConstructor
 @RequiredArgsConstructor
-public class Entry implements Serializable {
+public class Entry extends SaveableObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,15 +46,15 @@ public class Entry implements Serializable {
 	@Column(name = "id")
 	@NonNull
 	private Long id;
-	
-	@OneToMany
+
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pes_entry_clients",
     joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
     inverseJoinColumns = {@JoinColumn(name = "card_id", nullable = false, referencedColumnName = "id") })
     @NotFound(action = NotFoundAction.IGNORE)
 	private List<Card> client;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pes_entry_card",
     joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
     inverseJoinColumns = {@JoinColumn(name = "card_id", nullable = false, referencedColumnName = "id") })
@@ -85,11 +83,19 @@ public class Entry implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     @NotFound(action = NotFoundAction.IGNORE)
 	private Program programType;
-	
-	@OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "pes_entry_method",
+			joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
+			inverseJoinColumns = {@JoinColumn(name = "method_id", nullable = false, referencedColumnName = "id") })
+	@NotFound(action = NotFoundAction.IGNORE)
 	private List<Method> workMethods;
-	
-	@OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "pes_entry_coworker",
+			joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
+			inverseJoinColumns = {@JoinColumn(name = "coworker_id", nullable = false, referencedColumnName = "id") })
+	@NotFound(action = NotFoundAction.IGNORE)
 	private List<Coworker> otherWorkers;
 	
 	@Column(name = "event_description")
@@ -97,4 +103,8 @@ public class Entry implements Serializable {
 	
 	@Column(name = "fast_message")
 	private String fastMessage;
+
+	public Entry() {
+		super();
+	}
 }

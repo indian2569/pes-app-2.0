@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventDTO } from '../../model/EventDTO';
-import { MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { EntityDialogComponent } from '../../shared/entity-dialog/entity-dialog.component';
 import { SettingService } from '../setting.service';
 import { Subject, pipe } from 'rxjs';

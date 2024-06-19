@@ -1,11 +1,9 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .one_half {
 	width: 47.5%;
 }
 
 .mainComponent {
-	max-width: 720px;
 	vertical-align: middle;
 }
 
@@ -49,17 +47,76 @@ h3 {
     width: 100%;
 }
 
-.mat-datepicker-content {
-    box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
-    background-color: #fff;
-    color: #000000de
+
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 1px solid silver;
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
   }
   
-  .mat-calendar-body-selected {
-    background-color: #007f51;
-    color: #fff;
+  .wrap { 
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  } 
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid silver;
+    width: 100%;
+}
+
+.title {
+    margin: 0;
   }
   
-  .mat-calendar-body-cell-content {
-    border: none !important;
-  }
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.right {
+    float: right;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button-card {
+    background-color: #333333;
+    color: white;
+    text-align: center;
+}
+
+span.mat-mdc-button-touch-target {
+    background-color: #333333;
+}
+
+.right:hover {
+    background-color: #b3804b;
+}
+
+
+::ng-deep .mat-datepicker-content .mat-calendar {
+    background-color: #c7c7c7;
+    }
+    
+::ng-deep .time-container {
+    background-color: #c7c7c7;
+}
+    
+::ng-deep .mat-calendar-body-cell-content.mat-focus-indicator {
+    color: white;
+    border: none;
+}
+
+

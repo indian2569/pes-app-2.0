@@ -151,6 +151,38 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/card/activate/{code}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Cards
+      summary: Endpoint change/ toggle status of activity on object
+      operationId: getToggleCard
+      parameters:
+        - in: path
+          name: code
+          description: String code of card
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Successfully get Card"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/entry/save:
     post:
       security:
@@ -1237,11 +1269,15 @@ components:
           items:
             $ref: '#/components/schemas/Institution'
         createdBy:
-          type: string
+          $ref: '#/components/schemas/User'
         status:
           type: string
-        createDate:
+        created:
           type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Entry:
       description: "Entry object"
       type: object
@@ -1280,6 +1316,14 @@ components:
           type: string
         fast_message:
           type: string
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Event:
       description: "Event object"
       type: object
@@ -1292,6 +1336,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Campaign:
       description: "Campaign object"
       type: object
@@ -1304,6 +1356,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Coworker:
       description: "Coworker object"
       type: object
@@ -1318,6 +1378,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Institution:
       description: "Institution object"
       type: object
@@ -1330,6 +1398,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Method:
       description: "Methods object"
       type: object
@@ -1342,6 +1418,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     Program:
       description: "Programs object"
       type: object
@@ -1354,6 +1438,14 @@ components:
           type: string
         active:
           type: boolean
+        createdBy:
+          $ref: '#/components/schemas/User'
+        created:
+          type: string
+        updated:
+          type: string
+        last_change:
+          $ref: '#/components/schemas/User'
     LoginRequest:
       description: "Login object"
       type: object
@@ -1431,3 +1523,12 @@ components:
         valid_to:
           type: string
           format: date-time
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          description: User ID.
+        username:
+          type: string
+          description: Username of the authenticated user.
