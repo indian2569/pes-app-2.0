@@ -20,7 +20,6 @@ import { EntryDTO } from '../../model/EntryDTO';
 import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
 import { Observable, Subject, async } from 'rxjs';
-import { SelectInputComponent } from '../../shared/select/select-input.component';
 
 @Component({
   selector: 'app-entry',
@@ -33,7 +32,6 @@ export class EntryComponent implements OnInit, OnDestroy {
   @ViewChild('otherClientsInput', {static: false}) otherClientsControl: ChipsInputComponent;
   @ViewChild('coworkersInput', {static: false}) coworkersControl: ChipsInputComponent;
   @ViewChild('methodsInput', {static: false}) methodsControl: ChipsInputComponent;
-  @ViewChild('campaignInput', {static: false}) campaignControl: SelectInputComponent;
 
   programs: any[];
   methods: MethodsDTO[] ;
@@ -187,7 +185,7 @@ export class EntryComponent implements OnInit, OnDestroy {
         this.selectedProgram = this.entryEdit.program_type;
     }
   }
-
+// funtion for comparing that is used in mat-select  that selected values what is object is set up correctly
   comparePOptions(o1: ProgramDTO, o2: ProgramDTO): boolean {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }

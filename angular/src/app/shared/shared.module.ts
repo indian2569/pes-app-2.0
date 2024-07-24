@@ -42,7 +42,7 @@ registerLocaleData(localeSk, localeSkExtra);
       TableCardComponent,
       DialogBoxComponent,
       ConfirmDialogComponent,
-      DasbordBoxComponent,
+      DasbordBoxComponent
 
   ],
   imports: [
