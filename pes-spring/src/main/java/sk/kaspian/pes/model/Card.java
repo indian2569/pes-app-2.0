@@ -84,8 +84,10 @@ public class Card  extends SaveableObject {
 	@Column(name = "client_belongings")
 	private String clientBelongings;
 
-	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
-	private List<Institution> clientOtherInstitutes;
+	@JoinColumn(name = "institution_id")
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Institution clientOtherInstitutes;
 
 	@Column(name = "status")
 	private Boolean status;

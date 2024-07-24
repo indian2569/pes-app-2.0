@@ -121,7 +121,7 @@ formSetUp() {
     client_health: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
     client_income: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
     client_belongings: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
-    client_other_institutes: new FormControl(_.isNil(this.insertCard) ? [] : this.insertCard.client_other_institutes),
+    client_other_institutes: new FormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.client_other_institutes),
   });
 }
 
@@ -145,6 +145,11 @@ formSetUp() {
   createSaveObject(): CardBasicDTO {
     const ret: CardBasicDTO = this.formGroup.getRawValue();
     return ret;
+  }
+
+  // funtion for comparing that is used in mat-select  that selected values what is object is set up correctly
+  compareOptions(o1: InstitutionDTO, o2: InstitutionDTO): boolean {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
   ngOnDestroy(): void {

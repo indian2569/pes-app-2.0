@@ -244,8 +244,7 @@ public interface EntryMapper {
         card1.setClientIncome( card.getClientIncome() );
         card1.setClientBelongings( card.getClientBelongings() );
         if (card1.getClientOtherInstitutes() != null) {
-          card1.setClientOtherInstitutes(
-          institutionListToInstitutionList1(card.getClientOtherInstitutes()));
+          card1.setClientOtherInstitutes( institutionToInstitution1(card.getClientOtherInstitutes()));
         }
         if ( card.getStatus() != null ) {
             card1.setStatus( String.valueOf( card.getStatus() ) );

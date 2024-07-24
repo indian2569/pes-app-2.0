@@ -20,6 +20,7 @@ import { EntryDTO } from '../../model/EntryDTO';
 import { SettingService } from '../../setting/setting.service';
 import { CardService } from '../../card/card.service';
 import { Observable, Subject, async } from 'rxjs';
+import { SelectInputComponent } from '../../shared/select/select-input.component';
 
 @Component({
   selector: 'app-entry',
@@ -32,10 +33,11 @@ export class EntryComponent implements OnInit, OnDestroy {
   @ViewChild('otherClientsInput', {static: false}) otherClientsControl: ChipsInputComponent;
   @ViewChild('coworkersInput', {static: false}) coworkersControl: ChipsInputComponent;
   @ViewChild('methodsInput', {static: false}) methodsControl: ChipsInputComponent;
+  @ViewChild('campaignInput', {static: false}) campaignControl: SelectInputComponent;
 
-  programs: ProgramDTO[];
+  programs: any[];
   methods: MethodsDTO[] ;
-  campaigns: CampaignDTO[];
+  campaigns: any[];
   contacts: CoworkerDTO[];
   date = new Date(new Date());
   entryEdit: EntryDTO;
@@ -50,7 +52,7 @@ export class EntryComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   public ContractEnum2LabelMapping = ContractEnum2LabelMapping;
   public contactTypes = Object.values(ContractEnum);
-  setUp = true;
+  isLoading = false; // Flag to indicate loading state
 
   @Input() editId: string;
 
@@ -61,35 +63,17 @@ export class EntryComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router) {
     this.formSetUp();
-   }
-
-  ngOnInit(): void {
     this.route.url.pipe(takeUntil(this.onDestroy$))
       .subscribe((params: any) => {
         if (params[0].path !== 'add_entry' && params.length > 0) {
           this.editId = params[0].path;
         }
       });
-    this.settingService.getAllPrograms().pipe(takeUntil(this.onDestroy$))
-      .subscribe({
-        next: (data) => {
-          this.programs = data;
-        },
-        error: (e) => console.error(e)
-      });
     this.settingService.getAllMethods().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => {
           this.methods = data;
           this.methodsControl.allAvaliableChips = this.methods;
-        },
-        error: (e) => console.error(e)
-      });
-    this.settingService.getAllCampaigns().pipe(takeUntil(this.onDestroy$))
-      .subscribe({
-        next: (data) => {
-          this.campaigns = data;
-
         },
         error: (e) => console.error(e)
       });
@@ -110,37 +94,27 @@ export class EntryComponent implements OnInit, OnDestroy {
         },
         error: (e) => console.error(e)
       });
-    if (!_.isNil(this.editId)) {
-      this.entryService.getEntry(this.editId).pipe(takeUntil(this.onDestroy$))
-      .subscribe(card => {
-        this.entryEdit = card;
-        this.formSetUp();
-        this.title = 'Záznam';
-        this.readonly = true;
-        this.fillClientOnSite();
-        this.setUp = true;
-        this.selectedCampagne = this.entryEdit.campaign;
-        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);
-        this.selectedProgram = this.entryEdit.program_type;
-        this.formGroup.get('program_type').setValue(this.entryEdit.program_type);
 
-      });
-    } else {
-      this.formSetUp();
-      this.title = 'Vytvorenie záznamu';
-      this.readonly = _.isNil(this.editId) ? false : true;
-      this.fillClientOnSite();
-      this.setUp = true;
+   }
+
+   async ngOnInit(): Promise<void> {
+    this.isLoading = true;
+    try {
+      await this.loadData();
+      this.isLoading = false;
+    } catch (error) {
+      console.error('Error loading programs or entry', error);
+      this.isLoading = false;
     }
+    console.log(this.programs, this.campaigns);
+    console.log(`Type: ${typeof this.campaigns[1]}`, this.campaigns[1]);
 
   }
 
   private fillClientOnSite() {
     if (!_.isNil(this.formGroup.get('clients_on_site'))) {
       this.filteredClients = this.formGroup.get('clients_on_site').valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value || ''))
-      );
+        startWith(''), map(value => this._filter(value || '')));
     }
   }
 
@@ -210,21 +184,46 @@ export class EntryComponent implements OnInit, OnDestroy {
         this.coworkersControl.selectedChips = _.isNil(this.entryEdit.other_workers) ? [] : this.entryEdit.other_workers;
         this.methodsControl.selectedChips = _.isNil(this.entryEdit.work_methods) ? [] : this.entryEdit.work_methods;
         this.selectedCampagne = this.entryEdit.campaign;
-        this.formGroup.get('campaign').setValue(this.entryEdit.campaign);   
         this.selectedProgram = this.entryEdit.program_type;
-        this.formGroup.get('program_type').setValue(this.entryEdit.program_type);
     }
   }
 
-  transformToMoment = (value: any): moment.Moment => {
-    if (_.isNil(value)) {
-      return null;
+  comparePOptions(o1: ProgramDTO, o2: ProgramDTO): boolean {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
+  }
+
+  compareCOptions(o1: CampaignDTO, o2: CampaignDTO): boolean {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
+  }
+
+  async loadData() {
+    try {
+      this.programs = await this.settingService.getAllPrograms().toPromise();
+      this.campaigns = await this.settingService.getAllCampaigns().toPromise();
+      await this.setUpEntry(this.editId);
+    } catch (error) {
+      console.error('Error loading settings', error);
     }
-    let date: moment.Moment;
-    if (typeof value === 'object' ) {
-      date = moment.utc(value);
-    }
-    return date;
+  }
+
+  async setUpEntry(editId: string) {
+    if (!_.isNil(editId)) {
+      try {
+        const entryReaded = await this.entryService.getEntry(editId).toPromise();
+        this.entryEdit = entryReaded;
+        this.formSetUp();
+        this.title = 'Záznam';
+        this.readonly = true;
+        this.fillClientOnSite();
+      } catch (error) {
+        console.error('Error loading entry', error);
+      }
+  } else {
+      this.formSetUp();
+      this.title = 'Vytvorenie záznamu';
+      this.readonly = _.isNil(editId) ? false : true;
+      this.fillClientOnSite();
+  }
   }
 
   onMakeEditable () {

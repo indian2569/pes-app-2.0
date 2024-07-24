@@ -144,7 +144,7 @@
 				<div class="form-input clear">
 					<mat-form-field appearance="fill">
 	      				<mat-label>Iné inštitúcie:</mat-label>
-						<mat-select formControlName="client_other_institutes" class="full_width" [disabled]="readonly">
+						<mat-select formControlName="client_other_institutes" class="full_width" [disabled]="readonly" [compareWith]="compareOptions">
 							<mat-option *ngFor="let institution of institutions" [value]="institution">
 								{{institution.name}}
 							</mat-option>
