@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.EventMapper;
-import sk.kaspian.pes.model.Campaigne;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Event;
 import sk.kaspian.pes.repository.EventRepository;
@@ -71,6 +70,11 @@ public class EventServiceImpl implements EventService {
 		sk.kaspian.pes.model.Event event = eventRepository.getOne(id);
 		event.setActive(Boolean.FALSE);
 		return eventMapper.map(eventRepository.save(event));
+	}
+
+	@Override
+	public List<Event> getAllActiveEvents() {
+		return eventMapper.map(eventRepository.findByActiveTrue());
 	}
 
 	private void fillSavableFields(sk.kaspian.pes.model.Event updatable) {

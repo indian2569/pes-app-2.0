@@ -3,7 +3,6 @@ package sk.kaspian.pes.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.MethodMapper;
-import sk.kaspian.pes.model.Campaigne;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Method;
 import sk.kaspian.pes.repository.MethodRepository;
@@ -73,6 +71,11 @@ public class MethodServiceImpl implements MethodService {
 		sk.kaspian.pes.model.Method method = methodRepository.getOne(id);
 		method.setActive(Boolean.FALSE);
 		return methodMapper.map(methodRepository.save(method));
+	}
+
+	@Override
+	public List<Method> getAllActiveMethods() {
+		return methodMapper.map(methodRepository.findByActiveTrue());
 	}
 
 	private void fillSavableFields(sk.kaspian.pes.model.Method updatable) {

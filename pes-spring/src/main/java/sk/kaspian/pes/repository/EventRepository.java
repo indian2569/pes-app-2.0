@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import sk.kaspian.pes.model.Event;
 
+import java.util.List;
+
 @Repository
 public interface EventRepository  extends JpaRepository<Event, Long>{
+    List<Event> findByActiveTrue();
 }

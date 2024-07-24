@@ -8,12 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.CampaigneMapper;
 import sk.kaspian.pes.model.Campaigne;
-import sk.kaspian.pes.model.Card;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Campaign;
 import sk.kaspian.pes.repository.CampaigneRepository;
@@ -35,6 +35,7 @@ public class CampaigneServiceImpl implements CampaigneService{
 
 	@Override
 	@Transactional(readOnly = true)
+	@Cacheable(value = "allCampaigneCache", key = "'allData'")
 	public List<Campaign> getAllCompaignes() {
 		return campaigneMapper.map(campaigneRepository.findAll());
 	}
@@ -74,6 +75,11 @@ public class CampaigneServiceImpl implements CampaigneService{
 		Campaigne campaine = campaigneRepository.getOne(id);
 		campaine.setActive(Boolean.FALSE);
 		campaigneRepository.save(campaine);
+	}
+
+	@Override
+	public List<Campaign> getAllActiveCampaigns() {
+		return campaigneMapper.map(campaigneRepository.findByActiveTrue());
 	}
 
 	private void fillSavableFields(Campaigne updatable) {

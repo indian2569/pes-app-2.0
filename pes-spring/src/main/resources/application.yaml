@@ -9,6 +9,9 @@ spring:
    banner-mode: off
   application:
     name: pes
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
   jpa:
     open-in-view: false
     hibernate:

@@ -16,7 +16,6 @@ public interface ProgramService {
 	 * Remove object base of id
 	 * @param id {@link Long} id of Program
 	 */
-
 	void removeProgram(Long id);
 
 	/**
@@ -48,4 +47,9 @@ public interface ProgramService {
 	 */
 	sk.kaspian.pes.openapi.model.v1.Program deactivateProgram(Long id);
 
+	/**
+	 * Function return all Programs created that have status set up true mean active
+	 * @return {@link List} {@link Program} list of Programs
+	 */
+    List<Program> getAllActivePrograms();
 }

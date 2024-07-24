@@ -151,6 +151,33 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/card/allActiveCards:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Cards
+      summary:  Return all status equal active cards
+      operationId: getAllActiveCard
+      responses:
+        200:
+          description: "Successfully get All active Cards"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/card/activate/{code}:
     get:
       security:
@@ -539,6 +566,33 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/event/allActiveEvents:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Events
+      summary: Return all status equal active events
+      operationId: getAllActiveEvent
+      responses:
+        200:
+          description: "Successfully get all active Events"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/campaign/save:
     post:
       security:
@@ -640,6 +694,33 @@ paths:
       responses:
         200:
           description: "Successfully get All Campaigns"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /api/campaign/allActiveCampaigns:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Campaigns
+      summary:  Return all status equal active campaigns
+      operationId: getAllActiveCampaign
+      responses:
+        200:
+          description: "Successfully get all active Campaigns"
           content:
             application/json:
               schema:
@@ -773,6 +854,33 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/coworker/allActiveCoworkers:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Coworkers
+      summary: Return all status equal active coworkers
+      operationId: getAllActiveCoworker
+      responses:
+        200:
+          description: "Successfully get all active Coworkers"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coworker'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/institution/save:
     post:
       security:
@@ -874,6 +982,33 @@ paths:
       responses:
         200:
           description: "Successfully get All Institutions"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Institution'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /api/institution/allActiveInstitutions:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Institutions
+      summary:  Return all status equal active institutions
+      operationId: getAllActiveInstitutions
+      responses:
+        200:
+          description: "Successfully get all active Institutions"
           content:
             application/json:
               schema:
@@ -1007,6 +1142,33 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/method/allActiveMethods:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Methods
+      summary:  Return all status equal active method
+      operationId: getAllActiveMethods
+      responses:
+        200:
+          description: "Successfully get all active Methods"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Method'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/program/save:
     post:
       security:
@@ -1105,6 +1267,33 @@ paths:
         - Programs
       summary: Return all program
       operationId: getAllPrograms
+      responses:
+        200:
+          description: "Successfully get All Programs"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /api/program/allActivePrograms:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Programs
+      summary: Return all status equal active program
+      operationId: getAllActivePrograms
       responses:
         200:
           description: "Successfully get All Programs"
@@ -1265,9 +1454,7 @@ components:
         client_belongings:
           type: string
         client_other_institutes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Institution'
+          $ref: '#/components/schemas/Institution'
         createdBy:
           $ref: '#/components/schemas/User'
         status:

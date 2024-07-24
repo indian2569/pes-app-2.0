@@ -12,35 +12,35 @@ public interface EventService {
 	 * @return {@link List} {@link Event} list of Events
 	 */
 	List<Event> getAllEvents();
-	
+
 	/**
 	 * Remove object Event base on Id
 	 * @param id {@link Long} id of Event
 	 */
-	
+
 	void removeEvent(Long id);
-	
+
 	/**
 	 * Create Event
 	 * @param event object that we want to create
 	 * @return {@link Event}
 	 */
 	Event createEvent(Event event);
-	
+
 	/**
 	 * update Event
 	 * @param event object with update values
 	 * @return {@link Event} updated object
 	 */
 	Event updateEvent(Event event);
-	
+
 	/**
 	 * Return object base on id
 	 * @param id {@link Long} id of object
 	 * @return {@link Event} object base on id
 	 */
 	Event getEventById(Long id);
-	
+
 	/**
 	 * Function deactivate Event
 	 * 
@@ -48,4 +48,10 @@ public interface EventService {
 	 * @return {@link Event} update object
 	 */
 	Event deactivateEvent(Long id);
+
+	/**
+	 * Function return all Events created that have status set up true mean active
+	 * @return {@link List} {@link Event} list of Events
+	 */
+    List<Event> getAllActiveEvents();
 }

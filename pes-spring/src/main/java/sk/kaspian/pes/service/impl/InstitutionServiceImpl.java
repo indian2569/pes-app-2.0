@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.InstitutionMapper;
-import sk.kaspian.pes.model.Campaigne;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Institution;
 import sk.kaspian.pes.repository.InstitutionRepository;
@@ -72,6 +71,11 @@ public class InstitutionServiceImpl implements InstitutionService{
 		sk.kaspian.pes.model.Institution institution = institutionRepository.getOne(id);
 		institution.setActive(Boolean.FALSE);
 		return institutionMapper.map(institutionRepository.save(institution));
+	}
+
+	@Override
+	public List<Institution> getAllActiveInstitutions() {
+		return institutionMapper.map(institutionRepository.findByActiveTrue());
 	}
 
 	private void fillSavableFields(sk.kaspian.pes.model.Institution updatable) {

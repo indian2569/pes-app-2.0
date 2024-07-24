@@ -76,6 +76,11 @@ public class CardServiceImpl implements CardService {
 		return cardMapper.map(cardRepository.getReferenceById(id));
 	}
 
+	@Override
+	public List<sk.kaspian.pes.openapi.model.v1.Card> getAllActiveCards() {
+		return cardMapper.map(cardRepository.findByStatusTrue());
+	}
+
 	private void fillSavableFields(Card mappedCard) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();

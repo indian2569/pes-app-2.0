@@ -46,4 +46,10 @@ public interface CardService {
 	 * @return {@link Card} base on id
 	 */
 	Card activateTogleCard(Long id);
+
+	/**
+	 * Function return all cards created that have status set up true mean active
+	 * @return {@link List} {@link Card} list of Cards
+	 */
+	List<Card> getAllActiveCards();
 }

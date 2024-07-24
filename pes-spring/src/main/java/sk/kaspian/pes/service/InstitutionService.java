@@ -12,35 +12,34 @@ public interface InstitutionService {
 	 * @return {@link List} {@link Institution} list of Institutions
 	 */
 	List<Institution> getAllInstitutions();
-	
+
 	/**
 	 * Remove object Institution base on Id
 	 * @param id {@link Long} id of Institution
 	 */
-	
 	void removeInstitution(Long id);
-	
+
 	/**
 	 * Create Institution
 	 * @param institution object that we want to create
 	 * @return {@link Institution}
 	 */
 	Institution createInstitution(Institution institution);
-	
+
 	/**
 	 * update Institution
 	 * @param institution object with update values
 	 * @return {@link Institution} updated object
 	 */
 	Institution updateInstitution(Institution institution);
-	
+
 	/**
 	 * Return object base on id
 	 * @param id {@link Long} id of object
 	 * @return {@link Institution} object base on id
 	 */
 	Institution getInstitutionById(Long id);
-	
+
 	/**
 	 * Function deactivate Institution
 	 * 
@@ -48,4 +47,10 @@ public interface InstitutionService {
 	 * @return {@link Institution} update object
 	 */
 	Institution deactivateInstitution(Long id);
+
+	/**
+	 * Function return all Institutions created that have status set up true mean active
+	 * @return {@link List} {@link Institution} list of Institutions
+	 */
+    List<Institution> getAllActiveInstitutions();
 }

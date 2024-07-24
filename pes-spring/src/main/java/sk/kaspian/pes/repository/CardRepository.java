@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import sk.kaspian.pes.model.Card;
 
+import java.util.List;
+
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long>{
 
@@ -15,4 +17,6 @@ public interface CardRepository extends JpaRepository<Card, Long>{
     @Query(value = "UPDATE card SET status = :setValue WHERE id = :cardId", nativeQuery = true)
     @Modifying
     void activateCard(@Param("cardId") Long id, @Param("setValue") boolean setValue);
+
+    List<Card> findByStatusTrue();
 }

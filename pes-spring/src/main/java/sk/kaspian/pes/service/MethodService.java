@@ -11,35 +11,34 @@ public interface MethodService {
 	 * @return {@link List} {@link Method} list of Methods
 	 */
 	List<Method> getAllMethods();
-	
+
 	/**
 	 * Rmove object base of id
 	 * @param id {@link Long} id of Method
 	 */
-	
 	void removeMethod(Long id);
-	
+
 	/**
 	 * Crate object Method
 	 * @param method {@link Method} object to create
 	 * @return Method created object
 	 */
 	Method createMethod(Method method);
-	
+
 	/**
 	 * Update Method
 	 * @param method {@link Method} object with update value
 	 * @return {@link Method} update object
 	 */
 	Method updateMethod(Method method);
-	
+
 	/**
 	 * Get object base of id
 	 * @param id {@link Long} id of Method
 	 * @return {@link Method} object base of id
 	 */
 	Method getMethodById(Long id);
-	
+
 	/**
 	 * Function deactivate object Method
 	 * 
@@ -47,4 +46,10 @@ public interface MethodService {
 	 * @return {@link Method} changed object
 	 */
 	Method deactivateMethod(Long id);
+
+	/**
+	 * Function return all Methods created that have status set up true mean active
+	 * @return {@link List} {@link Method} list of Methods
+	 */
+    List<Method> getAllActiveMethods();
 }

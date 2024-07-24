@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.CoworkerMapper;
-import sk.kaspian.pes.model.Campaigne;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Coworker;
 import sk.kaspian.pes.repository.CoworkerRepository;
@@ -71,6 +70,11 @@ public class CoworkerServiceImpl implements CoworkerService {
 		sk.kaspian.pes.model.Coworker coworker = coworkerRepository.getOne(id);
 		coworker.setActive(Boolean.FALSE);
 		return coworkerMapper.map(coworkerRepository.save(coworker));
+	}
+
+	@Override
+	public List<Coworker> getAllActiveCoworkers() {
+		return coworkerMapper.map(coworkerRepository.findByActiveTrue());
 	}
 
 	private void fillSavableFields(sk.kaspian.pes.model.Coworker updatable) {

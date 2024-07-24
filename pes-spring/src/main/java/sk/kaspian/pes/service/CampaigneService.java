@@ -47,4 +47,9 @@ public interface CampaigneService {
 	 */
 	void deactivateCampaigne(Long id);
 
+	/**
+	 * Function return all compaignes created that have status set up true mean active
+	 * @return {@link List} {@link CampaigneService} list of campaignes
+	 */
+    List<Campaign> getAllActiveCampaigns();
 }

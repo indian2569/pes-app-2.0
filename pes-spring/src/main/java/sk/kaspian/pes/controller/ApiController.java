@@ -125,6 +125,41 @@ public class ApiController implements ApiApi {
     }
 
     @Override
+    public ResponseEntity<List<Campaign>> getAllActiveCampaign() {
+        return ResponseEntity.ok(campaignService.getAllActiveCampaigns());
+    }
+
+    @Override
+    public ResponseEntity<List<Card>> getAllActiveCard() {
+        return ResponseEntity.ok(cardService.getAllActiveCards());
+    }
+
+    @Override
+    public ResponseEntity<List<Coworker>> getAllActiveCoworker() {
+        return ResponseEntity.ok(coworkerService.getAllActiveCoworkers());
+    }
+
+    @Override
+    public ResponseEntity<List<Event>> getAllActiveEvent() {
+        return ResponseEntity.ok(eventService.getAllActiveEvents());
+    }
+
+    @Override
+    public ResponseEntity<List<Institution>> getAllActiveInstitutions() {
+        return ResponseEntity.ok(institutionService.getAllActiveInstitutions());
+    }
+
+    @Override
+    public ResponseEntity<List<Method>> getAllActiveMethods() {
+        return ResponseEntity.ok(methodService.getAllActiveMethods());
+    }
+
+    @Override
+    public ResponseEntity<List<Program>> getAllActivePrograms() {
+        return ResponseEntity.ok(programService.getAllActivePrograms());
+    }
+
+    @Override
     public ResponseEntity<List<Campaign>> getAllCampaign() {
         return ResponseEntity.ok(campaignService.getAllCompaignes());
     }
