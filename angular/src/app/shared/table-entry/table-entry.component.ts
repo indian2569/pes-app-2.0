@@ -16,6 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 
 export class TableEntryComponent implements OnInit, OnDestroy {
   @Input() tableData: EntryDTO[];
+  @Input() addButton: boolean;
+
   displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'createdBy', 'action'];
   dataSource: EntryDTO[];
   expandedElement: EntryDTO | null;

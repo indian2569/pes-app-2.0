@@ -28,6 +28,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { CustomDateAdapter } from '../config/custom.date.adapter';
 import localeSk from '@angular/common/locales/sk';
 import localeSkExtra from '@angular/common/locales/extra/sk';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSortModule} from "@angular/material/sort";
 
 registerLocaleData(localeSk, localeSkExtra);
 
@@ -64,6 +67,9 @@ registerLocaleData(localeSk, localeSkExtra);
     MatChipsModule,
     MatCardModule,
     MatNativeDateModule,
+    MatPaginatorModule,
+    MatTooltipModule,
+    MatSortModule,
 
   ],
   exports: [

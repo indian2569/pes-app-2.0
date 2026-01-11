@@ -1,6 +1,65 @@
-.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_fifth, .two_fifth, .three_fifth, .four_fifth, .one_sixth, .two_sixth, .three_sixth, .four_sixth, .five_sixth {
-    display: inline;
-    float: left;
-    margin: 0 0 0 5%;
-    list-style: none;
+.contact-card {
+    max-width: 600px;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+mat-card-title.mat-mdc-card-title {
+    margin-left: 1em;
+}
+
+/* Title */
+.contact-card mat-card-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #8fcb51;
+    border-bottom: 1px solid #8fcb51;
+    padding-bottom: 8px;
+}
+
+/* Description */
+.contact-description {
+    margin-bottom: 20px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Full width fields */
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* Actions */
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Spinner */
+mat-progress-spinner {
+    margin-left: 8px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form mat-form-field {
+    width: 100%;
+}
+
+/* Buttons (black + green theme) */
+button[mat-flat-button] {
+    background-color: #8fcb51;
+    color: #000;
+    font-weight: 600;
+}
+
+button[mat-flat-button]:hover {
+    background-color: #78b543;
 }

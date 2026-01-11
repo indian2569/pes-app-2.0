@@ -1,36 +1,44 @@
 <div class="flex-container wrap">
-	<div class="container"><h3 class="title"> {{title}}</h3>
-		<div class="buttons">
-		<button mat-flat-button type="submit" form="formGroup" class="button-card right" >Pridať</button>
-		<button mat-flat-button type="submit" form="formGroup" class="button-card right" >Uložiť</button>
-		<button mat-flat-button (click)='onMakeEditable()' class="button-card right">Zmeniť</button>
-	    </div>
-	</div>
+  <div class="page-header">
+    <h3 class="page-title full">{{ title }}</h3>
+    <div class="page-actions">
+      <button mat-flat-button color="primary" type="submit" form="formGroup" *ngIf="!readonly && editId === null">
+        Pridať
+      </button>
+      <button mat-flat-button color="primary" type="submit" form="formGroup" *ngIf="!readonly && editId !== null">
+        Uložiť
+      </button>
+      <button mat-stroked-button color="primary" (click)="onMakeEditable()"  *ngIf="readonly && editId !== null">
+        Zmeniť
+      </button>
+    </div>
+  </div>
 <div *ngIf="!formGroup">
 			Loading...
 </div>
-<div class="flex-item" *ngIf="formGroup">
-	<div class="mainComponent centered">
+<div class="flex-item">
+<div class="form-grid.one-col" *ngIf="formGroup">
+	<div class="mainComponent centered form-grid one-colw">
 	<mat-card>
 		<div *ngIf="errorMessages.length > 0">
 			<h3>Chyby:</h3>
 			<ul>
 			  <li *ngFor="let error of errorMessages">{{ error }}</li>
 			</ul>
-		  </div>
+    </div>
 		<form  [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="formGroup">
-			<div class = "row">
-				<mat-form-field class="example-form-field half_width" appearance="fill">
+			<div class = "form-grid one-colw">
+				<mat-form-field appearance="fill">
 	        		<mat-label>Klient</mat-label>
 	        		<input matInput type="text" formControlName="client_nick" [readonly]="readonly">
-	      		</mat-form-field>
+        </mat-form-field>
 			</div>
-			<div class = "row">
-				<mat-form-field class="example-form-field half_width" appearance="fill">
+			<div class = "form-grid two-col">
+				<mat-form-field appearance="fill">
 	        		<mat-label>Rok narodenia</mat-label>
 	        		<input matInput type="text" formControlName="client_birth_year" [readonly]="readonly">
 				</mat-form-field>
-				<mat-form-field class="example-form-field half_width" appearance="fill">
+				<mat-form-field appearance="fill" >
 	        		<mat-label>Pohlavie</mat-label>
 					<mat-select formControlName="client_gender" class="tooltip tooltipstered" [disabled]="readonly">
 						<mat-option value="man">mužské</mat-option>
@@ -39,19 +47,19 @@
 	      		</mat-form-field>
 			</div>
 			<div class = "row">
-				<mat-form-field class="example-form-field textarea" appearance="fill">
+				<mat-form-field appearance="fill" class="full">
 	        		<mat-label>Anamnéza</mat-label>
 	        		<textarea matInput type="text" formControlName="client_anamnesis" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
 	      		</mat-form-field>
 			</div>
 			<div class = "row">
-				<mat-form-field class="example-form-field textarea" appearance="fill">
+				<mat-form-field class="full" appearance="fill">
 	        		<mat-label>Plán rozvoja klienta</mat-label>
 	        		<textarea matInput type="text" formControlName="client_dev_plan" rows="9" maxlength="1500" [readonly]="readonly"></textarea>
 	      		</mat-form-field>
 			</div>
 			<div class="divider6"></div>
-			<mat-tab-group>
+			<mat-tab-group class="details-tabs">
 			<mat-tab label="Doplňujúce informácie">	
 				<div class="accordion-content" style="display: block;">
 					<div class="form-input clear">
@@ -158,11 +166,15 @@
 	</mat-card>
 	</div>
 </div>
-<div class="flex-item">
-    <h3 class="mainComponent centered">Zaznamy o kontakte s klientom</h3>
-    <app-table-entry [tableData] = "entrySet"></app-table-entry>
-
-	<h3 class="mainComponent centered">Zaznamy s on site kontakte</h3>
-    <app-table-entry [tableData] = "entryOnSiteSet"></app-table-entry>
+  <div class="one-colw">
+    <section class="table-section">
+    <h3>Zaznamy o kontakte s klientom</h3>
+    <app-table-entry [tableData]="entrySet" [addButton]="false"></app-table-entry>
+    </section>
+    <section class="table-section">
+    <h3 >Zaznamy s on site kontakte</h3>
+    <app-table-entry [tableData]="entryOnSiteSet" [addButton]="false"></app-table-entry>
+    </section>
+  </div>
 </div>
 </div>

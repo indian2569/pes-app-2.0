@@ -1,50 +1,61 @@
-<div class="container text-center">
-  <table mat-table [dataSource]="tableData" #mytable class="my-table mat-elevation-z8">
+<div class="table-container">
 
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+  <!-- Add button -->
+  <div class="table-header" *ngIf="addButton">
+    <h2>Záznamy</h2>
+    <button mat-flat-button color="primary" (click)="openDialog('Add', {})">
+      Pridať
+    </button>
+  </div>
 
-    <!-- place Column-->
-    <ng-container matColumnDef="place" class="table-place">
-      <th mat-header-cell *matHeaderCellDef> Miesto </th>
-      <td mat-cell *matCellDef="let element"> {{element.place}} </td>
+  <!-- Table -->
+  <table mat-table [dataSource]="tableData" class="mat-elevation-z8" matSort>
+
+    <!-- Place Column -->
+    <ng-container matColumnDef="place">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Miesto</th>
+      <td mat-cell *matCellDef="let element">{{ element.place }}</td>
     </ng-container>
 
-    <!-- entry_date_from Column -->
-    <ng-container matColumnDef="entry_date_from"  class="table-entry_date_from">
-      <th mat-header-cell *matHeaderCellDef> Datum </th>
-      <td mat-cell *matCellDef="let element"> {{element.entry_date_from}} </td>
+    <!-- Date Column -->
+    <ng-container matColumnDef="entry_date_from">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dátum</th>
+      <td mat-cell *matCellDef="let element">{{ element.entry_date_from | date }}</td>
     </ng-container>
 
-    <!-- campaign Column -->
-    <ng-container matColumnDef="campaign"  class="table-clint_age">
-      <th mat-header-cell *matHeaderCellDef> Kampaň </th>
-      <td mat-cell *matCellDef="let element"> {{element.campaign?.name}} </td>
+    <!-- Campaign Column -->
+    <ng-container matColumnDef="campaign">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kampaň</th>
+      <td mat-cell *matCellDef="let element">{{ element.campaign?.name }}</td>
     </ng-container>
 
-    <!-- program Column -->
-    <ng-container matColumnDef="program_type" class="table-program_type">
-      <th mat-header-cell *matHeaderCellDef> Program </th>
-      <td mat-cell *matCellDef="let element"> {{element.program_type?.name}} </td>
+    <!-- Program Column -->
+    <ng-container matColumnDef="program_type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Program</th>
+      <td mat-cell *matCellDef="let element">{{ element.program_type?.name }}</td>
     </ng-container>
 
-    <!-- cratedBy Column -->
-    <ng-container matColumnDef="createdBy"  class="table-cratedBy">
-      <th mat-header-cell *matHeaderCellDef> Pridal: </th>
-      <td mat-cell *matCellDef="let element"> {{element.createdBy?.username}}</td>
+    <!-- Created By Column -->
+    <ng-container matColumnDef="createdBy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Pridal</th>
+      <td mat-cell *matCellDef="let element">{{ element.createdBy?.username }}</td>
     </ng-container>
 
     <!-- Action Column -->
-    <ng-container matColumnDef="action"  class="table-action">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element" class="action-link"> 
-        <button type="button" (click)="redirectUrl(element)" class="btn btn-link btn-sm btn-rounded">Upraviť</button>
-        <button type="button" (click)="openDialog('Delete',element)" class="btn btn-link btn-sm btn-rounded">Vymazať</button>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Akcie</th>
+      <td mat-cell *matCellDef="let element" class="action-cell">
+        <button mat-icon-button color="primary" matTooltip="Upraviť" (click)="redirectUrl(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Vymazať" (click)="openDialog('Delete', element)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- Header & Row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
 </div>

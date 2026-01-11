@@ -64,16 +64,16 @@ public class ApiController implements ApiApi {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
+
     UserRepository userRepository;
 
-    @Autowired
+
     RoleRepository roleRepository;
 
-    @Autowired
+
     PasswordEncoder encoder;
 
-    @Autowired
+
     JwtUtils jwtUtils;
 
     @Override

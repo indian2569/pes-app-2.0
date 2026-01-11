@@ -18,7 +18,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
-		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<lombok.version>1.18.32</lombok.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<groups>fast,it</groups>
 
 		<!-- Spring Boot Versions override -->

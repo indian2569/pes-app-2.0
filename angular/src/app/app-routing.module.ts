@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import {AuthGuardService} from './_services/auth-guard.service';
+import {authGuard} from './_services/auth-guard.service';
 import { ProfileComponent } from './profile/profile.component';
 
 const appRoutes: Routes = [
@@ -17,22 +17,22 @@ const appRoutes: Routes = [
   },
   {
     path: 'entry_line',
-    canActivate: [AuthGuardService],
+    canActivate: [authGuard],
     loadChildren: () => import('./entry/entry.module').then(m => m.EntryModule)
   },
   {
     path: 'card_line',
-    canActivate: [AuthGuardService],
+    canActivate: [authGuard],
     loadChildren: () => import('./card/card.module').then(m => m.CardModule)
   },
   {
     path: 'setting',
-    canActivate: [AuthGuardService],
+    canActivate: [authGuard],
     loadChildren: () => import('./setting/setting.module').then(m => m.SettingModule)
   },
   {
     path: 'report',
-    canActivate: [AuthGuardService],
+    canActivate: [authGuard],
     loadChildren: () => import('./report/report.module').then(m => m.ReportModule)
   },
   {

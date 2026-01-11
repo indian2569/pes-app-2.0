@@ -1,5 +1,5 @@
-import { Component, Inject, Optional, Input, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Component, Inject, Optional, Input, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as _ from "lodash";
 import {  FormGroup, FormControl } from '@angular/forms';
 
@@ -89,7 +89,10 @@ export class DialogBoxComponent implements OnInit {
   }
 
   initButtonText(type: number) {
-    const startOfText = this.action === 'Add' ? 'Pridaj' : 'Uprav';
+    let startOfText = this.action === 'Add' ? 'Pridaj' : 'Uprav';
+    if (this.action === 'Delete') {
+      startOfText = 'Vymaž';
+    }
     switch (type) {
     case 1:
       this.buttonText = startOfText + ' inštitúciu';
@@ -110,10 +113,10 @@ export class DialogBoxComponent implements OnInit {
       this.buttonText = startOfText + ' udalosť';
       break;
     case 7:
-        this.descriptionText = startOfText + 'carty';
+        this.buttonText = startOfText + ' kartu';
         break;
     case 8:
-      this.descriptionText = startOfText + 'záznamu';
+      this.buttonText = startOfText + ' záznam';
       break;
     default:
       this.buttonText = 'Odoslať';
@@ -121,7 +124,7 @@ export class DialogBoxComponent implements OnInit {
   }
 
   initDescriptionText(type: number) {
-    const startOfText = this.action === 'Add' ? 'Dialog na pridanie ' : 'Dialog na upravu';
+    const startOfText = this.action === 'Add' ? 'Dialog na pridanie ' : 'Dialog na upravu ';
     switch (type) {
         case 1:
       this.descriptionText = startOfText + ' inštitúciu';
@@ -151,7 +154,7 @@ export class DialogBoxComponent implements OnInit {
       if (this.action === 'Add') {
         this.descriptionText = 'Pridavaš nový objekt';
       } else if (this.action === 'Update') {
-        this.descriptionText = 'Uprpraviť objekt';
+        this.descriptionText = 'Upraviť objekt';
       } else if (this.action === 'Delete') {
         this.descriptionText = 'Potvrdenie vymazania';
       }

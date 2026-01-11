@@ -1,2 +1,89 @@
-<app-table-card 
+<form [formGroup]="filterForm" class="filter-panel">
+
+  <div class="filter-row">
+
+    <!-- Meno -->
+    <mat-form-field appearance="outline">
+      <mat-label>Meno</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <!-- Pohlavie -->
+    <mat-form-field appearance="outline">
+      <mat-label>Pohlavie</mat-label>
+      <mat-select formControlName="sex">
+        <mat-option value="">All</mat-option>
+        <mat-option value="MAN">Mužské</mat-option>
+        <mat-option value="WOMAN">Ženské</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Rok narodenia od -->
+    <mat-form-field appearance="outline">
+      <mat-label>Rok narodenia od</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="timeFrom">
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Rok narodenia do -->
+    <mat-form-field appearance="outline">
+      <mat-label>Rok narodenia do</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="timeTo">
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="active">
+        <mat-option value="">All</mat-option>
+        <mat-option [value]="true">Aktívny</mat-option>
+        <mat-option [value]="false">Neaktívny</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Pridal -->
+    <mat-form-field appearance="outline">
+      <mat-label>Pridal</mat-label>
+      <input matInput formControlName="createdBy" placeholder="Username">
+    </mat-form-field>
+
+    <!-- Sort by -->
+    <mat-form-field appearance="outline">
+      <mat-label>Zoradiť podľa</mat-label>
+      <mat-select formControlName="sortBy">
+        <mat-option value="name">Meno</mat-option>
+        <mat-option value="birthDate">Rok narodenia</mat-option>
+        <mat-option value="active">Status</mat-option>
+        <mat-option value="createdBy">Pridal</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Sort order -->
+    <mat-form-field appearance="outline">
+      <mat-label>Poradie</mat-label>
+      <mat-select formControlName="sortOrder">
+        <mat-option value="ASC">ASC</mat-option>
+        <mat-option value="DESC">DESC</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="filter-actions">
+    <button mat-flat-button color="primary" (click)="applyFilters()">
+      Apply
+    </button>
+
+    <button mat-stroked-button type="button" (click)="resetFilters()">
+      Reset
+    </button>
+  </div>
+
+</form>
+
+<app-table-card
 [tableData] = "cardData"></app-table-card>

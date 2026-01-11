@@ -1,30 +1,19 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import {inject} from '@angular/core';
+import {
+
+  CanActivateFn,
+  Router
+} from '@angular/router';
 
 import { TokenStorageService } from './token-storage.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuardService  {
+export const authGuard: CanActivateFn = (route, state) => {
+  const tokenService = inject(TokenStorageService);
+  const router = inject(Router);
 
-  constructor(
-    private tokenService: TokenStorageService,
-    private router: Router,
-  ) {
+  if (tokenService.isAuthenticated()) {
+    return true;
   }
 
-  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    if (this.tokenService.isAutenticate()) {
-      return of(true);
-    }
-    return this.navigateToLoginPage();
-  }
-
-  private navigateToLoginPage(): Observable<boolean> {
-    this.router.navigate(['login']);
-    return of(false);
-  }
-
-}
+  return router.createUrlTree(['login']);
+};

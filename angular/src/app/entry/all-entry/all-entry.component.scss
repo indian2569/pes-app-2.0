@@ -1,0 +1,28 @@
+.filter-panel {
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.filter-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons (black + green theme) */
+button[mat-flat-button] {
+  background-color: #8fcb51;
+  color: #000;
+  font-weight: 600;
+}
+
+button[mat-flat-button]:hover {
+  background-color: #78b543;
+}

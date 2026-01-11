@@ -1,13 +1,39 @@
-.field-name {
-    min-width: 200px;
+.full-width {
     width: 100%;
 }
 
-.field-description {
-    min-width: 300px;
-    width: 100%;
+.dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
-.field-position {
-    min-width: 300px;
-    width: 100%;
+
+.delete-warning {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 12px 0;
+}
+
+.delete-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+}
+
+.delete-text {
+    margin: 0;
+}
+
+.delete-name {
+    margin: 0;
+    font-size: 16px;
+}
+
+.delete-hint {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.6);
 }

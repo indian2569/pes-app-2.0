@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage = '';
   roles: string[] = [];
   user: string = '';
+  loading = false;
   
   onDestroy$ = new Subject();
 
@@ -29,13 +30,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
+      this.roles = this.tokenStorage.user().roles;
     }
   }
 
   onSubmit(): void {
     const { username, password } = this.form;
-
+    this.loading = true;
     this.authService.login(username, password)
       .pipe(takeUntil(this.onDestroy$)).subscribe(
       data => {
@@ -45,13 +46,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+        this.roles = this.tokenStorage.user().roles;
         this.user = username;
-       // this.reloadPage();
+        this.loading = false;
       },
       err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
+        this.loading = false;
       }
     );
   }

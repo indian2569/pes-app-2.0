@@ -210,6 +210,34 @@ paths:
           $ref: '#/components/responses/URLNotExist'
         500:
           $ref: '#/components/responses/SystemException'
+  /api/card/filter:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Cards
+      summary: Filter card endpoint
+      description: Returns a list of cards based on filter criteria
+      operationId: filterCards
+      responses:
+        200:
+          description: "Successfully get All filtered Cards"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
   /api/entry/save:
     post:
       security:
@@ -311,6 +339,34 @@ paths:
       responses:
         200:
           description: "Successfully get All Entrys"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/AccessDenied'
+        404:
+          $ref: '#/components/responses/URLNotExist'
+        500:
+          $ref: '#/components/responses/SystemException'
+  /api/entry/filter:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Entrys
+      summary: Filter entrys endpoint
+      description: Returns a list of entrys based on filter criteria
+      operationId: filterEntrys
+      responses:
+        200:
+          description: "Successfully get All filtered Entrys"
           content:
             application/json:
               schema:
@@ -1465,6 +1521,54 @@ components:
           type: string
         last_change:
           $ref: '#/components/schemas/User'
+    PersonFilterRequest:
+      type: object
+      description: Filter criteria for searching cards
+      properties:
+        name:
+          type: string
+          example: Jano
+
+        sex:
+          type: string
+          description: Sex of person
+          enum: [ MAN, WOMAN ]
+
+        timeFrom:
+          type: string
+          format: date
+          description: Birth date from (inclusive)
+          example: 1980-01-01
+
+        timeTo:
+          type: string
+          format: date
+          description: Birth date to (inclusive)
+          example: 1995-12-31
+
+        active:
+          type: boolean
+          description: Active status
+
+        createdBy:
+          type: string
+          example: admin
+
+        sortBy:
+          type: string
+          description: Field to sort by
+          enum:
+            - name
+            - birthDate
+            - active
+            - createdBy
+          example: name
+
+        sortOrder:
+          type: string
+          description: Sort direction
+          enum: [ ASC, DESC ]
+          example: ASC
     Entry:
       description: "Entry object"
       type: object

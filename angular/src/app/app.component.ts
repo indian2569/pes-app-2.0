@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { TokenStorageService } from './_services/token-storage.service';
 import * as _ from "lodash";
 
@@ -15,13 +15,14 @@ export class AppComponent implements OnInit {
   showModeratorBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService) {}
+  constructor(protected token: TokenStorageService) {
+
+  }
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-
+    this.isLoggedIn = this.token.isAuthenticated();
     if (this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
+      const user = this.token.user();
       this.roles = user.roles;
 
         if (!_.isNil(this.roles)) {
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.tokenStorageService.signOut();
-    window.location.reload();
+    this.isLoggedIn = false;
+    this.token.signOut();
   }
 }

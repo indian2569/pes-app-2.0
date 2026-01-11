@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +17,9 @@ import * as _ from "lodash";
 
 export class TableCardComponent implements OnInit, OnDestroy {
 
+
     @Input() tableData: CardBasicDTO[];
+
     displayedColumns: string[] = ['client_nick', 'client_gender', 'clint_age', 'client_birth_year', 'cratedBy', 'status', 'action'];
     dataSource: CardBasicDTO[];
     onDestroy$ = new Subject();
@@ -27,7 +28,6 @@ export class TableCardComponent implements OnInit, OnDestroy {
     constructor(public dialog: MatDialog,
                 private cardService: CardService,
                 private router: Router) {
-
                 }
 
     ngOnInit(): void {

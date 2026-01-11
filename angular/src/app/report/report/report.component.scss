@@ -1,24 +1,66 @@
-.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_fifth, .two_fifth, .three_fifth, .four_fifth, .one_sixth, .two_sixth, .three_sixth, .four_sixth, .five_sixth {
-    display: inline;
-    float: left;
-    margin: 0 0 0 5%;
-    list-style: none;
+.stats-card {
+    max-width: 520px;
+    background: #fff; /* black background */
+    color: #000; /* text color */
+    padding: 24px;
+    border-radius: 8px;
 }
 
-.one_half:first-child, .one_third:first-child, .two_third:first-child, .one_quarter:first-child, .two_quarter:first-child, .three_quarter:first-child, .one_fifth:first-child, .two_fifth:first-child, .three_fifth:first-child, .four_fifth:first-child, .one_sixth:first-child, .two_sixth:first-child, .three_sixth:first-child, .four_sixth:first-child, .five_sixth:first-child {
-    margin-left: 0;
+.stats-card h3 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-weight: 600;
+    color: #8fcb51; /* green accent */
+    border-bottom: 1px solid #8fcb51;
+    padding-bottom: 8px;
 }
 
-.first {
-    clear: left;
+/* Date row styling */
+.date-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-#container {
-    font-size: 1em;
-    line-height: 1.4em;
+.date-field {
+    flex: 1 1 200px;
 }
 
-.clear {
-    display: block;
-    clear: both;
+/* Full width select */
+.full-width {
+    width: 100%;
+}
+
+/* Material form field dark theme tweaks */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #8fcb51;
+}
+
+.mat-form-field .mat-form-field-label {
+    color: #8fcb51 !important;
+}
+
+/* Submit button */
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Buttons (black + green theme) */
+button[mat-flat-button] {
+    background-color: #8fcb51;
+    color: #000;
+    font-weight: 600;
+}
+
+button[mat-flat-button]:hover {
+    background-color: #78b543;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    width: 24px;
+    height: 24px;
 }

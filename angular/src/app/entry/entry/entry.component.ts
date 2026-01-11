@@ -1,25 +1,24 @@
-import { Component, OnInit, ViewChild,  Input, OnDestroy } from '@angular/core';
-import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { map,  startWith, takeUntil} from 'rxjs/operators';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {map, startWith, takeUntil} from 'rxjs/operators';
 
-import { MethodsDTO } from '../../model/MethodsDTO';
-import { ProgramDTO } from '../../model/ProgramDTO';
-import { EntryService } from '../entry.service';
-import { CampaignDTO } from '../../model/CampaignDTO';
+import {MethodsDTO} from '../../model/MethodsDTO';
+import {ProgramDTO} from '../../model/ProgramDTO';
+import {EntryService} from '../entry.service';
+import {CampaignDTO} from '../../model/CampaignDTO';
 
 import * as _ from 'lodash';
-import * as moment from 'moment';
-import { Router, ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ContractEnum, ContractEnum2LabelMapping} from '../../model/ContractEnum';
 
 
-import { CardBasicDTO } from '../../model/CardBasicDTO';
-import { ChipsInputComponent } from '../../shared/chips/chips-input.component';
-import { CoworkerDTO } from '../../model/CoworkerDTO';
-import { EntryDTO } from '../../model/EntryDTO';
-import { SettingService } from '../../setting/setting.service';
-import { CardService } from '../../card/card.service';
-import { Observable, Subject, async } from 'rxjs';
+import {CardBasicDTO} from '../../model/CardBasicDTO';
+import {ChipsInputComponent} from '../../shared/chips/chips-input.component';
+import {CoworkerDTO} from '../../model/CoworkerDTO';
+import {EntryDTO} from '../../model/EntryDTO';
+import {SettingService} from '../../setting/setting.service';
+import {CardService} from '../../card/card.service';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-entry',
@@ -185,7 +184,7 @@ export class EntryComponent implements OnInit, OnDestroy {
         this.selectedProgram = this.entryEdit.program_type;
     }
   }
-// funtion for comparing that is used in mat-select  that selected values what is object is set up correctly
+// function for comparing that is used in mat-select  that selected values what is object is set up correctly
   comparePOptions(o1: ProgramDTO, o2: ProgramDTO): boolean {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
@@ -207,8 +206,7 @@ export class EntryComponent implements OnInit, OnDestroy {
   async setUpEntry(editId: string) {
     if (!_.isNil(editId)) {
       try {
-        const entryReaded = await this.entryService.getEntry(editId).toPromise();
-        this.entryEdit = entryReaded;
+        this.entryEdit = await this.entryService.getEntry(editId).toPromise();
         this.formSetUp();
         this.title = 'Záznam';
         this.readonly = true;
@@ -216,12 +214,12 @@ export class EntryComponent implements OnInit, OnDestroy {
       } catch (error) {
         console.error('Error loading entry', error);
       }
-  } else {
+    } else {
       this.formSetUp();
       this.title = 'Vytvorenie záznamu';
-      this.readonly = _.isNil(editId) ? false : true;
+      this.readonly = !_.isNil(editId);
       this.fillClientOnSite();
-  }
+    }
   }
 
   onMakeEditable () {

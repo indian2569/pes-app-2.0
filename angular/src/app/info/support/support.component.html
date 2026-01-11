@@ -1,24 +1,52 @@
-<div class="one_half">
-<h2>Podpora - kontakt</h2>
-<p>Tuto môžete zadať problémy ktoré máte v rámci aplikácie a poslať tento dotaz na podporu
-	kde sa vám môžme s vašim problémom/ dotazom pomôcť, poradiť prípadne ho odstraniť ak nastala chyba.
-</p>
-<form class="rnd5" action="/contact" method="post" id="contact-form" novalidate="">
-	<div class="push10"></div>
-	<div class="form-input clear">
-		<label for="c-title">Nadpis: <span class="red">*</span><br>
-			<input type="text" name="c-title" id="c-title" value="" size="22" data-parsley-required="true" class="tooltip tooltipstered" data-parsley-id="8172"><ul class="parsley-errors-list" id="parsley-id-8172"></ul>
-		</label>
-	</div>				
-	<div class="push10"></div>
-	<div class="form-message">
-		<label for="c-message">Otázka / popis udalosti: <span class="red">*</span><br>
-			<textarea name="c-message" id="c-message" cols="25" rows="10" data-parsley-required="true" class="tooltip tooltipstered" data-parsley-id="0264"></textarea><ul class="parsley-errors-list" id="parsley-id-0264"></ul>
-		</label>
-	</div>
-	<div class="push10"></div>
-	<p>
-		<input type="submit" value="Odoslať" class="button small orange">
-	</p>
-</form>
-</div>
+<mat-card class="contact-card">
+  <mat-card-title>
+    Podpora – kontakt
+  </mat-card-title>
+
+  <mat-card-content>
+    <p class="contact-description">
+      Tu môžete zadať problémy, ktoré máte v rámci aplikácie a odoslať ich
+      na podporu, kde vám pomôžeme s riešením alebo poradíme.
+    </p>
+
+    <form [formGroup]="contactForm" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nadpis</mat-label>
+        <input matInput formControlName="title" required>
+        <mat-error *ngIf="contactForm.get('title')?.hasError('required')">
+          Nadpis je povinný
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Otázka / popis udalosti</mat-label>
+        <textarea
+            matInput
+            rows="6"
+            formControlName="message"
+            required>
+        </textarea>
+        <mat-error *ngIf="contactForm.get('message')?.hasError('required')">
+          Popis je povinný
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="contactForm.invalid || loading">
+          Odoslať
+        </button>
+
+        <mat-progress-spinner
+            *ngIf="loading"
+            diameter="24"
+            mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

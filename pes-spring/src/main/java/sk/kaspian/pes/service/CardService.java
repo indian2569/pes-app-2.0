@@ -2,6 +2,7 @@ package sk.kaspian.pes.service;
 
 import java.util.List;
 
+import sk.kaspian.pes.model.PersonFilterRequest;
 import sk.kaspian.pes.openapi.model.v1.Card;
 
 public interface CardService {
@@ -52,4 +53,11 @@ public interface CardService {
 	 * @return {@link List} {@link Card} list of Cards
 	 */
 	List<Card> getAllActiveCards();
+
+	/**
+	 * Method that return cards base on filter values
+	 * @param request {@link PersonFilterRequest} filter values object
+	 * @return  {@link List} {@link Card} list of Cards filtered
+	 */
+	List<Card> filterCard(PersonFilterRequest request);
 }

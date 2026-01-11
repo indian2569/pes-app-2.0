@@ -1,122 +1,117 @@
-
-.one_half {
-	width: 47.5%;
-}
-
-.mainComponent {
-	vertical-align: middle;
-}
-
-.red{
-	color: #ff0000;
-}
-
-.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_fifth, .two_fifth, .three_fifth, .four_fifth, .one_sixth, .two_sixth, .three_sixth, .four_sixth, .five_sixth {
-    display: inline;
-    float: left;
-    margin: 0 0 0 5%;
-        margin-bottom: 0px;
-        margin-left: 5%;
-    list-style: none;
-}
-
 #container {
     font-size: 1em;
     line-height: 1.4em;
 }
-
-.first {
-    clear: left;
+/* Header */
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
-.one_half:first-child, .one_third:first-child, .two_third:first-child, .one_quarter:first-child, .two_quarter:first-child, .three_quarter:first-child, .one_fifth:first-child, .two_fifth:first-child, .three_fifth:first-child, .four_fifth:first-child, .one_sixth:first-child, .two_sixth:first-child, .three_sixth:first-child, .four_sixth:first-child, .five_sixth:first-child {
-    margin-left: 0;
+.page-title {
+    color: #8fcb51;
+    margin: 0;
 }
 
-.clear {
-    display: block;
-    clear: both;
+.page-actions {
+    display: flex;
+    gap: 8px;
 }
 
-h3 {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    margin-bottom: 0px;
+/* Card */
+.form-card {
+    padding: 24px;
 }
 
-.textarea {
+/* Form layout */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Two-column grid */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.full {
     width: 100%;
 }
 
-
-.flex-container {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    border: 1px solid silver;
-    -ms-box-orient: horizontal;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -moz-flex;
-    display: -webkit-flex;
+/* Loading */
+.loading {
     display: flex;
-  }
-  
-  .wrap { 
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-  } 
-
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid silver;
-    width: 100%;
+    justify-content: center;
+    padding: 32px;
 }
 
-.title {
-    margin: 0;
-  }
-  
-.buttons {
-    display: flex;
-    gap: 10px;
+/* Buttons (black + green theme) */
+button[mat-flat-button] {
+    background-color: #8fcb51;
+    color: #000;
+    font-weight: 600;
 }
 
-.right {
-    float: right;
-    border-radius: 10px;
-    cursor: pointer;
+button[mat-flat-button]:hover {
+    background-color: #78b543;
 }
 
-.button-card {
-    background-color: #333333;
-    color: white;
-    text-align: center;
-}
+/* READONLY STATE */
+.readonly {
 
-span.mat-mdc-button-touch-target {
-    background-color: #333333;
-}
-
-.right:hover {
-    background-color: #b3804b;
-}
-
-
-::ng-deep .mat-datepicker-content .mat-calendar {
-    background-color: #c7c7c7;
+    /* Inputs & textareas */
+    .mat-mdc-input-element {
+        color: rgba(0, 0, 0, 0.65);
+        cursor: not-allowed;
     }
-    
-::ng-deep .time-container {
-    background-color: #c7c7c7;
-}
-    
-::ng-deep .mat-calendar-body-cell-content.mat-focus-indicator {
-    color: white;
-    border: none;
+
+    /* Form field background */
+    .mat-mdc-form-field-flex {
+        background-color: #f4f4f4;
+    }
+
+    /* Remove underline / focus glow */
+    .mat-mdc-form-field-focus-overlay {
+        opacity: 0;
+    }
+
+    /* Labels */
+    .mat-mdc-floating-label {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Selects */
+    .mat-mdc-select {
+        pointer-events: none;
+        color: rgba(0, 0, 0, 0.65);
+    }
+
+    .mat-mdc-select-arrow {
+        opacity: 0.4;
+    }
+
+    /* Textareas */
+    textarea.mat-mdc-input-element {
+        resize: none;
+    }
+
+    /* Chips (custom components) */
+    app-chips-input {
+        opacity: 0.7;
+        pointer-events: none;
+    }
 }
 
-
+.readonly .mat-mdc-form-field::after {
+    content: "🔒";
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    font-size: 12px;
+    opacity: 0.5;
+}

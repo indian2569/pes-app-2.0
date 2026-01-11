@@ -1,49 +1,62 @@
-<!-- app.component.html -->
-<div class="container text-center">
+<div class="table-container">
 
-  <button mat-button (click)="openDialog('Add',{})" mat-flat-button class="btn btn-add">Pridaj</button>
+  <!-- Add Button -->
+  <div class="table-actions">
+    <button mat-flat-button color="primary" (click)="openDialog('Add', {})">
+      Pridať
+    </button>
+  </div>
 
-  <table mat-table [dataSource]="dataSource" #mytable class="simple-table mat-elevation-z8">
+  <!-- Optional Filter -->
+  <div *ngIf="showFilter" class="table-filter">
+    <mat-form-field appearance="outline" class="filter-input">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter table">
+    </mat-form-field>
+  </div>
 
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+  <!-- Table -->
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name" class="table-name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <!-- Description Column -->
-    <ng-container matColumnDef="description"  class="table-description">
-      <th mat-header-cell *matHeaderCellDef> Popis </th>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Popis </th>
       <td mat-cell *matCellDef="let element"> {{element.description}} </td>
     </ng-container>
 
-    <!-- Description Column -->
-    <ng-container *ngIf="havePosition" matColumnDef="position" class="table-position">
-      <th mat-header-cell *matHeaderCellDef> Pozícia </th>
+    <!-- Position Column -->
+    <ng-container *ngIf="havePosition" matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pozícia </th>
       <td mat-cell *matCellDef="let element"> {{element.position}} </td>
     </ng-container>
 
     <!-- Action Column -->
-    <ng-container matColumnDef="action"  class="table-action">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element" class="action-link"> 
-        <button type="button" (click)="openDialog('Update',element)" class="btn btn-link btn-sm btn-rounded">
-          Upraviť
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Akcie </th>
+      <td mat-cell *matCellDef="let element" class="action-cell">
+        <button mat-icon-button color="primary" (click)="openDialog('Update', element)" matTooltip="Upraviť">
+          <mat-icon>edit</mat-icon>
         </button>
-        <button type="button" (click)="activateTogle(element)" class="btn btn-link btn-sm btn-rounded">
-          Deaktivovať
+        <button mat-icon-button color="warn" (click)="activateToggle(element)" matTooltip="Aktivovať / Deaktivovať">
+          <mat-icon>toggle_off</mat-icon>
         </button>
-        <button type="button" (click)="openDialog('Delete',element)" class="btn btn-link btn-sm btn-rounded">
-          Vymazať
+        <button mat-icon-button color="warn" (click)="openDialog('Delete', element)" matTooltip="Vymazať">
+          <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
 
+  <!-- Paginator -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

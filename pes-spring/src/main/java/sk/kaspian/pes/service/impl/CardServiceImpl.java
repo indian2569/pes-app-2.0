@@ -3,7 +3,9 @@ package sk.kaspian.pes.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.CardMapper;
 import sk.kaspian.pes.model.Card;
+import sk.kaspian.pes.model.PersonFilterRequest;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.repository.CardRepository;
 import sk.kaspian.pes.repository.UserRepository;
+import sk.kaspian.pes.repository.specialization.CardSpecification;
 import sk.kaspian.pes.service.CardService;
 
 @Service
@@ -79,6 +83,16 @@ public class CardServiceImpl implements CardService {
 	@Override
 	public List<sk.kaspian.pes.openapi.model.v1.Card> getAllActiveCards() {
 		return cardMapper.map(cardRepository.findByStatusTrue());
+	}
+
+	@Override
+	public List<sk.kaspian.pes.openapi.model.v1.Card> filterCard(PersonFilterRequest request) {
+		Sort sort = Sort.by(
+				Sort.Direction.fromString(request.getSortOrder()),
+				request.getSortBy()
+		);
+		return cardRepository.findAll(CardSpecification.filter(request),sort)
+				.stream().map(card -> cardMapper.map(card)).collect(Collectors.toList());
 	}
 
 	private void fillSavableFields(Card mappedCard) {
