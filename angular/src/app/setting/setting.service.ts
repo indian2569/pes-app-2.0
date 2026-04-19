@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpContext, HttpContextToken, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { CampaignDTO } from '../model/CampaignDTO';
 import { EventDTO } from '../model/EventDTO';
 import { InstitutionDTO } from '../model/InstitutionDTO';
@@ -14,12 +15,12 @@ import { ProgramDTO } from '../model/ProgramDTO';
 })
 export class SettingService {
 
-  public static readonly CAMAPAIGNE_API_URL = 'https://kaspian-pes.online/api/campaign';
-  public static readonly COWORKERS_API_URL = 'https://kaspian-pes.online/api/coworker';
-  public static readonly EVENTS_API_URL = 'https://kaspian-pes.online/api/event';
-  public static readonly INSTITUTION_API_URL = 'https://kaspian-pes.online/api/institution';
-  public static readonly METHODS_API_URL = 'https://kaspian-pes.online/api/method';
-  public static readonly PROGRAMS_API_URL = 'https://kaspian-pes.online/api/program';
+  public static readonly CAMAPAIGNE_API_URL = `${environment.apiUrl}/api/campaign`;
+  public static readonly COWORKERS_API_URL = `${environment.apiUrl}/api/coworker`;
+  public static readonly EVENTS_API_URL = `${environment.apiUrl}/api/event`;
+  public static readonly INSTITUTION_API_URL = `${environment.apiUrl}/api/institution`;
+  public static readonly METHODS_API_URL = `${environment.apiUrl}/api/method`;
+  public static readonly PROGRAMS_API_URL = `${environment.apiUrl}/api/program`;
 
   private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
 

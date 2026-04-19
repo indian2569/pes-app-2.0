@@ -4,6 +4,7 @@ import { MethodsDTO } from '../model/MethodsDTO';
 import { CampaignDTO } from '../model/CampaignDTO';
 
 import { HttpClient, HttpContext, HttpContextToken } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 import { take } from 'rxjs/operators';
 import { CoworkerDTO } from '../model/CoworkerDTO';
@@ -17,7 +18,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EntryService {
-  public static readonly ENTRY_API_URL = 'https://kaspian-pes.online/api/entry';
+  public static readonly ENTRY_API_URL = `${environment.apiUrl}/api/entry`;
   programData: ProgramDTO[] = [];
   methodsData: MethodsDTO[] = [];
   campaignesData: CampaignDTO[] = [];
