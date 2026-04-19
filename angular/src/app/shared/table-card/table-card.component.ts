@@ -27,7 +27,7 @@ export class TableCardComponent implements OnInit, OnDestroy {
     dataSource: CardBasicDTO[];
     onDestroy$ = new Subject();
 
-    @ViewChild(MatTable, {static: true} ) table: MatTable<any>;
+    @ViewChild(MatTable, {static: false} ) table: MatTable<any>;
   pageEvent: PageEvent;
   length: number;
   pageSize: number;
@@ -55,7 +55,7 @@ export class TableCardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      if (result.event === 'Delete') {
+      if (result?.event === 'Delete') {
         this.deleteRowData(result.data);
       }
     });

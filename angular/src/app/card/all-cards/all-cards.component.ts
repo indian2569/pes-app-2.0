@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CardBasicDTO } from '../../model/CardBasicDTO';
 import { CardPageDTO } from '../../model/CardPageDTO';
 import { CardService } from '../card.service';
 import { Subject } from 'rxjs';
@@ -52,6 +51,7 @@ export class AllCardsComponent implements OnInit, OnDestroy {
           ? filters.timeTo.toISOString()
           : null
     };
+    this.cardService.getAllCards(request).subscribe(cards => this.cardData = cards);
   }
 
   resetFilters(): void {

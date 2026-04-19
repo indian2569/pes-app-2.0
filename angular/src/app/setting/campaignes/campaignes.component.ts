@@ -30,8 +30,6 @@ export class CampaignesComponent implements OnInit, OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.height = '400px';
     dialogConfig.width = '600px';
-
-    this.dialog.open(EntityDialogComponent, dialogConfig);
     const dialogRef = this.dialog.open(EntityDialogComponent, dialogConfig);
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((data:any) => this.saveObject(data));
   }

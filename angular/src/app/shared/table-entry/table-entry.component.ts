@@ -23,7 +23,7 @@ export class TableEntryComponent implements OnInit, OnDestroy {
   expandedElement: EntryDTO | null;
   onDestroy$ = new Subject();
 
-  @ViewChild(MatTable, {static: true} ) table: MatTable<any>;
+  @ViewChild(MatTable, {static: false} ) table: MatTable<any>;
   constructor(private router: Router, public dialog: MatDialog,
                 private entryService: EntryService,) {}
 
@@ -45,7 +45,7 @@ export class TableEntryComponent implements OnInit, OnDestroy {
   });
 
   dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      if (result.event === 'Delete') {
+      if (result?.event === 'Delete') {
         this.deleteRowData(result.data);
       }
     });
