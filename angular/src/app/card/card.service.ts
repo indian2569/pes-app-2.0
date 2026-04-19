@@ -3,6 +3,7 @@ import { HttpClient, HttpContextToken } from '@angular/common/http';
 import { CardBasicDTO } from '../model/CardBasicDTO';
 import { Observable } from 'rxjs';
 import { CardPageDTO } from '../model/CardPageDTO';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { CardPageDTO } from '../model/CardPageDTO';
 export class CardService {
 
   constructor(protected http: HttpClient) { }
-  public static readonly CARD_API_URL = 'https://kaspian-pes.online/api/card';
+  public static readonly CARD_API_URL = `${environment.apiUrl}/api/card`;
 
   public saveCard(card: CardBasicDTO):  Observable<CardBasicDTO> {
     return this.http.post<CardBasicDTO>(CardService.CARD_API_URL + '/save', card);
