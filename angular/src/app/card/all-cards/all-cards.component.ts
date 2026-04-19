@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
+import { CardPageDTO } from '../../model/CardPageDTO';
 import { CardService } from '../card.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,7 +13,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 })
 export class AllCardsComponent implements OnInit, OnDestroy {
 
-  cardData: CardBasicDTO[] = [];
+  cardData: CardPageDTO;
   filterForm: FormGroup;
 
   onDestroy$ = new Subject();

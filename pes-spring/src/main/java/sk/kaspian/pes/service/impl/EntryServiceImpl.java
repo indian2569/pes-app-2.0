@@ -7,7 +7,11 @@ import java.util.Optional;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.EntryMapper;
+import sk.kaspian.pes.model.CardSpecifications;
+import sk.kaspian.pes.model.EntryFilter;
+import sk.kaspian.pes.model.EntrySpecifications;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
@@ -39,8 +46,24 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Entry> getAllEntrys() {
-		return entryMapper.map(entryRepository.findAll());
+	public List<Entry> getAllEntrys(EntryFilter filter) {
+		Specification<sk.kaspian.pes.model.Entry> spec = Specification.where(EntrySpecifications.withPlace(filter.getPlace()))
+				.and(EntrySpecifications.withCampaign(filter.getCampaign()))
+				.and(EntrySpecifications.withYearFrom(filter.getYearfrom()))
+				.and(EntrySpecifications.withYearTo(filter.getYearto()))
+				.and(EntrySpecifications.withProgram(filter.getProgram()))
+				.and(EntrySpecifications.withAuthor(filter.getAuthor()));
+
+		// Handle sorting
+		Sort sort = Sort.by("id"); // Default sorting by id
+		if (filter.getSort() != null && !filter.getSort().isEmpty()) {
+			sort = Sort.by(Sort.Order.asc(filter.getSort()));
+		}
+
+		// Handle pagination
+		Pageable pageable = PageRequest.of(filter.getPageNumber(), filter.getPageSize(), sort);
+
+		return entryMapper.map(entryRepository.findAll(spec, pageable).getContent());
 	}
 
 	@Override

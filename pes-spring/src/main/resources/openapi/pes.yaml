@@ -132,15 +132,23 @@ paths:
         - Cards
       summary: Return all cards
       operationId: getAllCard
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/Gender'
+        - $ref: '#/components/parameters/YearFrom'
+        - $ref: '#/components/parameters/YearTo'
+        - $ref: '#/components/parameters/Author'
       responses:
         200:
           description: "Successfully get All Cards"
           content:
             application/json:
               schema:
-                type: array
                 items:
-                  $ref: '#/components/schemas/Card'
+                  $ref: '#/components/schemas/CardPage'
         400:
           $ref: '#/components/responses/InvalidRequest'
         401:
@@ -336,6 +344,16 @@ paths:
         - Entrys
       summary: Return all entrys
       operationId: getAllEntry
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/Place'
+        - $ref: '#/components/parameters/Campaign'
+        - $ref: '#/components/parameters/YearFrom'
+        - $ref: '#/components/parameters/YearTo'
+        - $ref: '#/components/parameters/Author'
+        - $ref: '#/components/parameters/Program'
       responses:
         200:
           description: "Successfully get All Entrys"
@@ -1451,6 +1469,111 @@ components:
         #        maximum: 100
         default: 20
       required: false
+    PageNumber:
+      name: page_number
+      in: query
+      x-pageable-option: true
+      description: Page number, default is `0`
+      schema:
+        type: integer
+        default: 0
+#        minimum: 0
+      required: false
+    Sort:
+      name: sort
+      in: query
+      x-pageable-option: true
+      description: |
+        "Multi sort criteria: property1,property2(desc),property(asc) eg. name,type(desc)"        
+      schema:
+        type: string
+      required: false
+    Search:
+      name: search
+      in: query
+      x-pageable-option: true
+      description: "Search test filter criteria"        
+      schema:
+        type: string
+      required: false
+    MaxRecords:
+      name: max
+      in: query
+      description: Max results count
+      schema:
+        type: integer
+      required: false
+    FromRecord:
+      name: from
+      in: query
+      description: From which result to continue (inclusive)
+      schema:
+        type: integer
+      required: false
+    Name:
+      name: name
+      in: query
+      x-pageable-option: true
+      description: "Name of the card, event, etc"
+      schema:
+        type: string
+      required: false
+    Gender:
+      name: gender
+      in: query
+      x-pageable-option: true
+      description: "Gender on card object"
+      schema:
+        type: string
+      required: false
+    YearFrom:
+        name: yearfrom
+        in: query
+        x-pageable-option: true
+        description: "Year value from:"
+        schema:
+          type: string
+        required: false
+    YearTo:
+      name: yearto
+      in: query
+      x-pageable-option: true
+      description: "Year value to:"
+      schema:
+        type: string
+      required: false
+    Author:
+      name: author
+      in: query
+      x-pageable-option: true
+      required: false
+      description: "Identification of peason who created object"
+      schema:
+        type: string
+    Place:
+      name: place
+      in: query
+      x-pageable-option: true
+      required: false
+      description: "Identification of place"
+      schema:
+        type: string
+    Campaign:
+      name: campaign
+      in: query
+      x-pageable-option: true
+      required: false
+      description: "Identification of campaign"
+      schema:
+        type: string
+    Program:
+      name: program
+      in: query
+      x-pageable-option: true
+      required: false
+      description: "Identification of program"
+      schema:
+        type: string
   responses:
     EntityNotFound:
       description: "Entity not found"
@@ -1467,6 +1590,19 @@ components:
     AccessDenied:
       description: "Access denied - insufficient rights"
   schemas:
+    CardPage:
+      type: object
+      description: "Array of card results filtered, ordered and with paging support"
+      required:
+        - results
+        - paging
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        paging:
+          $ref: '#/components/schemas/Paging'
     Card:
       description: "Card object"
       type: object
@@ -1823,3 +1959,33 @@ components:
         username:
           type: string
           description: Username of the authenticated user.
+    Paging:
+      type: object
+      description: "Paging information"
+      required:
+        - pageNumber
+        - pageSize
+        - pageCount
+        - totalElements
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+          description: "Page number, first page is 0"
+        pageSize:
+          type: integer
+          format: int32
+          description: "Number of items in the page"
+        pageCount:
+          type: integer
+          format: int32
+          description: "Total number of pages"
+        totalElements:
+          type: integer
+          format: int64
+          description: "Total number of elements"
+      example:
+        pageNumber: 0,
+        pageSize: 30,
+        pageCount: 5
+        totalElements: 100

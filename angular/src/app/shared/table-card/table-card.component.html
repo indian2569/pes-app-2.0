@@ -71,6 +71,8 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
+  <mat-paginator (page)="handlePageEvent($event)" [length]="pageble.totalElements" [pageIndex]="pageble.pageNumber" [pageSize]="pageble.pageSize" [pageSizeOptions]="[10, 20, 50]" aria-label="Vyber pocet zaznamov">
+  </mat-paginator>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

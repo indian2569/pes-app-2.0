@@ -85,7 +85,7 @@ export class EntryComponent implements OnInit, OnDestroy {
     this.cardService.getAllCards().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => {
-          this.cards = data;
+          this.cards = data.results;
           this.otherClientsControl.allAvaliableChips = this.cards;
           this.clientsControl.allAvaliableChips = this.cards;
         },

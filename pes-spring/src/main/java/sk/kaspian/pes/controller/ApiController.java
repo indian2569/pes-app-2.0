@@ -13,10 +13,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
-import sk.kaspian.pes.model.ERole;
-import sk.kaspian.pes.model.Role;
+import sk.kaspian.pes.model.*;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.*;
+import sk.kaspian.pes.openapi.model.v1.Card;
+import sk.kaspian.pes.openapi.model.v1.Coworker;
+import sk.kaspian.pes.openapi.model.v1.Entry;
+import sk.kaspian.pes.openapi.model.v1.Event;
+import sk.kaspian.pes.openapi.model.v1.Institution;
+import sk.kaspian.pes.openapi.model.v1.Method;
+import sk.kaspian.pes.openapi.model.v1.Program;
 import sk.kaspian.pes.openapi.server.controller.v1.ApiApi;
 import sk.kaspian.pes.repository.RoleRepository;
 import sk.kaspian.pes.repository.UserRepository;
@@ -25,10 +31,7 @@ import sk.kaspian.pes.service.*;
 import sk.kaspian.pes.service.impl.UserDetailsImpl;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,7 +76,7 @@ public class ApiController implements ApiApi {
 
     PasswordEncoder encoder;
 
-
+    @Autowired
     JwtUtils jwtUtils;
 
     @Override
@@ -125,6 +128,16 @@ public class ApiController implements ApiApi {
     }
 
     @Override
+    public ResponseEntity<List<Card>> filterCards() {
+        return ResponseEntity.ok(cardService.getAllCards(null).getResults());
+    }
+
+    @Override
+    public ResponseEntity<List<Entry>> filterEntrys() {
+        return ResponseEntity.ok(entryService.getAllEntrys(null));
+    }
+
+    @Override
     public ResponseEntity<List<Campaign>> getAllActiveCampaign() {
         return ResponseEntity.ok(campaignService.getAllActiveCampaigns());
     }
@@ -165,8 +178,22 @@ public class ApiController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<List<Card>> getAllCard() {
-        return ResponseEntity.ok(cardService.getAllCards());
+    public ResponseEntity<List<CardPage>> getAllCard(Optional<Integer> pageSize, Optional<Integer> pageNumber, Optional<String> sort, Optional<String> name, Optional<String> gender, Optional<String> yearfrom, Optional<String> yearto, Optional<String> author) {
+        CardPage card = cardService.getAllCards(fillCardFilterValue(pageSize, pageNumber, sort, name, gender, yearfrom, yearto, author));
+        return ResponseEntity.ok(List.of(card));
+    }
+
+    private CardFilter fillCardFilterValue(Optional<Integer> pageSize, Optional<Integer> pageNumber, Optional<String> sort, Optional<String> name, Optional<String> gender, Optional<String> yearfrom, Optional<String> yearto, Optional<String> author) {
+        CardFilter cardfilter = new CardFilter();
+        cardfilter.setPageSize(pageSize.orElse(null));
+        cardfilter.setPageNumber(pageNumber.orElse(null));
+        cardfilter.setSort(sort.orElse(null));
+        cardfilter.setName(name.orElse(null));
+        cardfilter.setGender(gender.orElse(null));
+        cardfilter.setYearfrom(yearfrom.orElse(null));
+        cardfilter.setYearto(yearto.orElse(null));
+        cardfilter.setAuthor(author.orElse(null));
+        return cardfilter;
     }
 
     @Override
@@ -180,8 +207,22 @@ public class ApiController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<List<Entry>> getAllEntry() {
-        return ResponseEntity.ok(entryService.getAllEntrys());
+    public ResponseEntity<List<Entry>> getAllEntry(Optional<Integer> pageSize, Optional<Integer> pageNumber, Optional<String> sort, Optional<String> place, Optional<String> campaign, Optional<String> yearfrom, Optional<String> yearto, Optional<String> author, Optional<String> program) {
+        return ResponseEntity.ok(entryService.getAllEntrys(fillEntryFilterValue(pageSize, pageNumber, sort, place, campaign,yearfrom, yearto, program, author)));
+    }
+
+    private EntryFilter fillEntryFilterValue(Optional<Integer> pageSize, Optional<Integer> pageNumber, Optional<String> sort, Optional<String> place, Optional<String> campaign, Optional<String> yearfrom, Optional<String> yearto, Optional<String> program, Optional<String> author) {
+        EntryFilter entryfilter = new EntryFilter();
+        entryfilter.setPageSize(pageSize.orElse(null));
+        entryfilter.setPageNumber(pageNumber.orElse(null));
+        entryfilter.setSort(sort.orElse(null));
+        entryfilter.setPlace(place.orElse(null));
+        entryfilter.setCampaign(campaign.orElse(null));
+        entryfilter.setYearfrom(yearfrom.orElse(null));
+        entryfilter.setYearto(yearto.orElse(null));
+        entryfilter.setProgram(program.orElse(null));
+        entryfilter.setAuthor(author.orElse(null));
+        return entryfilter;
     }
 
     @Override

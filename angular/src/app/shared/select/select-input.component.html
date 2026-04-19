@@ -1,0 +1,21 @@
+<div *ngIf="inputValues !== undefined">
+<mat-form-field class="example-select-list" appearance="fill">
+  <mat-label>{{title}}</mat-label>
+  <input  placeholder="{{inputPlaceholder}}" #selectInput [formControl]="inputControl"/>
+  <mat-select formControlName="inputControl" class="example-chip-list">
+    <mat-option *ngFor="let inputValue of inputValues" [value]="inputValue">
+      {{inputValue.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+<div *ngIf="inputValues === undefined">
+  <mat-form-field class="example-select-list" appearance="fill">
+  <mat-label>{{title}}</mat-label>
+  <mat-select formControlName="inputControl" class="example-chip-list" [(value)]="selectedValue">
+    <mat-option [value]="selectedValue">
+      {{selectedValue.name}}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+</div>

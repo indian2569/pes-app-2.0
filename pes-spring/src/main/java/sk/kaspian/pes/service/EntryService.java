@@ -3,6 +3,7 @@ package sk.kaspian.pes.service;
 import java.util.List;
 import java.util.Optional;
 
+import sk.kaspian.pes.model.EntryFilter;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
@@ -11,9 +12,10 @@ public interface EntryService {
 	
 	/**
 	 * Function return all Entry's created
+	 * @param @{@link EntryFilter} filter values for the select
 	 * @return {@link List} {@link EntryService} list of Entrys
 	 */
-	List<Entry> getAllEntrys();
+	List<Entry> getAllEntrys(EntryFilter filter);
 	
 	/**
 	 * remove Entry

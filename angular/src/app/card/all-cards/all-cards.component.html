@@ -69,7 +69,6 @@
         <mat-option value="DESC">DESC</mat-option>
       </mat-select>
     </mat-form-field>
-
   </div>
 
   <!-- Actions -->
@@ -86,4 +85,4 @@
 </form>
 
 <app-table-card
-[tableData] = "cardData"></app-table-card>
+[tableData] = "cardData.results" [pageble] = "cardData.paging" ></app-table-card>

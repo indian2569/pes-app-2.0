@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpContextToken } from '@angular/common/http';
 import { CardBasicDTO } from '../model/CardBasicDTO';
 import { Observable } from 'rxjs';
-
+import { CardPageDTO } from '../model/CardPageDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,14 @@ export class CardService {
     return this.http.delete<CardBasicDTO>(CardService.CARD_API_URL + '/' + `${code}`);
   }
 
-  public getAllCards(): Observable<CardBasicDTO[]> {
-    return this.http.get<CardBasicDTO[]>(CardService.CARD_API_URL + '/allCards');
+  public getAllCards(params?: any): Observable<CardPageDTO> {
+    if (params != undefined) {
+      return this.http.get<CardPageDTO>(CardService.CARD_API_URL + '/allCards', {
+        params: JSON.parse(JSON.stringify(params, (key, value) => (value === null || value === '' || value === undefined ? undefined : value))),
+      });
+    } else {
+      return this.http.get<CardPageDTO>(CardService.CARD_API_URL + '/allCards');
+    }
   }
 
   public togleActivateCards(code: string): Observable<CardBasicDTO> {

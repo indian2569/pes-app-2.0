@@ -2,16 +2,19 @@ package sk.kaspian.pes.service;
 
 import java.util.List;
 
+import sk.kaspian.pes.model.CardFilter;
 import sk.kaspian.pes.model.PersonFilterRequest;
 import sk.kaspian.pes.openapi.model.v1.Card;
+import sk.kaspian.pes.openapi.model.v1.CardPage;
 
 public interface CardService {
 
 	/**
 	 * Function return all cards created
-	 * @return {@link List} {@link Card} list of Cards
+	 * @param filter @{@link CardFilter} filter value for selecting cards
+	 * @return {@link CardPage} list of Cards
 	 */
-	List<Card> getAllCards();
+	CardPage getAllCards(CardFilter filter);
 
 	/**
 	 * Remove Card base on ID

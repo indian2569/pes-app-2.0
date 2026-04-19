@@ -5,7 +5,11 @@ import java.util.List;
 
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,8 +19,11 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.CardMapper;
 import sk.kaspian.pes.model.Card;
+import sk.kaspian.pes.model.CardFilter;
+import sk.kaspian.pes.model.CardSpecifications;
 import sk.kaspian.pes.model.PersonFilterRequest;
 import sk.kaspian.pes.model.User;
+import sk.kaspian.pes.openapi.model.v1.CardPage;
 import sk.kaspian.pes.repository.CardRepository;
 import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.repository.specialization.CardSpecification;
@@ -36,8 +43,27 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<sk.kaspian.pes.openapi.model.v1.Card> getAllCards() {
-		return cardMapper.map(cardRepository.findAll());
+	public sk.kaspian.pes.openapi.model.v1.CardPage getAllCards(CardFilter filter) {
+		if (filter == null) {
+			CardPage cardPage = new CardPage();
+			cardPage.setResults(cardMapper.map(cardRepository.findAll()));
+			return cardPage;
+		}
+		Specification<Card> spec = Specification.where(CardSpecifications.withName(filter.getName()))
+				.and(CardSpecifications.withGender(filter.getGender()))
+				.and(CardSpecifications.withYearFrom(filter.getYearfrom()))
+				.and(CardSpecifications.withYearTo(filter.getYearto()))
+				.and(CardSpecifications.withAuthor(filter.getAuthor()));
+		// Handle sorting
+		Sort sort = Sort.by("id"); // Default sorting by id
+		if (filter.getSort() != null && !filter.getSort().isEmpty()) {
+			sort = Sort.by(Sort.Order.asc(filter.getSort()));
+		}
+
+		// Handle pagination
+		Pageable pageable = PageRequest.of(filter.getPageNumber(), filter.getPageSize(), sort);
+
+		return cardMapper.map(cardRepository.findAll(spec, pageable));
 	}
 
 	@Override
