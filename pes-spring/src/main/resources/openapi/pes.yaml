@@ -1421,8 +1421,6 @@ paths:
       tags:
         - Authentication
       summary: Get authenticated informations
-      security:
-        - bearerAuth: []
       operationId: registerAcess
       requestBody:
         required: true
@@ -1884,8 +1882,12 @@ components:
     SignUpRequest:
       description: "Login object"
       type: object
+      required:
+        - username
+        - email
+        - password
       properties:
-        username: 
+        username:
           type: string
         email:
           type: string
@@ -1893,7 +1895,7 @@ components:
           type: string
         roles:
           type: array
-          items: 
+          items:
             type: string
     LogUser:
       description: "Programs object"

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM maven:3.6.3-jdk-11 AS buildstage
+FROM maven:3.9.14-eclipse-temurin-11 AS buildstage
 
 WORKDIR /pes-spring
 
@@ -8,7 +8,7 @@ COPY . .
 
 RUN mvn clean package
 
-FROM openjdk:11.0-jre-slim AS runstage
+FROM eclipse-temurin:11-jre-jammy AS runstage
 
 COPY --from=buildstage /pes-spring/target/pes-1.0.0-SNAPSHOT.jar .
 
