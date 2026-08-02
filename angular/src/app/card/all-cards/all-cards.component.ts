@@ -31,7 +31,7 @@ export class AllCardsComponent implements OnInit, OnDestroy {
       sortOrder: ['ASC']
     });
     this.cardService.getAllCards()
-    .pipe(takeUntil(this.onDestroy$)).subscribe(card => this.cardData = card);
+    .pipe(takeUntil(this.onDestroy$)).subscribe(card => this.cardData = card[0]);
   }
 
   ngOnDestroy(): void {
@@ -51,7 +51,7 @@ export class AllCardsComponent implements OnInit, OnDestroy {
           ? filters.timeTo.toISOString()
           : null
     };
-    this.cardService.getAllCards(request).subscribe(cards => this.cardData = cards);
+    this.cardService.getAllCards(request).subscribe(cards => this.cardData = cards[0]);
   }
 
   resetFilters(): void {

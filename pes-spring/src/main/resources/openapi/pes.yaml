@@ -1615,7 +1615,7 @@ components:
           type: string
         client_dev_plan:
           type: string
-        clint_age:
+        client_age:
           type: string
         client_birth_year:
           type: string

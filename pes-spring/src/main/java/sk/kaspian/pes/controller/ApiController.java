@@ -1,9 +1,6 @@
 package sk.kaspian.pes.controller;
 
 import io.micrometer.core.annotation.Timed;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,49 +32,56 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequiredArgsConstructor
 @Timed
 @CrossOrigin(origins = {"http://localhost:4200", "https://kaspian-pes.online"})
 public class ApiController implements ApiApi {
 
-    @NonNull
-    private EntryService entryService;
+    private final EntryService entryService;
 
-    @NonNull
-    private CampaigneService campaignService;
+    private final  CampaigneService campaignService;
 
-    @NonNull
-    private CardService cardService;
+    private final  CardService cardService;
 
-    @NonNull
-    private CoworkerService coworkerService;
+    private final  CoworkerService coworkerService;
 
-    @NonNull
-    private EventService eventService;
+    private final  EventService eventService;
 
-    @NonNull
-    private InstitutionService institutionService;
+    private final  InstitutionService institutionService;
 
-    @NonNull
-    private MethodService methodService;
+    private final  MethodService methodService;
 
-    @NonNull
-    private ProgramService programService;
+    private final  ProgramService programService;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final  AuthenticationManager authenticationManager;
 
+    private final UserRepository userRepository;
 
-    UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
+    private final PasswordEncoder encoder;
 
-    RoleRepository roleRepository;
+    private final JwtUtils jwtUtils;
 
-
-    PasswordEncoder encoder;
-
-    @Autowired
-    JwtUtils jwtUtils;
+    public ApiController(EntryService entryService, CampaigneService campaignService,
+        CardService cardService, CoworkerService coworkerService, EventService eventService,
+        InstitutionService institutionService, MethodService methodService,
+        ProgramService programService, AuthenticationManager authenticationManager,
+        UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder,
+        JwtUtils jwtUtils) {
+        this.entryService = entryService;
+        this.campaignService = campaignService;
+        this.cardService = cardService;
+        this.coworkerService = coworkerService;
+        this.eventService = eventService;
+        this.institutionService = institutionService;
+        this.methodService = methodService;
+        this.programService = programService;
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
+        this.jwtUtils = jwtUtils;
+    }
 
     @Override
     public ResponseEntity<Void> deleteCampaign(String code) {
@@ -397,7 +401,8 @@ public class ApiController implements ApiApi {
 
     @Override
     public ResponseEntity<Card> saveCard(Card card) {
-        return ResponseEntity.ok(cardService.updateCard(card));
+        return ResponseEntity.ok(
+            card.getId() == null ? cardService.createCard(card) : cardService.updateCard(card));
     }
 
     @Override

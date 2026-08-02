@@ -25,13 +25,13 @@ export class CardService {
     return this.http.delete<CardBasicDTO>(CardService.CARD_API_URL + '/' + `${code}`);
   }
 
-  public getAllCards(params?: any): Observable<CardPageDTO> {
+  public getAllCards(params?: any): Observable<CardPageDTO[]> {
     if (params != undefined) {
-      return this.http.get<CardPageDTO>(CardService.CARD_API_URL + '/allCards', {
+      return this.http.get<CardPageDTO[]>(CardService.CARD_API_URL + '/allCards', {
         params: JSON.parse(JSON.stringify(params, (key, value) => (value === null || value === '' || value === undefined ? undefined : value))),
       });
     } else {
-      return this.http.get<CardPageDTO>(CardService.CARD_API_URL + '/allCards');
+      return this.http.get<CardPageDTO[]>(CardService.CARD_API_URL + '/allCards');
     }
   }
 

@@ -23,7 +23,7 @@ export class TableCardComponent implements OnInit, OnDestroy {
     @Input() tableData: CardBasicDTO[];
     @Input() pageble: PageDTO;
     @Output() pageChange = new EventEmitter<any>();
-    displayedColumns: string[] = ['client_nick', 'client_gender', 'clint_age', 'client_birth_year', 'cratedBy', 'status', 'action'];
+    displayedColumns: string[] = ['client_nick', 'client_gender', 'client_age', 'client_birth_year', 'cratedBy', 'status', 'action'];
     dataSource: CardBasicDTO[];
     onDestroy$ = new Subject();
 
@@ -44,6 +44,10 @@ export class TableCardComponent implements OnInit, OnDestroy {
     redirectUrl(obj_row): void {
      this.router.navigate([`/card_line/` + obj_row.id]);
     }
+
+  redirectUrlNew(): void {
+    this.router.navigate([`/card_line/add_card`]);
+  }
 
     openDialog (action, obj) {
     obj.action = action;
@@ -84,7 +88,6 @@ export class TableCardComponent implements OnInit, OnDestroy {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
     this.pageChange.emit(e);
-    console.log(this.length, this.pageSize, this.pageIndex);
   }
 
   ngOnDestroy(): void {

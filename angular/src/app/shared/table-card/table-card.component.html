@@ -3,7 +3,7 @@
   <!-- Table title and Add button -->
   <div class="table-header">
     <h3 class="page-title full">Karty</h3>
-    <button mat-flat-button color="primary" class="btn-add" (click)="redirectUrl({id: 0})">
+    <button mat-flat-button color="primary" class="btn-add" (click)="redirectUrlNew()">
       Pridať
     </button>
   </div>
@@ -24,9 +24,9 @@
     </ng-container>
 
     <!-- Age Column -->
-    <ng-container matColumnDef="clint_age">
+    <ng-container matColumnDef="client_age">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Vek </th>
-      <td mat-cell *matCellDef="let element"> {{element.clint_age}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.client_age}} </td>
     </ng-container>
 
     <!-- Birth Year Column -->
@@ -71,7 +71,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-  <mat-paginator (page)="handlePageEvent($event)" [length]="pageble.totalElements" [pageIndex]="pageble.pageNumber" [pageSize]="pageble.pageSize" [pageSizeOptions]="[10, 20, 50]" aria-label="Vyber pocet zaznamov">
+  <mat-paginator (page)="handlePageEvent($event)" [length]="pageble?.totalElements" [pageIndex]="pageble?.pageNumber" [pageSize]="pageble?.pageSize" [pageSizeOptions]="[10, 20, 50]" aria-label="Vyber pocet zaznamov">
   </mat-paginator>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

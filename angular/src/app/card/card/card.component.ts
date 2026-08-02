@@ -107,7 +107,7 @@ formSetUp() {
     client_gender: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender, [Validators.required]),
     client_anamnesis: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
     client_dev_plan: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan),
-    clint_age: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.clint_age),
+    client_age: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_age),
     client_birth_year: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year, [Validators.required]),
     client_name: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
     client_surname: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),

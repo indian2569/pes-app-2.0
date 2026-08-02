@@ -1,6 +1,5 @@
 package sk.kaspian.pes.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -24,7 +23,7 @@ public interface CardMapper {
 		page.setPaging(toPaging(pageValus));
 		page.setResults(map(pageValus.getContent()));
 		return page;
-	};
+	}
 
 	default Paging toPaging(Page<?> page) {
 		var paging = new Paging();

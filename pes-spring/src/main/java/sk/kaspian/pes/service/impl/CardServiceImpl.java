@@ -1,9 +1,11 @@
 package sk.kaspian.pes.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,11 +78,11 @@ public class CardServiceImpl implements CardService {
 	@Transactional
 	public sk.kaspian.pes.openapi.model.v1.Card updateCard(sk.kaspian.pes.openapi.model.v1.Card card) {
 		Card mappedCard = cardMapper.map(card);
-		if (mappedCard.getId() == null) {
-			mappedCard.setStatus(Boolean.TRUE);
-		}
+		Card existingCard = cardRepository.findById(mappedCard.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Card not found: " + mappedCard.getId()));
+		mergeChangedFields(mappedCard, existingCard);
 		fillSavableFields(mappedCard);
-		return cardMapper.map(cardRepository.save(mappedCard));
+		return cardMapper.map(cardRepository.save(existingCard));
 	}
 
 	@Override
@@ -88,6 +90,9 @@ public class CardServiceImpl implements CardService {
 	public sk.kaspian.pes.openapi.model.v1.Card createCard(sk.kaspian.pes.openapi.model.v1.Card card) {
 		Card mappedCard = cardMapper.map(card);
 		mappedCard.setStatus(Boolean.TRUE);
+		if (mappedCard.getClientBirthYear() != null && (mappedCard.getClientAge() == null || mappedCard.getClientAge().isEmpty()) ) {
+			mappedCard.setClientAge(String.valueOf(calculateAge(mappedCard.getClientBirthYear())));
+		}
 		fillSavableFields(mappedCard);
 		return cardMapper.map(cardRepository.save(mappedCard));
 	}
@@ -102,7 +107,7 @@ public class CardServiceImpl implements CardService {
 	@Transactional
 	public sk.kaspian.pes.openapi.model.v1.Card activateTogleCard(Long id) {
 		Card cardToToggle = cardRepository.getReferenceById(id);
-		cardRepository.activateCard(id, !cardToToggle.getStatus());
+		cardRepository.activateCard(id, cardToToggle.getStatus() != null ?!cardToToggle.getStatus(): Boolean.TRUE);
 		return cardMapper.map(cardRepository.getReferenceById(id));
 	}
 
@@ -132,5 +137,89 @@ public class CardServiceImpl implements CardService {
 		}
 		mappedCard.setUpdated(LocalDateTime.now());
 		mappedCard.setLastChange(changedPerson);
+	}
+
+	private int calculateAge(String birthYearStr) {
+		if (birthYearStr == null || birthYearStr.isBlank()) {
+			throw new IllegalArgumentException("Birth year must not be null or empty");
+		}
+
+		int birthYear;
+		try {
+			birthYear = Integer.parseInt(birthYearStr);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid birth year format: " + birthYearStr);
+		}
+
+		int currentYear = Year.now().getValue();
+
+		if (birthYear > currentYear) {
+			throw new IllegalArgumentException("Birth year cannot be in the future");
+		}
+
+		return currentYear - birthYear;
+	}
+
+	private void mergeChangedFields(Card source, Card target) {
+		if (source.getClientNick() != null) {
+			target.setClientNick(source.getClientNick());
+		}
+		if (source.getClientGender() != null) {
+			target.setClientGender(source.getClientGender());
+		}
+		if (source.getClientAnamnesis() != null) {
+			target.setClientAnamnesis(source.getClientAnamnesis());
+		}
+		if (source.getClientDevPlan() != null) {
+			target.setClientDevPlan(source.getClientDevPlan());
+		}
+		if (source.getClientAge() != null) {
+			target.setClientAge(source.getClientAge());
+		}
+		if (source.getClientBirthYear() != null) {
+			target.setClientBirthYear(source.getClientBirthYear());
+		}
+		if (source.getClientName() != null) {
+			target.setClientName(source.getClientName());
+		}
+		if (source.getClientSurname() != null) {
+			target.setClientSurname(source.getClientSurname());
+		}
+		if (source.getClientBirthDate() != null) {
+			target.setClientBirthDate(source.getClientBirthDate());
+		}
+		if (source.getClientFamilyStatus() != null) {
+			target.setClientFamilyStatus(source.getClientFamilyStatus());
+		}
+		if (source.getClientCitizenship() != null) {
+			target.setClientCitizenship(source.getClientCitizenship());
+		}
+		if (source.getClientAddress() != null) {
+			target.setClientAddress(source.getClientAddress());
+		}
+		if (source.getClientPhone() != null) {
+			target.setClientPhone(source.getClientPhone());
+		}
+		if (source.getClientEmail() != null) {
+			target.setClientEmail(source.getClientEmail());
+		}
+		if (source.getClientSocnet() != null) {
+			target.setClientSocnet(source.getClientSocnet());
+		}
+		if (source.getClientHealth() != null) {
+			target.setClientHealth(source.getClientHealth());
+		}
+		if (source.getClientIncome() != null) {
+			target.setClientIncome(source.getClientIncome());
+		}
+		if (source.getClientBelongings() != null) {
+			target.setClientBelongings(source.getClientBelongings());
+		}
+		if (source.getClientOtherInstitutes() != null) {
+			target.setClientOtherInstitutes(source.getClientOtherInstitutes());
+		}
+		if (source.getStatus() != null) {
+			target.setStatus(source.getStatus());
+		}
 	}
 }

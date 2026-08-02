@@ -85,7 +85,7 @@ export class EntryComponent implements OnInit, OnDestroy {
     this.cardService.getAllCards().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => {
-          this.cards = data.results;
+          this.cards = data[0].results;
           this.otherClientsControl.allAvaliableChips = this.cards;
           this.clientsControl.allAvaliableChips = this.cards;
         },
@@ -103,9 +103,6 @@ export class EntryComponent implements OnInit, OnDestroy {
       console.error('Error loading programs or entry', error);
       this.isLoading = false;
     }
-    console.log(this.programs, this.campaigns);
-    console.log(`Type: ${typeof this.campaigns[1]}`, this.campaigns[1]);
-
   }
 
   private fillClientOnSite() {

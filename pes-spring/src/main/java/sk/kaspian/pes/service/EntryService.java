@@ -12,22 +12,22 @@ public interface EntryService {
 	
 	/**
 	 * Function return all Entry's created
-	 * @param @{@link EntryFilter} filter values for the select
+	 * @param filter @{@link EntryFilter} values for the select
 	 * @return {@link List} {@link EntryService} list of Entrys
 	 */
 	List<Entry> getAllEntrys(EntryFilter filter);
 	
 	/**
 	 * remove Entry
-	 * @param id
+	 * @param id {@link Long} id of the object that we want to remove
 	 */
 	
 	void removeEntry(Long id);
 	
 	/**
 	 * update Entry 
-	 * @param entry
-	 * @return
+	 * @param entry {@link Entry} request object of that we want to create
+	 * @return  created object
 	 */
 	Entry createEntry(Entry entry);
 	

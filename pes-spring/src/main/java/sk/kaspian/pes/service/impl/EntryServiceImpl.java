@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import sk.kaspian.pes.mapper.EntryMapper;
-import sk.kaspian.pes.model.CardSpecifications;
 import sk.kaspian.pes.model.EntryFilter;
 import sk.kaspian.pes.model.EntrySpecifications;
 import sk.kaspian.pes.model.User;
@@ -29,8 +26,6 @@ import sk.kaspian.pes.openapi.model.v1.Entry;
 import sk.kaspian.pes.repository.EntryRepository;
 import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.EntryService;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor

@@ -7,7 +7,7 @@ client_nick?: string;
 client_gender?: string;
 client_anamnesis?: string;
 client_dev_plan?: string;
-clint_age?: number;
+client_age?: number;
 client_birth_year?: number;
 client_name?: string;
 client_surname?: string;

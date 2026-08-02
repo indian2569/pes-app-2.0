@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.NonNull;
+
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.repository.UserRepository;
 

@@ -84,5 +84,5 @@
 
 </form>
 
-<app-table-card
+<app-table-card *ngIf="cardData"
 [tableData] = "cardData.results" [pageble] = "cardData.paging" ></app-table-card>
