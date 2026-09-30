@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CardPageDTO } from '../../model/CardPageDTO';
 import { CardService } from '../card.service';
-import { Subject } from 'rxjs';
+import { CoworkerDTO } from '../../model/CoworkerDTO';
+import { LookupService } from '../../shared/lookup/lookup.service';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {FormBuilder, FormGroup} from "@angular/forms";
 
@@ -14,10 +16,11 @@ export class AllCardsComponent implements OnInit, OnDestroy {
 
   cardData: CardPageDTO;
   filterForm: FormGroup;
+  coworkers$: Observable<CoworkerDTO[]>;
 
   onDestroy$ = new Subject();
 
-  constructor(private fb: FormBuilder,private cardService: CardService) { }
+  constructor(private fb: FormBuilder, private cardService: CardService, private lookupService: LookupService) { }
 
   ngOnInit(): void {
     this.filterForm = this.fb.group({
@@ -30,6 +33,7 @@ export class AllCardsComponent implements OnInit, OnDestroy {
       sortBy: ['name'],
       sortOrder: ['ASC']
     });
+    this.coworkers$ = this.lookupService.getCoworkers();
     this.cardService.getAllCards()
     .pipe(takeUntil(this.onDestroy$)).subscribe(card => this.cardData = card[0]);
   }

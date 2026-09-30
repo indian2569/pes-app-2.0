@@ -47,7 +47,12 @@
     <!-- Pridal -->
     <mat-form-field appearance="outline">
       <mat-label>Pridal</mat-label>
-      <input matInput formControlName="createdBy" placeholder="Username">
+      <mat-select formControlName="createdBy">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let coworker of coworkers$ | async" [value]="coworker.name">
+          {{ coworker.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <!-- Sort by -->

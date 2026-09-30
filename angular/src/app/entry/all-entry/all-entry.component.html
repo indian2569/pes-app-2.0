@@ -5,12 +5,7 @@
     <!-- Place -->
     <mat-form-field appearance="outline">
       <mat-label>Miesto</mat-label>
-      <mat-select formControlName="place">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let place of places" [value]="place">
-          {{ place }}
-        </mat-option>
-      </mat-select>
+      <input matInput formControlName="place">
     </mat-form-field>
 
     <!-- Time from -->
@@ -36,8 +31,8 @@
       <mat-label>Kampaň</mat-label>
       <mat-select formControlName="campaign">
         <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let c of campaigns" [value]="c">
-          {{ c }}
+        <mat-option *ngFor="let c of campaigns$ | async" [value]="c.name">
+          {{ c.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -47,8 +42,8 @@
       <mat-label>Program</mat-label>
       <mat-select formControlName="program">
         <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let p of programs" [value]="p">
-          {{ p }}
+        <mat-option *ngFor="let p of programs$ | async" [value]="p.name">
+          {{ p.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -56,8 +51,12 @@
     <!-- Created by -->
     <mat-form-field appearance="outline">
       <mat-label>Pridal</mat-label>
-      <input matInput formControlName="createdBy"
-             placeholder="Username">
+      <mat-select formControlName="createdBy">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let coworker of coworkers$ | async" [value]="coworker.name">
+          {{ coworker.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <!-- Sort by -->
