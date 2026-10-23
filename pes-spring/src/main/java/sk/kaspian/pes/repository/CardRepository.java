@@ -17,7 +17,7 @@ public interface CardRepository extends JpaRepository<Card, Long>,
 
 
     @Query(value = "UPDATE card SET status = :setValue WHERE id = :cardId", nativeQuery = true)
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     void activateCard(@Param("cardId") Long id, @Param("setValue") boolean setValue);
 
     List<Card> findByStatusTrue();

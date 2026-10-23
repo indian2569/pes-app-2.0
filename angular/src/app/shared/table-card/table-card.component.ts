@@ -77,8 +77,12 @@ export class TableCardComponent implements OnInit, OnDestroy {
 
   activateTogle(row_obj: any) {
     this.cardService.togleActivateCards(row_obj.id).pipe(takeUntil(this.onDestroy$))
-    .subscribe(sub => {
-      this.table.renderRows();
+    .subscribe(updatedCard => {
+        const index = this.dataSource.findIndex(c => c.id === updatedCard.id);
+        if (index > -1) {
+            this.dataSource[index] = updatedCard;
+            this.table.renderRows();
+        }
     });
   }
 
