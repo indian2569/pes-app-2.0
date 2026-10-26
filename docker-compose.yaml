@@ -1,6 +1,4 @@
-version: "3.4"
-
-# Global configurations that 
+# Global configurations that
 x-global-envs: &env_variables
   environment:
     # Default passwod for postgres
@@ -57,7 +55,8 @@ services:
 
     angular:
         build:
-          context: angular
+          context: ./angular
+          dockerfile: Dockerfile
         container_name: angular
         ports: 
           - 4200:4200

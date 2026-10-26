@@ -9,11 +9,11 @@ RUN npm install -g @angular/cli@16
 
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
-RUN npm ci --force
+RUN npm install --force
 
 # Copy all files and build the Angular project
 COPY . .
-RUN ng build --configuration production
+RUN NODE_OPTIONS="--max-old-space-size=1024" ng build --configuration production
 
 # Use a lightweight Node.js image for the final stage
 FROM node:18-bullseye-slim as production
