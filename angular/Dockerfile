@@ -9,7 +9,7 @@ RUN npm install -g @angular/cli@16
 
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
-RUN npm install --force
+RUN npm ci
 
 # Copy all files and build the Angular project
 COPY . .
