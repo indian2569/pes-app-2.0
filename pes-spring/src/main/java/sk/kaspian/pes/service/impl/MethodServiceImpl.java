@@ -62,13 +62,13 @@ public class MethodServiceImpl implements MethodService {
 	@Override
 	@Transactional(readOnly = true)
 	public Method getMethodById(Long id) {
-		return methodMapper.map(methodRepository.getOne(id));
+		return methodMapper.map(methodRepository.getReferenceById(id));
 	}
 
 	@Override
 	@Transactional
 	public Method deactivateMethod(Long id) {
-		sk.kaspian.pes.model.Method method = methodRepository.getOne(id);
+		sk.kaspian.pes.model.Method method = methodRepository.getReferenceById(id);
 		method.setActive(Boolean.FALSE);
 		return methodMapper.map(methodRepository.save(method));
 	}

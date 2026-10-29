@@ -29,7 +29,6 @@ import sk.kaspian.pes.service.impl.UserDetailsImpl;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @Timed
@@ -323,7 +322,7 @@ public class ApiController implements ApiApi {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+                .toList();
         JwtResponse jwtRespo = new JwtResponse();
         jwtRespo.setToken(jwt);
         jwtRespo.setId(BigDecimal.valueOf(userDetails.getId()));

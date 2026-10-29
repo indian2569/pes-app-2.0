@@ -61,13 +61,13 @@ public class EventServiceImpl implements EventService {
 	@Override
 	@Transactional(readOnly = true)
 	public Event getEventById(Long id) {
-		return eventMapper.map(eventRepository.getOne(id));
+		return eventMapper.map(eventRepository.getReferenceById(id));
 	}
 
 	@Override
 	@Transactional
 	public Event deactivateEvent(Long id) {
-		sk.kaspian.pes.model.Event event = eventRepository.getOne(id);
+		sk.kaspian.pes.model.Event event = eventRepository.getReferenceById(id);
 		event.setActive(Boolean.FALSE);
 		return eventMapper.map(eventRepository.save(event));
 	}

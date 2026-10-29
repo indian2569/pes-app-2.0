@@ -62,13 +62,13 @@ public class InstitutionServiceImpl implements InstitutionService{
 	@Override
 	@Transactional(readOnly = true)
 	public Institution getInstitutionById(Long id) {
-		return institutionMapper.map(institutionRepository.getOne(id));
+		return institutionMapper.map(institutionRepository.getReferenceById(id));
 	}
 
 	@Override
 	@Transactional
 	public Institution deactivateInstitution(Long id) {
-		sk.kaspian.pes.model.Institution institution = institutionRepository.getOne(id);
+		sk.kaspian.pes.model.Institution institution = institutionRepository.getReferenceById(id);
 		institution.setActive(Boolean.FALSE);
 		return institutionMapper.map(institutionRepository.save(institution));
 	}

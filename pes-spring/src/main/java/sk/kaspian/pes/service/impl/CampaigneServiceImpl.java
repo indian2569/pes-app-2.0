@@ -70,14 +70,14 @@ public class CampaigneServiceImpl implements CampaigneService{
 	@Override
 	@Transactional(readOnly = true)
 	public Campaign getCampaigneById(Long id) {
-		return campaigneMapper.map(campaigneRepository.getOne(id));
+		return campaigneMapper.map(campaigneRepository.getReferenceById(id));
 	}
 
 	@Override
 	@Transactional
 	@CacheEvict(value = "allCampaigneCache", allEntries = true)
 	public void deactivateCampaigne(Long id) {
-		Campaigne campaine = campaigneRepository.getOne(id);
+		Campaigne campaine = campaigneRepository.getReferenceById(id);
 		campaine.setActive(Boolean.FALSE);
 		campaigneRepository.save(campaine);
 	}

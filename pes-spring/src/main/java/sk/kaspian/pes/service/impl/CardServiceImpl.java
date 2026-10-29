@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 
-import java.util.stream.Collectors;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -100,7 +99,7 @@ public class CardServiceImpl implements CardService {
 	@Override
 	@Transactional(readOnly = true)
 	public sk.kaspian.pes.openapi.model.v1.Card getCardById(Long id) {
-		return cardMapper.map(cardRepository.getOne(id));
+		return cardMapper.map(cardRepository.getReferenceById(id));
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class CardServiceImpl implements CardService {
 				? Sort.by(Sort.Direction.fromOptionalString(request.getSortOrder()).orElse(Sort.Direction.ASC), request.getSortBy())
 				: Sort.by("id");
 		return cardRepository.findAll(CardSpecification.filter(request),sort)
-				.stream().map(card -> cardMapper.map(card)).collect(Collectors.toList());
+				.stream().map(cardMapper::map).toList();
 	}
 
 	private void fillSavableFields(Card mappedCard) {

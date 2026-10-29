@@ -68,14 +68,14 @@ public class ProgramServiceImpl implements ProgramService {
 	@Override
 	@Transactional(readOnly = true)
 	public sk.kaspian.pes.openapi.model.v1.Program getProgramById(Long id) {
-		return programMapper.map(programRepository.getOne(id));
+		return programMapper.map(programRepository.getReferenceById(id));
 	}
 
 	@Override
 	@Transactional
 	@CacheEvict(value = "allProgramCache", allEntries = true)
 	public sk.kaspian.pes.openapi.model.v1.Program deactivateProgram(Long id) {
-		sk.kaspian.pes.model.Program program = programRepository.getOne(id);
+		sk.kaspian.pes.model.Program program = programRepository.getReferenceById(id);
 		program.setActive(Boolean.FALSE);
 		return programMapper.map(programRepository.save(program));
 	}

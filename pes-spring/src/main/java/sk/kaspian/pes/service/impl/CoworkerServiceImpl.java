@@ -62,12 +62,12 @@ public class CoworkerServiceImpl implements CoworkerService {
 	@Override
 	@Transactional(readOnly = true)
 	public Coworker getCoworkerById(Long id) {
-		return coworkerMapper.map(coworkerRepository.getOne(id));
+		return coworkerMapper.map(coworkerRepository.getReferenceById(id));
 	}
 
 	@Override
 	public Coworker deactivateCoworker(Long id) {
-		sk.kaspian.pes.model.Coworker coworker = coworkerRepository.getOne(id);
+		sk.kaspian.pes.model.Coworker coworker = coworkerRepository.getReferenceById(id);
 		coworker.setActive(Boolean.FALSE);
 		return coworkerMapper.map(coworkerRepository.save(coworker));
 	}

@@ -11,6 +11,9 @@ spring:
    banner-mode: off
   application:
     name: pes
+  threads:
+    virtual:
+      enabled: true
   cache:
     jcache:
       config: classpath:ehcache.xml
