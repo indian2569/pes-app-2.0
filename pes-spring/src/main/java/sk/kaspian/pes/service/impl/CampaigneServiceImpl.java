@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 import lombok.AllArgsConstructor;
@@ -42,12 +43,14 @@ public class CampaigneServiceImpl implements CampaigneService{
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allCampaigneCache", allEntries = true)
 	public void removeCampaigne(Long id) {
 		campaigneRepository.deleteById(id);
 	}
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allCampaigneCache", allEntries = true)
 	public Campaign createCampaigne(Campaign campaigne) {
 		Campaigne map = campaigneMapper.map(campaigne);
 		map.setActive(Boolean.TRUE);
@@ -57,6 +60,7 @@ public class CampaigneServiceImpl implements CampaigneService{
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allCampaigneCache", allEntries = true)
 	public Campaign updateCampaigne(Campaign campaigne) {
 		Campaigne map = campaigneMapper.map(campaigne);
 		fillSavableFields(map);
@@ -71,6 +75,7 @@ public class CampaigneServiceImpl implements CampaigneService{
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allCampaigneCache", allEntries = true)
 	public void deactivateCampaigne(Long id) {
 		Campaigne campaine = campaigneRepository.getOne(id);
 		campaine.setActive(Boolean.FALSE);

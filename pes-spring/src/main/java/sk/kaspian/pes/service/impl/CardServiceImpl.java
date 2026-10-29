@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -118,10 +118,9 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	public List<sk.kaspian.pes.openapi.model.v1.Card> filterCard(PersonFilterRequest request) {
-		Sort sort = Sort.by(
-				Sort.Direction.fromString(request.getSortOrder()),
-				request.getSortBy()
-		);
+		Sort sort = StringUtils.hasText(request.getSortBy())
+				? Sort.by(Sort.Direction.fromOptionalString(request.getSortOrder()).orElse(Sort.Direction.ASC), request.getSortBy())
+				: Sort.by("id");
 		return cardRepository.findAll(CardSpecification.filter(request),sort)
 				.stream().map(card -> cardMapper.map(card)).collect(Collectors.toList());
 	}

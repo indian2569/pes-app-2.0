@@ -355,40 +355,10 @@ public class ApiController implements ApiApi {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = new HashSet<>();
-        if (signUpRequest.getRoles()!= null) {
-            strRoles.addAll(signUpRequest.getRoles());
-        }
-        Set<Role> roles = new HashSet<>();
-
-        if (!strRoles.isEmpty()) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
+        // registration is public, so requested roles are ignored; elevated roles are granted by an admin
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new IllegalStateException("Error: Role is not found."));
+        user.setRoles(new HashSet<>(Set.of(userRole)));
         userRepository.save(user);
         response.setMessage("User registered successfully!");
         return ResponseEntity.ok(response);

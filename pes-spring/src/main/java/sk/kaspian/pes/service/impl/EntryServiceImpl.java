@@ -42,6 +42,9 @@ public class EntryServiceImpl implements EntryService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Entry> getAllEntrys(EntryFilter filter) {
+		if (filter == null) {
+			return entryMapper.map(entryRepository.findAll());
+		}
 		Specification<sk.kaspian.pes.model.Entry> spec = Specification.where(EntrySpecifications.withPlace(filter.getPlace()))
 				.and(EntrySpecifications.withCampaign(filter.getCampaign()))
 				.and(EntrySpecifications.withYearFrom(filter.getYearfrom()))

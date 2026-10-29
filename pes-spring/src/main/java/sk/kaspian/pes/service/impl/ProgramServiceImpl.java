@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,12 +41,14 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allProgramCache", allEntries = true)
 	public void removeProgram(Long id) {
 		programRepository.deleteById(id);
 	}
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allProgramCache", allEntries = true)
 	public sk.kaspian.pes.openapi.model.v1.Program createProgram(Program program) {
 		sk.kaspian.pes.model.Program map = programMapper.map(program);
 		map.setActive(Boolean.TRUE);
@@ -55,6 +58,7 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allProgramCache", allEntries = true)
 	public sk.kaspian.pes.openapi.model.v1.Program updateProgram(Program program) {
 		sk.kaspian.pes.model.Program map = programMapper.map(program);
 		fillSavableFields(map);
@@ -69,6 +73,7 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "allProgramCache", allEntries = true)
 	public sk.kaspian.pes.openapi.model.v1.Program deactivateProgram(Long id) {
 		sk.kaspian.pes.model.Program program = programRepository.getOne(id);
 		program.setActive(Boolean.FALSE);

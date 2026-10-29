@@ -20,13 +20,13 @@ public class CardSpecification {
 
       if (StringUtils.hasText(f.getName())) {
         predicates.add(cb.like(
-            cb.lower(root.get("client_nick")),
+            cb.lower(root.<String>get("clientNick")),
             "%" + f.getName().toLowerCase() + "%"
         ));
       }
 
       if (StringUtils.hasText(f.getSex())) {
-        predicates.add(cb.equal(root.get("client_gender"), f.getSex()));
+        predicates.add(cb.equal(root.get("clientGender"), f.getSex()));
       }
 
       if (f.getActive() != null) {
@@ -35,18 +35,18 @@ public class CardSpecification {
 
       if (f.getTimeFrom() != null) {
         predicates.add(cb.greaterThanOrEqualTo(
-            root.get("client_birth_year"), f.getTimeFrom()
+            root.<String>get("clientBirthYear"), String.valueOf(f.getTimeFrom().getYear())
         ));
       }
 
       if (f.getTimeTo() != null) {
         predicates.add(cb.lessThanOrEqualTo(
-            root.get("client_birth_year"), f.getTimeTo()
+            root.<String>get("clientBirthYear"), String.valueOf(f.getTimeTo().getYear())
         ));
       }
 
       if (StringUtils.hasText(f.getCreatedBy())) {
-        predicates.add(cb.equal(root.get("created_by"), f.getCreatedBy()));
+        predicates.add(cb.equal(root.get("createdBy").get("username"), f.getCreatedBy()));
       }
 
       return cb.and(predicates.toArray(new Predicate[0]));
