@@ -1,6 +1,5 @@
 package sk.kaspian.pes.caching;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.stereotype.Component;
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;

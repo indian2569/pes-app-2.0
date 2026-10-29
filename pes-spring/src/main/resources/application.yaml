@@ -3,11 +3,6 @@ app:
     weightSumTolerance: 0.0005
 
 # /v3/api-docs is served by OpenAPIController from openapi/pes.yaml
-springdoc:
-  api-docs:
-    enabled: false
-  swagger-ui:
-    enabled: false
 
 spring:
   profiles:
