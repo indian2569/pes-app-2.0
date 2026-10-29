@@ -13,8 +13,8 @@ This document describes the architecture of the **PES (Portfolio Entry System)**
 
 | Layer | Technology | Version/Details |
 |-------|------------|-----------------|
-| Backend Framework | Spring Boot | 2.7.10 (from pom.xml parent) |
-| Java Runtime | Java | 11 (java.version=11 from properties) |
+| Backend Framework | Spring Boot | 3.2.5 (upgraded from 2.7.10) |
+| Java Runtime | Java | 21 (java.version=21 from properties) |
 | Frontend Framework | Angular | 16 with Standalone Components |
 | Web Server | Undertow | spring-boot-starter-undertow (Tomcat excluded) |
 | Database | PostgreSQL | With Flyway migrations at `db/specific/postgres/` |
@@ -71,6 +71,7 @@ pes-app-2.0/
 - **Service Layer**: Multiple domain-specific services for business logic
 - **Repository Layer**: JPA repositories for data access
 - **Security**: JWT authentication via Kaspiian Identity Provider
+- **Spring Boot Version**: 3.2.5 (upgraded from 2.7.10) - Requires Java 21+ and javax.* to java.* migration
 
 ### Frontend (Angular SPA)
 - **Module Pattern**: Domain-specific lazy-loaded modules
@@ -108,5 +109,5 @@ This documentation was generated through code inspection:
 - Verified JWT flow via Identity Provider + custom token issuance
 - Flyway migrations confirmed in `db/specific/postgres/`
 - Ehcache configured but disabled per configuration
-- Spring Boot 2.7.10, Java 11 (from pom.xml)
+- Spring Boot 3.2.5, Java 21 (from pom.xml)
 - Undertow web server (Tomcat excluded via exclusions)

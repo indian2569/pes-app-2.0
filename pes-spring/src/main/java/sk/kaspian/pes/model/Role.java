@@ -1,7 +1,6 @@
 package sk.kaspian.pes.model;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "roles")

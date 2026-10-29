@@ -2,6 +2,13 @@ app:
   validation:
     weightSumTolerance: 0.0005
 
+# /v3/api-docs is served by OpenAPIController from openapi/pes.yaml
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
 spring:
   profiles:
     active: postgres, dev
@@ -54,5 +61,6 @@ logging:
 
 bezkoder:
   app:
-    jwtSecret: bezKoderSecretKey
+    # base64-encoded, must decode to >= 64 bytes for HS512
+    jwtSecret: ${JWT_SECRET:XlIr8FM8mo7PpHTHGRwdKgbYCkRMQoOu2p49KbOqHhSo3AWT5RmwMHTl36xHlb7EzCAjG2OHY2AjOihxtBo+yw==}
     jwtExpirationMs: 1800000

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.10</version>
+		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>sk.kaspian.pes</groupId>
@@ -14,17 +14,14 @@
 	<name>pes-spring</name>
 	<description>PES aplication for Kaspian</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring-cloud.version>2020.0.3</spring-cloud.version>
+		<spring-cloud.version>2023.0.3</spring-cloud.version>
 		<lombok.version>1.18.48</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<groups>fast,it</groups>
 
-		<!-- Spring Boot Versions override -->
-		<hazelcast.version>3.12.12</hazelcast.version>
-		
 		<!-- non Spring Boot dependencies -->
 		<equalsverifier.version>3.5.5</equalsverifier.version><!-- 3.6.1,3.7.2,3.8 -->
 		<spring-admin-client.version>2.5.4</spring-admin-client.version>
@@ -98,15 +95,11 @@
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-hazelcast</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
 
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-common</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
 		</dependency>
 
 		<dependency>
@@ -154,12 +147,24 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-models</artifactId>
+			<artifactId>swagger-annotations-jakarta</artifactId>
 			<version>2.2.21</version>
 		</dependency>
 		<dependency>
@@ -170,7 +175,8 @@
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>3.8.1</version>
+			<version>3.10.8</version>
+			<classifier>jakarta</classifier>
 		</dependency>
 	</dependencies>
 
@@ -203,7 +209,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.3.0</version>
+				<version>7.5.0</version>
 				<executions>
 					<execution>
 						<id>generate-portfolio-server</id>
@@ -219,7 +225,9 @@
 								<apiPackage>sk.kaspian.pes.openapi.server.controller.v1</apiPackage>
 								<swaggerDocketConfig>false</swaggerDocketConfig>
 								<configPackage>sk.kaspian.pes.openapi.server.config</configPackage>
-								<useOptional>true</useOptional>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useJakartaEe>true</useJakartaEe>
+								<useOptional>false</useOptional>
 								<returnSuccessCode>false</returnSuccessCode>
 								<useTags>false</useTags>
 								<virtualService>false</virtualService>
@@ -227,6 +235,8 @@
 								<hideGenerationTimestamp>true</hideGenerationTimestamp>
 								<interfaceOnly>true</interfaceOnly>
 								<skipDefaultInterface>true</skipDefaultInterface>
+								<documentationProvider>springdoc</documentationProvider>
+								<annotationLibrary>swagger2</annotationLibrary>
 							</configOptions>
 						</configuration>
 					</execution>

@@ -1,32 +1,30 @@
 package sk.kaspian.pes.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import sk.kaspian.pes.model.enums.ContactEnum;
@@ -51,14 +49,12 @@ public class Entry extends SaveableObject {
 	@JoinTable(name = "pes_entry_clients",
     joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
     inverseJoinColumns = {@JoinColumn(name = "card_id", nullable = false, referencedColumnName = "id") })
-    @NotFound(action = NotFoundAction.IGNORE)
 	private List<Card> client;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pes_entry_card",
     joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
     inverseJoinColumns = {@JoinColumn(name = "card_id", nullable = false, referencedColumnName = "id") })
-    @NotFound(action = NotFoundAction.IGNORE)
 	private List<Card> clientsOnSite;
 
 	@Column(name = "entry_date_from")
@@ -88,14 +84,12 @@ public class Entry extends SaveableObject {
 	@JoinTable(name = "pes_entry_method",
 			joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
 			inverseJoinColumns = {@JoinColumn(name = "method_id", nullable = false, referencedColumnName = "id") })
-	@NotFound(action = NotFoundAction.IGNORE)
 	private List<Method> workMethods;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "pes_entry_coworker",
 			joinColumns = { @JoinColumn(name = "entry_id", nullable = false, referencedColumnName = "id") },
 			inverseJoinColumns = {@JoinColumn(name = "coworker_id", nullable = false, referencedColumnName = "id") })
-	@NotFound(action = NotFoundAction.IGNORE)
 	private List<Coworker> otherWorkers;
 	
 	@Column(name = "event_description")

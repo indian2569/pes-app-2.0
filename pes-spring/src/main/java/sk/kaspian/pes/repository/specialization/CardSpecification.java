@@ -3,7 +3,7 @@ package sk.kaspian.pes.repository.specialization;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import sk.kaspian.pes.model.Card;

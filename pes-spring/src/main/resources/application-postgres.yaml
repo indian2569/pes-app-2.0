@@ -9,7 +9,7 @@ spring:
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:Passw0rd}
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: ${DB_SHOW_SQL:false}
 #    properties.hibernate.default_schema: pes
   flyway:

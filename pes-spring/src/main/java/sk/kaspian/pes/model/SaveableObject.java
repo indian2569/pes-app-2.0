@@ -1,13 +1,11 @@
 package sk.kaspian.pes.model;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

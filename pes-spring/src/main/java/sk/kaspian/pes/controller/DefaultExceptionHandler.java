@@ -3,8 +3,8 @@ package sk.kaspian.pes.controller;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;

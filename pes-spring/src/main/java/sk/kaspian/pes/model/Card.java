@@ -1,6 +1,6 @@
 package sk.kaspian.pes.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

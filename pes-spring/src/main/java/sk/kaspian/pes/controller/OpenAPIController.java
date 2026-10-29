@@ -3,7 +3,7 @@ package sk.kaspian.pes.controller;
 import java.io.IOException;
 import java.time.Instant;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
