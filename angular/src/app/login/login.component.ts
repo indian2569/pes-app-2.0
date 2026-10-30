@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
-    if (this.tokenStorage.getToken()) {
+    if (this.tokenStorage.isAuthenticated()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.user()?.roles ?? [];
     }

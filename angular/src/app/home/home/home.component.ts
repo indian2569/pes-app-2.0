@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   isLoggedIn (): boolean {
-    return !!this.tokenStorageService.getToken();
+    return this.tokenStorageService.isAuthenticated();
   }
 
   redirectLoginUrl(): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HTTP_INTERCEPTORS, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -13,18 +13,15 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         return next.handle(req).pipe(
         catchError((err: HttpErrorResponse) => {
-           if ([401, 403].includes(err.status) && (this.isAuthRequest(req) || this.token.getToken())) {
-                // auto logout if 401 or 403 response returned from api
-                console.log(err.status);
+           // 401 means the session is no longer valid, so log out; 403 only means this action is not allowed
+           // for the user, the session stays and the caller handles the error
+           if (err.status === HttpStatusCode.Unauthorized && this.token.token() !== null) {
                 this.token.signOut();
             }
-          return throwError(err);
+          return throwError(() => err);
         })
       );
     }
-
-
-    private isAuthRequest = (request: HttpRequest<unknown>) => request.url.includes('token');
 }
 
 export const errorInterceptorProviders = [
