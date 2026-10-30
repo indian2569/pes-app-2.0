@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -9,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  form: any = {
+  form: { username: string | null; email: string | null; password: string | null } = {
     username: null,
     email: null,
     password: null
@@ -27,14 +28,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     const { username, email, password } = this.form;
 
-    this.authService.register(username, email, password).pipe(takeUntil(this.onDestroy$))
+    this.authService.register(username ?? '', email ?? '', password ?? '').pipe(takeUntil(this.onDestroy$))
     .subscribe(
       data => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
-      err => {
-        this.errorMessage = err.error.message;
+      (err: HttpErrorResponse) => {
+        this.errorMessage = err.error?.message ?? err.message;
         this.isSignUpFailed = true;
       }
     );

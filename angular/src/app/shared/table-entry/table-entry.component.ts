@@ -1,14 +1,15 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
 import { EntryDTO } from '../../model/EntryDTO';
 import { PageDTO } from '../../model/PageDTO';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { MatTable } from '@angular/material/table';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DialogAction, DialogBoxComponent, DialogBoxData, DialogBoxResult } from '../dialog-box/dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryService } from '../../entry/entry.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { isNil } from '../utils/is-nil';
 
 @Component({
   selector: 'app-table-entry',
@@ -16,53 +17,49 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./table-entry.component.scss'],
 })
 
-export class TableEntryComponent implements OnInit, OnDestroy {
-  @Input() tableData: EntryDTO[];
-  @Input() addButton: boolean;
+export class TableEntryComponent implements OnChanges, OnDestroy {
+  @Input() tableData: EntryDTO[] | null = null;
+  @Input() addButton = false;
   // paging is optional: the paginator is shown only when the parent passes server paging info
-  @Input() pageble: PageDTO;
+  @Input() pageble: PageDTO | null = null;
   @Output() pageChange = new EventEmitter<PageEvent>();
 
   displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'createdBy', 'action'];
-  dataSource: EntryDTO[];
-  expandedElement: EntryDTO | null;
+  dataSource: EntryDTO[] = [];
+  expandedElement: EntryDTO | null = null;
   onDestroy$ = new Subject();
 
-  @ViewChild(MatTable, {static: false} ) table: MatTable<any>;
+  @ViewChild(MatTable, {static: false} ) table?: MatTable<EntryDTO>;
   constructor(private router: Router, public dialog: MatDialog,
                 private entryService: EntryService,) {}
 
-  ngOnInit(): void {
-      this.dataSource = this.tableData;
+  // the table shows dataSource, so a deleted row disappears right away
+  ngOnChanges(): void {
+      this.dataSource = isNil(this.tableData) ? [] : [...this.tableData];
   }
 
-  redirectUrl(obj_row): void {
+  redirectUrl(obj_row: EntryDTO): void {
      this.router.navigate([`/entry_line/` + obj_row.id]);
   }
 
-  openDialog (action, obj) {
-    obj.action = action;
-    obj.actionType = 8;
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+  openDialog (action: DialogAction, row: EntryDTO | Record<string, never>) {
+    const dialogRef = this.dialog.open<DialogBoxComponent, DialogBoxData, DialogBoxResult>(DialogBoxComponent, {
       width: '720px',
       height : 'auto',
-      data: obj
+      data: { action, actionType: 8, row }
   });
 
   dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      if (result?.event === 'Delete') {
-        this.deleteRowData(result.data);
+      if (result?.event === 'Delete' && !isNil(row.id)) {
+        this.deleteRowData(row.id);
       }
     });
   }
 
-  deleteRowData(row_obj: any) {
-        this.entryService.deleteEntry(row_obj.id).pipe(takeUntil(this.onDestroy$))
-            .subscribe(sub => {
-                this.dataSource = this.dataSource.filter((value, key) => {
-                    return value.id !== row_obj.id;
-                });
-                this.table.renderRows();
+  deleteRowData(id: number) {
+        this.entryService.deleteEntry(id).pipe(takeUntil(this.onDestroy$))
+            .subscribe(() => {
+                this.dataSource = this.dataSource.filter(value => value.id !== id);
             });
     }
 
@@ -71,4 +68,3 @@ export class TableEntryComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 }
-

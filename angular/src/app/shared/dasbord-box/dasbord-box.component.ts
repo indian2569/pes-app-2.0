@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DasbordBoxComponent implements OnInit {
 
-  @Input()  displayName: String;
-  @Input()  displayValue: String;
+  @Input()  displayName = '';
+  @Input()  displayValue: string | number = '';
 
   constructor() { }
 

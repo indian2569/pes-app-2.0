@@ -1,32 +1,35 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { UntypedFormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { SettingDTO } from '../../model/SettingDTO';
+
+export interface EntityDialogResult {
+  event: 'close';
+  data: Partial<SettingDTO>;
+}
+
 @Component({
   selector: 'app-entity-dialog',
   templateUrl: './entity-dialog.component.html',
   styleUrls: ['./entity-dialog.component.scss']
 })
-export class EntityDialogComponent implements OnInit {
+export class EntityDialogComponent {
 
-  formGroup: UntypedFormGroup;
-  description: string;
+  formGroup: FormGroup<{ name: FormControl<string | null>, description: FormControl<string | null> }>;
+  description = 'Test';
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EntityDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data) {
-  }
-
-  ngOnInit(): void {
+    private dialogRef: MatDialogRef<EntityDialogComponent, EntityDialogResult>) {
     this.formGroup = this.fb.group({
-      name: new FormControl(),
-      description: new FormControl(),
+      name: new FormControl<string | null>(null),
+      description: new FormControl<string | null>(null),
     });
-    this.description = 'Test';
   }
 
   save() {
-    this.dialogRef.close({event: 'close', data: this.formGroup.value});
+    const { name, description } = this.formGroup.getRawValue();
+    this.dialogRef.close({event: 'close', data: { name: name ?? '', description: description ?? '' }});
   }
 
   close() {

@@ -1,4 +1,4 @@
 export interface TableHeaderDTO {
-    display: String;
-    key: String;
+    display: string;
+    key: string;
 }

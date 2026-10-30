@@ -16,8 +16,8 @@ export interface EntryFilterParams {
   place?: string;
   campaign?: string;
   program?: string;
-  yearfrom?: string;
-  yearto?: string;
+  yearfrom?: string | null;
+  yearto?: string | null;
   author?: string;
 }
 
@@ -35,11 +35,11 @@ export class EntryService {
     return this.http.post<EntryDTO>(EntryService.ENTRY_API_URL + '/save', entry, { context: this.CONTEXT });
   }
 
-  public getEntry(code: string):  Observable<EntryDTO> {
+  public getEntry(code: string | number):  Observable<EntryDTO> {
     return this.http.get<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`, { context: this.CONTEXT });
   }
 
-  deleteEntry(code: string): Observable<EntryDTO> {
+  deleteEntry(code: string | number): Observable<EntryDTO> {
     return this.http.delete<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 

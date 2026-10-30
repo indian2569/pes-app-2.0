@@ -1,5 +1,6 @@
 import {computed, Injectable, signal} from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthUserDTO } from '../model/AuthUserDTO';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -11,7 +12,7 @@ export class TokenStorageService {
 
   // 🔐 signals
   private _token = signal<string | null>(null);
-  private _user = signal<any | null>(null);
+  private _user = signal<AuthUserDTO | null>(null);
 
   // derived state
   isAuthenticated = computed(() => !!this._user());
@@ -47,7 +48,7 @@ export class TokenStorageService {
     return window.sessionStorage.getItem(TOKEN_KEY);
   }
 
-  public saveUser(user: any): void {
+  public saveUser(user: AuthUserDTO): void {
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     this._user.set(user);
   }

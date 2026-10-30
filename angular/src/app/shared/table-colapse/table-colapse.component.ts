@@ -1,12 +1,13 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
+import { SettingDTO } from '../../model/SettingDTO';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { SettingService } from '../../setting/setting.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as _ from "lodash";
+import { isNil } from '../utils/is-nil';
 import { CardService } from '../../card/card.service';
 import { EntryService } from '../../entry/entry.service';
 
@@ -25,12 +26,12 @@ import { EntryService } from '../../entry/entry.service';
 
   export class TableColapseComponent implements OnInit, OnDestroy {
 
-    @Input() tableData: InstitutionDTO[];
-    @Input() typeNumber: number;
-    dataSource: InstitutionDTO[];
+    @Input() tableData: InstitutionDTO[] = [];
+    @Input() typeNumber = 0;
+    dataSource: InstitutionDTO[] = [];
     columnsToDisplay = ['name'];
-    expandedElement: InstitutionDTO | null;
-    result = '';
+    expandedElement: InstitutionDTO | null = null;
+    result = false;
     onDestroy$ = new Subject();
 
   constructor(private dialog: MatDialog,
@@ -39,7 +40,7 @@ import { EntryService } from '../../entry/entry.service';
               private entryService: EntryService) { }
 
     ngOnInit(): void {
-      this.dataSource = _.isNil(this.tableData) ? [] : this.tableData;
+      this.dataSource = isNil(this.tableData) ? [] : this.tableData;
       this.columnsSetUpBaseOnType(this.typeNumber);
     }
 
@@ -66,8 +67,8 @@ import { EntryService } from '../../entry/entry.service';
      }
   }
 
-    editItem(id: number) {
-        let editItem;
+    editItem(id: string) {
+        let editItem: SettingDTO | undefined;
         switch (this.typeNumber) {
             case 1:
                 this.settingService.getInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))
@@ -96,7 +97,7 @@ import { EntryService } from '../../entry/entry.service';
         }
     }
 
-  confirmDialog(id: number): void {
+  confirmDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '500px'
     });
@@ -105,15 +106,15 @@ import { EntryService } from '../../entry/entry.service';
     dialogRef.componentInstance.btnOkText = 'Vymazať'; 
     dialogRef.componentInstance.btnCancelText = 'Spať';
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$))
-      .subscribe(dialogResult => {
-      this.result = dialogResult;
+      .subscribe((dialogResult: boolean | undefined) => {
+      this.result = dialogResult === true;
       if (this.result) {
         this.deleteItem(id);
       }
     });
   }
 
-    deleteItem(id: number) {
+    deleteItem(id: string) {
         switch (this.typeNumber) {
             case 1:
                 this.settingService.deleteInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))

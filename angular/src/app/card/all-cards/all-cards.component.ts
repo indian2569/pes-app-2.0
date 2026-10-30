@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CardPageDTO } from '../../model/CardPageDTO';
-import { CardService } from '../card.service';
+import { CardFilterParams, CardService } from '../card.service';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 import { PageEvent } from '@angular/material/paginator';
 
 const DEFAULT_FILTER = {
   name: '',
   gender: '',
-  yearFrom: null,
-  yearTo: null,
+  yearFrom: null as number | null,
+  yearTo: null as number | null,
   author: '',
   sortBy: 'clientNick',
   sortOrder: 'ASC'
@@ -23,8 +23,8 @@ const DEFAULT_FILTER = {
 })
 export class AllCardsComponent implements OnInit, OnDestroy {
 
-  cardData: CardPageDTO;
-  filterForm: FormGroup;
+  cardData: CardPageDTO | null = null;
+  filterForm = this.fb.nonNullable.group({ ...DEFAULT_FILTER });
   pageNumber = 0;
   pageSize = 20;
 
@@ -35,7 +35,6 @@ export class AllCardsComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private cardService: CardService) { }
 
   ngOnInit(): void {
-    this.filterForm = this.fb.group({ ...DEFAULT_FILTER });
     this.load$.pipe(
       switchMap(() => this.cardService.getAllCards(this.buildRequest())),
       takeUntil(this.onDestroy$)
@@ -65,8 +64,8 @@ export class AllCardsComponent implements OnInit, OnDestroy {
   }
 
   // maps the form onto the query parameters of GET /api/card/allCards
-  private buildRequest(): any {
-    const filters = this.filterForm.value;
+  private buildRequest(): CardFilterParams {
+    const filters = this.filterForm.getRawValue();
     return {
       page_number: this.pageNumber,
       page_size: this.pageSize,

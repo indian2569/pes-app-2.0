@@ -20,12 +20,12 @@ import { ProgramDTO } from '../../model/ProgramDTO';
 })
 export class LookupService {
 
-  private campaigns$: Observable<CampaignDTO[]>;
-  private coworkers$: Observable<CoworkerDTO[]>;
-  private events$: Observable<EventDTO[]>;
-  private institutions$: Observable<InstitutionDTO[]>;
-  private methods$: Observable<MethodsDTO[]>;
-  private programs$: Observable<ProgramDTO[]>;
+  private campaigns$?: Observable<CampaignDTO[]>;
+  private coworkers$?: Observable<CoworkerDTO[]>;
+  private events$?: Observable<EventDTO[]>;
+  private institutions$?: Observable<InstitutionDTO[]>;
+  private methods$?: Observable<MethodsDTO[]>;
+  private programs$?: Observable<ProgramDTO[]>;
 
   constructor(private settingService: SettingService) { }
 

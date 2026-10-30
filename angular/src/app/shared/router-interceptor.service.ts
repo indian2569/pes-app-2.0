@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationError } from '@angular/router';
+import { Event, NavigationError } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class RouterInterceptorService {
     this.targetUrl = location.href;
    }
 
-   handleEvent(event): void {
+   handleEvent(event: Event): void {
     if (event instanceof NavigationError && event.error.status === 401) {
       const redirectUrl: string = event.error.headers.get('sso-login-url');
       if (redirectUrl) {

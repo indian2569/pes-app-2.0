@@ -8,10 +8,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 })
 export class ConfirmDialogComponent implements OnInit {
 
-  @Input() title: string;
-  @Input() message: string;
-  @Input() btnOkText: string;
-  @Input() btnCancelText: string;
+  @Input() title = '';
+  @Input() message = '';
+  @Input() btnOkText = '';
+  @Input() btnCancelText = '';
 
   constructor(private activeModal: MatDialogRef<ConfirmDialogComponent>) { }
 

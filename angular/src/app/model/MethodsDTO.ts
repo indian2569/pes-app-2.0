@@ -1,12 +1,3 @@
-import { UserDTO } from "./UserDTO";
+import { SettingDTO } from "./SettingDTO";
 
-export interface MethodsDTO {
-    id: number;
-    name: String;
-    description: String;
-    active?: Boolean;
-    createdBy?: UserDTO;
-    created?: string;
-    updated?: string;
-    last_change?: UserDTO;
-}
+export type MethodsDTO = SettingDTO;

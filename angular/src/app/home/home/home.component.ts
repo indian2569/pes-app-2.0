@@ -5,20 +5,21 @@ import { TokenStorageService } from '../../_services/token-storage.service';
 import { EntryService } from '../../entry/entry.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { EntryDTO } from '../../model/EntryDTO';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   title = 'Demo';
   content?: string;
   boxName1 = 'Nedavno pridane';
   boxName2 = 'Pridane tento mesiac';
   boxName3 = 'Vytvorene celkom';
-  records = [];
+  records: EntryDTO[] = [];
 
   onDestroy$ = new Subject();
 
@@ -31,6 +32,11 @@ export class HomeComponent implements OnInit {
     this.entryService.getAllEntrysByCard().pipe(takeUntil(this.onDestroy$))
     .subscribe(entrys => this.records = entrys);
 
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 
   isLoggedIn (): boolean {

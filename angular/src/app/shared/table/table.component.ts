@@ -2,17 +2,23 @@ import {Component, ViewChild, Input, OnInit, OnDestroy, AfterViewInit} from '@an
 
 import { MatTableDataSource} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DialogAction, DialogBoxComponent, DialogBoxData, DialogBoxResult } from '../dialog-box/dialog-box.component';
 
 import { SettingService } from '../../setting/setting.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import { CoworkerDTO } from '../../model/CoworkerDTO';
+import { isNil } from '../utils/is-nil';
 
-export interface UsersData {
-  name: string;
-  id: number;
+/** Rows of the setting tables; only coworkers (type 5) have a position. */
+type SettingRow = CoworkerDTO;
+
+interface SettingApi {
+  getAll(): Observable<SettingRow[]>;
+  save(item: SettingRow): Observable<SettingRow>;
+  delete(id: string): Observable<SettingRow>;
 }
 
 @Component({
@@ -22,10 +28,10 @@ export interface UsersData {
 })
 export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input() typeNumber: number;
+  @Input() typeNumber = 0;
   @Input() showFilter: boolean = false;
 
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<SettingRow>([]);
   displayedColumns: string[] = [];
   havePosition = false;
   onDestroy$ = new Subject<void>();
@@ -62,18 +68,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // --- Load data from service
   private loadData(): void {
-    const serviceMap: any = {
-      1: this.settingService.getAllInstitutions.bind(this.settingService),
-      2: this.settingService.getAllCampaigns.bind(this.settingService),
-      3: this.settingService.getAllMethods.bind(this.settingService),
-      4: this.settingService.getAllPrograms.bind(this.settingService),
-      5: this.settingService.getAllCoworkers.bind(this.settingService),
-      6: this.settingService.getAllEvents.bind(this.settingService),
-    };
-
-    const serviceFn = serviceMap[this.typeNumber];
-    if (serviceFn) {
-      serviceFn().pipe(takeUntil(this.onDestroy$)).subscribe(res => {
+    const service = this.getServiceMethods();
+    if (service) {
+      service.getAll().pipe(takeUntil(this.onDestroy$)).subscribe(res => {
         this.dataSource.data = res;
       });
     }
@@ -86,63 +83,63 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // --- Open Dialog for Add / Update / Delete
-  openDialog(action: string, obj: any): void {
-    obj.action = action;
-    obj.actionType = this.typeNumber;
-
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+  openDialog(action: DialogAction, row: Partial<SettingRow>): void {
+    const dialogRef = this.dialog.open<DialogBoxComponent, DialogBoxData, DialogBoxResult>(DialogBoxComponent, {
       width: '720px',
       maxWidth: '95vw',
-      data: obj
+      data: { action, actionType: this.typeNumber, row }
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      if (!result) return;
-      if (result.event === 'Add') this.addRow(result.data);
-      else if (result.event === 'Update') this.updateRow(result.data);
-      else if (result.event === 'Delete') this.deleteRow(result.data);
+      if (!result || result.event === 'Cancel') return;
+      // keep the fields the dialog doesn't edit (active, audit fields) when saving
+      const item: SettingRow = { ...row, ...result.data };
+      if (result.event === 'Add') this.addRow(item);
+      else if (result.event === 'Update') this.updateRow(item);
+      else if (result.event === 'Delete') this.deleteRow(item);
     });
   }
 
   // --- CRUD Operations
-  private getServiceMethods(): any {
-    const serviceMap: any = {
-      1: { save: this.settingService.saveInstitution.bind(this.settingService), delete: this.settingService.deleteInstitution.bind(this.settingService) },
-      2: { save: this.settingService.saveCampaign.bind(this.settingService), delete: this.settingService.deleteCampaign.bind(this.settingService) },
-      3: { save: this.settingService.saveMethod.bind(this.settingService), delete: this.settingService.deleteMethod.bind(this.settingService) },
-      4: { save: this.settingService.saveProgram.bind(this.settingService), delete: this.settingService.deleteProgram.bind(this.settingService) },
-      5: { save: this.settingService.saveCoworker.bind(this.settingService), delete: this.settingService.deleteCoworker.bind(this.settingService) },
-      6: { save: this.settingService.saveEvent.bind(this.settingService), delete: this.settingService.deleteEvent.bind(this.settingService) },
+  private getServiceMethods(): SettingApi | undefined {
+    const s = this.settingService;
+    const serviceMap: Record<number, SettingApi> = {
+      1: { getAll: () => s.getAllInstitutions(), save: item => s.saveInstitution(item), delete: id => s.deleteInstitution(id) },
+      2: { getAll: () => s.getAllCampaigns(), save: item => s.saveCampaign(item), delete: id => s.deleteCampaign(id) },
+      3: { getAll: () => s.getAllMethods(), save: item => s.saveMethod(item), delete: id => s.deleteMethod(id) },
+      4: { getAll: () => s.getAllPrograms(), save: item => s.saveProgram(item), delete: id => s.deleteProgram(id) },
+      5: { getAll: () => s.getAllCoworkers(), save: item => s.saveCoworker(item), delete: id => s.deleteCoworker(id) },
+      6: { getAll: () => s.getAllEvents(), save: item => s.saveEvent(item), delete: id => s.deleteEvent(id) },
     };
     return serviceMap[this.typeNumber];
   }
 
-  private addRow(data: any): void {
-    const service = this.getServiceMethods();
-    service.save(data).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
+  private addRow(data: SettingRow): void {
+    this.getServiceMethods()?.save(data).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
       this.dataSource.data = [...this.dataSource.data, res];
     });
   }
 
-  private updateRow(data: any): void {
-    const service = this.getServiceMethods();
-    service.save(data).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
+  private updateRow(data: SettingRow): void {
+    this.getServiceMethods()?.save(data).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
       this.dataSource.data = this.dataSource.data.map(row => row.id === res.id ? res : row);
     });
   }
 
-  private deleteRow(data: any): void {
-    const service = this.getServiceMethods();
-    service.delete(data.id).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      this.dataSource.data = this.dataSource.data.filter(row => row.id !== data.id);
+  private deleteRow(data: SettingRow): void {
+    const id = data.id;
+    if (isNil(id)) {
+      return;
+    }
+    this.getServiceMethods()?.delete(id).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.dataSource.data = this.dataSource.data.filter(row => row.id !== id);
     });
   }
 
   // --- Toggle active state
-  activateToggle(row: any): void {
-    const service = this.getServiceMethods();
+  activateToggle(row: SettingRow): void {
     const payload = { ...row, active: !row.active };
-    service.save(payload).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
+    this.getServiceMethods()?.save(payload).pipe(takeUntil(this.onDestroy$)).subscribe(res => {
       this.dataSource.data = this.dataSource.data.map(r => r.id === res.id ? res : r);
     });
   }

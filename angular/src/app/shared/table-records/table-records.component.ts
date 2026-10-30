@@ -4,14 +4,10 @@ import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryDTO } from '../../model/EntryDTO';
 
-import * as _ from "lodash";
+import { isNil } from '../utils/is-nil';
 import { EntryService } from '../../entry/entry.service';
 
-export interface UsersData {
-  name: string;
-  id: number;
-}
-
+// TODO: component is not used yet, its row actions are not implemented
 @Component({
   selector: 'app-table-records',
   templateUrl: './table-records.component.html',
@@ -19,30 +15,34 @@ export interface UsersData {
 })
 export class TableRecordsComponent implements OnInit {
 
-  dataSource: any[];
+  dataSource: EntryDTO[] = [];
   havePosition = false;
 
-  @ViewChild(MatTable, {static: true} ) table: MatTable<any>;
-  @Input() tableData: EntryDTO[];
+  @ViewChild(MatTable, {static: true} ) table?: MatTable<EntryDTO>;
+  @Input() tableData: EntryDTO[] | null = null;
 
-  displayedColumns: string[];
+  displayedColumns: string[] = ['entry_date_from', 'place', 'duration' , 'createdBy', 'program_type', 'action'];
   constructor(public dialog: MatDialog,
               private entryService: EntryService) {}
 
   ngOnInit(): void {
-    this.displayedColumns = ['entry_date_from', 'place', 'duration' , 'createdBy', 'program_type', 'action'];
-      this.dataSource = _.isNil(this.tableData) ? [] : this.tableData;
+      this.dataSource = isNil(this.tableData) ? [] : this.tableData;
   }
 
-  addRowData(row_obj) {
-
-  }
-
-  updateRowData(row_obj) {
+  // TODO: open the update/delete dialog, the template already binds the buttons to it
+  openDialog(action: 'Update' | 'Delete', row_obj: EntryDTO) {
 
   }
 
-  deleteRowData(row_obj) {
+  addRowData(row_obj: EntryDTO) {
+
+  }
+
+  updateRowData(row_obj: EntryDTO) {
+
+  }
+
+  deleteRowData(row_obj: EntryDTO) {
 
   }
 

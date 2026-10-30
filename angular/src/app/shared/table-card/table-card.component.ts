@@ -1,13 +1,13 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DialogAction, DialogBoxComponent, DialogBoxData, DialogBoxResult } from '../dialog-box/dialog-box.component';
 import { MatTable } from '@angular/material/table';
 import { CardService } from '../../card/card.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import * as _ from "lodash";
+import { isNil } from '../utils/is-nil';
 import { PageEvent } from '@angular/material/paginator';
 import { PageDTO } from '../../model/PageDTO';
 
@@ -17,71 +17,73 @@ import { PageDTO } from '../../model/PageDTO';
   styleUrls: ['./table-card.component.scss']
 })
 
-export class TableCardComponent implements OnInit, OnDestroy {
+export class TableCardComponent implements OnChanges, OnDestroy {
 
 
-    @Input() tableData: CardBasicDTO[];
-    @Input() pageble: PageDTO;
-    @Output() pageChange = new EventEmitter<any>();
+    @Input() tableData: CardBasicDTO[] | null = null;
+    @Input() pageble: PageDTO | null = null;
+    @Output() pageChange = new EventEmitter<PageEvent>();
     displayedColumns: string[] = ['client_nick', 'client_gender', 'client_age', 'client_birth_year', 'cratedBy', 'status', 'action'];
-    dataSource: CardBasicDTO[];
+    dataSource: CardBasicDTO[] = [];
     onDestroy$ = new Subject();
 
-    @ViewChild(MatTable, {static: false} ) table: MatTable<any>;
-  pageEvent: PageEvent;
-  length: number;
-  pageSize: number;
-  pageIndex: number;
+    @ViewChild(MatTable, {static: false} ) table?: MatTable<CardBasicDTO>;
+  pageEvent?: PageEvent;
+  length = 0;
+  pageSize = 0;
+  pageIndex = 0;
     constructor(public dialog: MatDialog,
                 private cardService: CardService,
                 private router: Router) {
                 }
 
-    ngOnInit(): void {
-      this.dataSource = _.isNil(this.tableData) ? [] : this.tableData;
+    // the table shows dataSource, so rows removed or toggled here stay in sync with new pages from the parent
+    ngOnChanges(): void {
+      this.dataSource = isNil(this.tableData) ? [] : [...this.tableData];
     }
 
-    redirectUrl(obj_row): void {
+    redirectUrl(obj_row: CardBasicDTO): void {
      this.router.navigate([`/card_line/` + obj_row.id]);
     }
 
   redirectUrlNew(): void {
-    this.router.navigate([`/card_line/add_card`]);
+    this.router.navigate([`/card_line/add_cards`]);
   }
 
-    openDialog (action, obj) {
-    obj.action = action;
-    obj.actionType = 7;
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+    openDialog (action: DialogAction, row: CardBasicDTO) {
+    const dialogRef = this.dialog.open<DialogBoxComponent, DialogBoxData, DialogBoxResult>(DialogBoxComponent, {
       width: '720px',
       height : 'auto',
-      data: obj
+      data: { action, actionType: 7, row }
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
       if (result?.event === 'Delete') {
-        this.deleteRowData(result.data);
+        this.deleteRowData(row);
       }
     });
   }
 
-  deleteRowData(row_obj: any) {
+  deleteRowData(row_obj: CardBasicDTO) {
+    if (isNil(row_obj.id)) {
+      return;
+    }
     this.cardService.deleteCard(row_obj.id).pipe(takeUntil(this.onDestroy$))
-    .subscribe(sub => {
-        this.dataSource = this.dataSource.filter((value, key) => {
-        return value.id !== row_obj.id;
-        });
-        this.table.renderRows();
+    .subscribe(() => {
+        this.dataSource = this.dataSource.filter(value => value.id !== row_obj.id);
     });
   }
 
-  activateTogle(row_obj: any) {
+  activateTogle(row_obj: CardBasicDTO) {
+    if (isNil(row_obj.id)) {
+      return;
+    }
     this.cardService.togleActivateCards(row_obj.id).pipe(takeUntil(this.onDestroy$))
     .subscribe(updatedCard => {
         const index = this.dataSource.findIndex(c => c.id === updatedCard.id);
         if (index > -1) {
             this.dataSource[index] = updatedCard;
-            this.table.renderRows();
+            this.table?.renderRows();
         }
     });
   }

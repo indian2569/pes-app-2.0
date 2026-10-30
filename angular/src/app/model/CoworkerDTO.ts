@@ -1,13 +1,5 @@
-import { UserDTO } from "./UserDTO";
+import { SettingDTO } from "./SettingDTO";
 
-export interface CoworkerDTO {
-    id: number;
-    name: String;
-    description: String;
-    position?: String;
-    active?: Boolean;
-    createdBy?: UserDTO;
-    created?: string;
-    updated?: string;
-    last_change?: UserDTO;
+export interface CoworkerDTO extends SettingDTO {
+    position?: string;
 }

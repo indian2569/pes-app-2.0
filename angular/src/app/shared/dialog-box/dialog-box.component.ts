@@ -1,12 +1,33 @@
 import { Component, Inject, Optional, Input, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as _ from "lodash";
+import { isNil } from '../utils/is-nil';
 import {  FormGroup, FormControl } from '@angular/forms';
+import { CardBasicDTO } from '../../model/CardBasicDTO';
+import { CoworkerDTO } from '../../model/CoworkerDTO';
+import { EntryDTO } from '../../model/EntryDTO';
+import { SettingDTO } from '../../model/SettingDTO';
 
-export interface UsersData {
-  name: string;
-  id: number;
+export type DialogAction = 'Add' | 'Update' | 'Delete';
+
+/**
+ * Data passed to the dialog.
+ * actionType: 1 institution, 2 campaign, 3 method, 4 program, 5 coworker, 6 event, 7 card, 8 entry.
+ */
+export interface DialogBoxData {
+  action: DialogAction;
+  actionType: number;
+  row: Partial<SettingDTO> | CoworkerDTO | CardBasicDTO | EntryDTO;
 }
+
+/** Values of the dialog form, the shape of a setting item. */
+export interface DialogBoxValue {
+  id?: string;
+  name: string;
+  description: string;
+  position?: string;
+}
+
+export type DialogBoxResult = { event: DialogAction, data: DialogBoxValue } | { event: 'Cancel' };
 
 @Component({
   selector: 'app-dialog-box',
@@ -15,75 +36,77 @@ export interface UsersData {
 })
 export class DialogBoxComponent implements OnInit {
 
-  local_data: any;
-  @Input() action: string;
-  @Input() data: any;
-  @Input() actionType: number;
-  reportForm: FormGroup;
-  buttonText: string;
-  descriptionText: string;
+  @Input() action: DialogAction = 'Add';
+  @Input() data: DialogBoxValue;
+  @Input() actionType = 0;
+  reportForm = new FormGroup({
+    id: new FormControl<string | undefined>(undefined, { nonNullable: true }),
+    name: new FormControl('', { nonNullable: true }),
+    description: new FormControl('', { nonNullable: true }),
+    position: new FormControl('', { nonNullable: true })
+  });
+  buttonText = '';
+  descriptionText = '';
   constructor(
-    public dialogRef: MatDialogRef<DialogBoxComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public dataValue: UsersData) {
-    this.local_data = { ...this.dataValue };
-    this.action = this.local_data.action;
-    this.actionType = this.local_data.actionType;
-    this.data = this.fillInputData(this.local_data);
+    public dialogRef: MatDialogRef<DialogBoxComponent, DialogBoxResult>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public dataValue: DialogBoxData | null) {
+    if (!isNil(this.dataValue)) {
+      this.action = this.dataValue.action;
+      this.actionType = this.dataValue.actionType;
+    }
+    this.data = this.fillInputData(this.dataValue?.row);
 
   }
 
   ngOnInit(): void {
-    this.reportForm = this.generateFormGroup(this.actionType);
+    this.reportForm.reset({ position: '', ...this.data });
     this.initButtonText(this.actionType);
     this.initDescriptionText(this.actionType);
   }
 
   doAction() {
-    this.dialogRef.close({event: this.action, data: this.reportForm.getRawValue()});
+    const { position, ...value } = this.reportForm.getRawValue();
+    // only coworkers have a position
+    const data: DialogBoxValue = this.actionType === 5 ? { ...value, position } : value;
+    this.dialogRef.close({event: this.action, data });
   }
 
   closeDialog() {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  generateFormGroup(type: number): FormGroup {
-    if (!_.isNil(type) && type === 5) {
-      return new FormGroup ({
-      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
-      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
-      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description),
-      position: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.position)});
-    } else {
-    return new FormGroup ({
-      id: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.id),
-      name: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.name),
-      description: _.isNil(this.data) ?  new FormControl() :  new FormControl(this.data.description)});
+  fillInputData(userInput: DialogBoxData['row'] | undefined): DialogBoxValue {
+    if (isNil(userInput)) {
+      return { name: '', description: '' };
     }
-  }
-
-  fillInputData(userInput): any {
     if (this.actionType === 7) {
+      const card = userInput as CardBasicDTO;
       return {
-      id: userInput.id,
-      name: userInput.client_nick
+      id: card.id?.toString(),
+      name: card.client_nick ?? '',
+      description: ''
     };
     } else if (this.actionType === 8) {
+      const entry = userInput as EntryDTO;
       return {
-        id: userInput.id,
-        name: userInput.place + ' ' + (_.isNil(userInput.program_type) ? '' : userInput.program_type.name) + ' ' + userInput.entry_date_from
+        id: entry.id?.toString(),
+        name: entry.place + ' ' + (isNil(entry.program_type) ? '' : entry.program_type.name) + ' ' + entry.entry_date_from,
+        description: ''
       };
     } else if (this.actionType === 5) {
+      const coworker = userInput as Partial<CoworkerDTO>;
       return {
-        id: userInput.id,
-        name: userInput.name,
-        position: userInput.position,
-        description: userInput.description
+        id: coworker.id,
+        name: coworker.name ?? '',
+        position: coworker.position,
+        description: coworker.description ?? ''
       };
     } else {
+      const setting = userInput as Partial<SettingDTO>;
       return {
-        id: userInput.id,
-        name: userInput.name,
-        description: userInput.description
+        id: setting.id,
+        name: setting.name ?? '',
+        description: setting.description ?? ''
       };
     }
   }

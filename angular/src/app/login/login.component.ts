@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  form: any = {
+  form: { username: string | null; password: string | null } = {
     username: null,
     password: null
   };
@@ -30,14 +31,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.roles = this.tokenStorage.user().roles;
+      this.roles = this.tokenStorage.user()?.roles ?? [];
     }
   }
 
   onSubmit(): void {
     const { username, password } = this.form;
     this.loading = true;
-    this.authService.login(username, password)
+    this.authService.login(username ?? '', password ?? '')
       .pipe(takeUntil(this.onDestroy$)).subscribe(
       data => {
 
@@ -46,12 +47,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.user().roles;
-        this.user = username;
+        this.roles = this.tokenStorage.user()?.roles ?? [];
+        this.user = username ?? '';
         this.loading = false;
       },
-      err => {
-        this.errorMessage = err.error.message;
+      (err: HttpErrorResponse) => {
+        this.errorMessage = err.error?.message ?? err.message;
         this.isLoginFailed = true;
         this.loading = false;
       }

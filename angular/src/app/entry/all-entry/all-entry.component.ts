@@ -8,12 +8,12 @@ import { ProgramDTO } from '../../model/ProgramDTO';
 import { LookupService } from '../../shared/lookup/lookup.service';
 import { Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 
 const DEFAULT_FILTER = {
   place: '',
-  timeFrom: null,
-  timeTo: null,
+  timeFrom: null as Date | null,
+  timeTo: null as Date | null,
   campaign: '',
   program: '',
   author: '',
@@ -29,12 +29,12 @@ const DEFAULT_FILTER = {
 export class AllEntryComponent implements OnInit, OnDestroy {
 
 
-  filterForm: FormGroup;
+  filterForm = this.fb.nonNullable.group({ ...DEFAULT_FILTER });
 
   campaigns$: Observable<CampaignDTO[]>;
   programs$: Observable<ProgramDTO[]>;
 
-  entryData: EntryPageDTO;
+  entryData: EntryPageDTO | null = null;
   pageNumber = 0;
   pageSize = 20;
   // switchMap drops responses of older requests, so a slow request can't overwrite newer results
@@ -44,12 +44,11 @@ export class AllEntryComponent implements OnInit, OnDestroy {
   constructor(private entryService: EntryService,
               private lookupService: LookupService,
               private fb: FormBuilder,) {
-    this.filterForm = this.fb.group({ ...DEFAULT_FILTER });
+    this.campaigns$ = this.lookupService.getCampaigns();
+    this.programs$ = this.lookupService.getPrograms();
    }
 
   ngOnInit(): void {
-    this.campaigns$ = this.lookupService.getCampaigns();
-    this.programs$ = this.lookupService.getPrograms();
     this.load$.pipe(
       switchMap(() => this.entryService.getAllEntrys(this.buildRequest())),
       takeUntil(this.onDestroy$)
@@ -80,7 +79,7 @@ export class AllEntryComponent implements OnInit, OnDestroy {
 
   // maps the form onto the query parameters of GET /api/entry/allEntrys
   private buildRequest(): EntryFilterParams {
-    const filters = this.filterForm.value;
+    const filters = this.filterForm.getRawValue();
     return {
       page_number: this.pageNumber,
       page_size: this.pageSize,

@@ -1,14 +1,17 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CardService } from '../card.service';
 import { EntryService} from '../../entry/entry.service';
 import { map, tap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import { isNil } from '../../shared/utils/is-nil';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
 import { Subject } from 'rxjs';
 import { SettingService } from '../../setting/setting.service';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
+import { EntryDTO } from '../../model/EntryDTO';
+
+type CardForm = ReturnType<CardComponent['buildForm']>;
 
 @Component({
   selector: 'app-card',
@@ -21,20 +24,19 @@ export class CardComponent implements OnInit, OnDestroy {
   contactInfo = false;
   otherInfo = false;
   workInfo = false;
-  insertCard: CardBasicDTO;
-  formGroup: FormGroup;
-  title: string;
-  readonly: boolean;
-  haveObject$: boolean;
-  institutions: InstitutionDTO[];
-  selectedInstitution: InstitutionDTO;
-  entrySet = [];
-  entryOnSiteSet = [];
+  insertCard?: CardBasicDTO;
+  formGroup?: CardForm;
+  title = '';
+  readonly = false;
+  haveObject$ = false;
+  institutions: InstitutionDTO[] = [];
+  entrySet: EntryDTO[] = [];
+  entryOnSiteSet: EntryDTO[] = [];
   errorMessages: string[] = [];
   
   onDestroy$ = new Subject();
 
-  @Input() editId: string;
+  @Input() editId: string | null = null;
 
   constructor(private cardService: CardService,
 			  private entryService: EntryService,
@@ -44,34 +46,34 @@ export class CardComponent implements OnInit, OnDestroy {
               private router: Router) {}
 
   ngOnInit(): void {
-    this.route.url
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((params: any) => {
-        if (params[0].path !== 'add_card' && params.length > 0) {
-          this.editId = params[0].path;
-        }
-        this.settingService.getAllInstitutions().pipe(takeUntil(this.onDestroy$))
-        .subscribe({
-          next: (data) => {
-            this.institutions = data;
-          },
-          error: (e) => console.error(e)
-        });
-        if (!_.isNil(this.editId)) {
-          this.cardService.getCard(this.editId)
+    this.settingService.getAllInstitutions().pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: (data) => {
+          this.institutions = data;
+        },
+        error: (e) => console.error(e)
+      });
+    // ':id' route has the card id, 'add_cards' has no id and opens an empty card
+    this.route.paramMap
+      .pipe(map(params => params.get('id') ?? this.editId), takeUntil(this.onDestroy$))
+      .subscribe(editId => {
+        this.editId = editId;
+        if (!isNil(editId)) {
+          this.cardService.getCard(editId)
             .pipe(takeUntil(this.onDestroy$)).subscribe(card => {
                 this.insertCard = card;
                 this.formSetUp();
                 this.title = 'Karta klienta';
                 this.readonly = true;
                 this.haveObject$ = false;
-          this.entryService.getAllEntrysByCardMain(this.insertCard).pipe(takeUntil(this.onDestroy$))
+          this.entryService.getAllEntrysByCardMain(card).pipe(takeUntil(this.onDestroy$))
           .subscribe(entrys => this.entrySet = entrys);
     
-          this.entryService.getAllEntrysByCardOnSite(this.insertCard).pipe(takeUntil(this.onDestroy$))
+          this.entryService.getAllEntrysByCardOnSite(card).pipe(takeUntil(this.onDestroy$))
           .subscribe(entrys => this.entryOnSiteSet = entrys);
           });
         } else {
+          this.insertCard = undefined;
           this.formSetUp();
           this.title = 'Vytvorenie karty klienta';
           this.readonly = false;
@@ -101,40 +103,49 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
 formSetUp() {
-  this.formGroup = this.formBuilder.group({
-    id: new FormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.id),
-    client_nick: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_nick, [Validators.required]),
-    client_gender: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_gender, [Validators.required]),
-    client_anamnesis: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_anamnesis, [Validators.required]),
-    client_dev_plan: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_dev_plan),
-    client_age: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_age),
-    client_birth_year: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_year, [Validators.required]),
-    client_name: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_name),
-    client_surname: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_surname),
-    client_birth_date: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_birth_date),
-    client_family_status: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_family_status),
-    client_citizenship: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_citizenship),
-    client_address: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_address),
-    client_phone: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_phone),
-    client_email: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_email),
-    client_socnet: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_socnet),
-    client_health: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_health),
-    client_income: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_income),
-    client_belongings: new FormControl(_.isNil(this.insertCard) ? '' : this.insertCard.client_belongings),
-    client_other_institutes: new FormControl(_.isNil(this.insertCard) ? undefined : this.insertCard.client_other_institutes),
-  });
+  this.formGroup = this.buildForm(this.insertCard);
 }
 
-  onSubmit(): void {
-    this.errorMessages = this.getFormValidationErrors(this.formGroup);
+  buildForm(card?: CardBasicDTO) {
+    const fb = this.formBuilder.nonNullable;
+    return fb.group({
+      id: fb.control<number | undefined>(card?.id),
+      client_nick: fb.control(card?.client_nick ?? '', [Validators.required]),
+      client_gender: fb.control(card?.client_gender ?? '', [Validators.required]),
+      client_anamnesis: fb.control(card?.client_anamnesis ?? '', [Validators.required]),
+      client_dev_plan: fb.control(card?.client_dev_plan ?? ''),
+      client_age: fb.control(card?.client_age ?? ''),
+      client_birth_year: fb.control(card?.client_birth_year ?? '', [Validators.required]),
+      client_name: fb.control(card?.client_name ?? ''),
+      client_surname: fb.control(card?.client_surname ?? ''),
+      client_birth_date: fb.control(card?.client_birth_date ?? ''),
+      client_family_status: fb.control(card?.client_family_status ?? ''),
+      client_citizenship: fb.control(card?.client_citizenship ?? ''),
+      client_address: fb.control(card?.client_address ?? ''),
+      client_phone: fb.control(card?.client_phone ?? ''),
+      client_email: fb.control(card?.client_email ?? ''),
+      client_socnet: fb.control(card?.client_socnet ?? ''),
+      client_health: fb.control(card?.client_health ?? ''),
+      client_income: fb.control(card?.client_income ?? ''),
+      client_belongings: fb.control(card?.client_belongings ?? ''),
+      client_other_institutes: fb.control<InstitutionDTO | undefined>(card?.client_other_institutes),
+    });
+  }
 
-    if (this.formGroup.valid) {
-      this.cardService.saveCard(this.createSaveObject()).pipe(
+  onSubmit(): void {
+    const formGroup = this.formGroup;
+    if (isNil(formGroup)) {
+      return;
+    }
+    this.errorMessages = this.getFormValidationErrors(formGroup);
+
+    if (formGroup.valid) {
+      this.cardService.saveCard(this.createSaveObject(formGroup)).pipe(
         tap(() => {
-          this.formGroup.markAsUntouched();
-          this.formGroup.markAsPristine();
-          if (_.isNil(this.insertCard)) {
-            this.formGroup.reset();
+          formGroup.markAsUntouched();
+          formGroup.markAsPristine();
+          if (isNil(this.insertCard)) {
+            formGroup.reset();
           }
           this.onMakeEditable();
         }),takeUntil(this.onDestroy$))
@@ -142,13 +153,12 @@ formSetUp() {
     }
   }
 
-  createSaveObject(): CardBasicDTO {
-    const ret: CardBasicDTO = this.formGroup.getRawValue();
-    return ret;
+  createSaveObject(formGroup: CardForm): CardBasicDTO {
+    return formGroup.getRawValue();
   }
 
   // funtion for comparing that is used in mat-select  that selected values what is object is set up correctly
-  compareOptions(o1: InstitutionDTO, o2: InstitutionDTO): boolean {
+  compareOptions(o1: InstitutionDTO | null, o2: InstitutionDTO | null): boolean {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
@@ -157,10 +167,10 @@ formSetUp() {
     this.onDestroy$.complete();
   }
 
-  getFormValidationErrors(form: FormGroup): string[] {
+  getFormValidationErrors(form: CardForm): string[] {
     const errors: string[] = [];
-    Object.keys(form.controls).forEach(key => {
-      const controlErrors = form.get(key).errors;
+    Object.entries(form.controls).forEach(([key, control]) => {
+      const controlErrors = control.errors;
       const keyTranslate = translateKey(key);
       if (controlErrors) {
         Object.keys(controlErrors).forEach(errorKey => {
@@ -196,4 +206,3 @@ function translateKey(key: string): string {
   }
   return translate;
 }
-
