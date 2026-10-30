@@ -56,10 +56,10 @@ public interface EntryMapper {
             entry.setClient(cardListToCardList1(one.getClient()));
         }
         if ( one.getEntryDateFrom() != null ) {
-            entry.setEntryDateFrom( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( one.getEntryDateFrom() ) );
+            entry.setEntryDateFrom( formatDateTime(one.getEntryDateFrom() ));
         }
         if ( one.getEntryDateTo() != null ) {
-            entry.setEntryDateTo( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( one.getEntryDateTo() ) );
+            entry.setEntryDateTo( formatDateTime(one.getEntryDateTo() ));
         }
         entry.setPlace( one.getPlace() );
         if ( one.getContactType() != null ) {
@@ -80,8 +80,8 @@ public interface EntryMapper {
         entry.setEventDescription( one.getEventDescription() );
         entry.setFastMessage( one.getFastMessage() );
         entry.setCreatedBy(userToUser1(one.getCreatedBy()));
-        entry.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(one.getCreated()));
-        entry.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(one.getUpdated()));
+        entry.setCreated(formatDateTime(one.getCreated()));
+        entry.setUpdated(formatDateTime(one.getUpdated()));
         entry.setLastChange(userToUser1(one.getLastChange()));
 
         return entry;
@@ -155,8 +155,8 @@ public interface EntryMapper {
         coworker1.setDescription( coworker.getDescription() );
         coworker1.setPosition( coworker.getPosition() );
         coworker1.setActive( coworker.isActive() );
-        coworker1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(coworker.getCreated()));
-        coworker1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(coworker.getUpdated()));
+        coworker1.setCreated(formatDateTime(coworker.getCreated()));
+        coworker1.setUpdated(formatDateTime(coworker.getUpdated()));
         coworker1.setLastChange(userToUser1(coworker.getLastChange()));
         coworker1.setCreatedBy(userToUser1(coworker.getCreatedBy()));
         return coworker1;
@@ -175,8 +175,8 @@ public interface EntryMapper {
         method1.setName( method.getName() );
         method1.setDescription( method.getDescription() );
         method1.setActive( method.isActive() );
-        method1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( method.getCreated()));
-        method1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( method.getUpdated()));
+        method1.setCreated(formatDateTime(method.getCreated()));
+        method1.setUpdated(formatDateTime(method.getUpdated()));
         method1.setLastChange(userToUser1(method.getLastChange()));
         method1.setCreatedBy(userToUser1(method.getCreatedBy()));
         return method1;
@@ -208,8 +208,8 @@ public interface EntryMapper {
         campaign.setName( campaigne.getName() );
         campaign.setDescription( campaigne.getDescription() );
         campaign.setActive( campaigne.isActive() );
-        campaign.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( campaigne.getCreated()));
-        campaign.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( campaigne.getUpdated()));
+        campaign.setCreated(formatDateTime(campaigne.getCreated()));
+        campaign.setUpdated(formatDateTime(campaigne.getUpdated()));
         campaign.setLastChange(userToUser1(campaigne.getLastChange()));
         campaign.setCreatedBy(userToUser1(campaigne.getCreatedBy()));
         return campaign;
@@ -228,8 +228,8 @@ public interface EntryMapper {
         program1.setName( program.getName() );
         program1.setDescription( program.getDescription() );
         program1.setActive( program.isActive() );
-        program1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( program.getCreated()));
-        program1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( program.getUpdated()));
+        program1.setCreated(formatDateTime(program.getCreated()));
+        program1.setUpdated(formatDateTime(program.getUpdated()));
         program1.setLastChange(userToUser1(program.getLastChange()));
         program1.setCreatedBy(userToUser1(program.getCreatedBy()));
         return program1;
@@ -272,10 +272,10 @@ public interface EntryMapper {
             card1.setCreatedBy( userToUser1(card.getCreatedBy()));
         }
         if ( card.getCreated() != null ) {
-            card1.setCreated( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( card.getCreated() ) );
+            card1.setCreated( formatDateTime(card.getCreated() ));
         }
         if ( card.getUpdated() != null ) {
-            card1.setCreated( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( card.getUpdated()) );
+            card1.setUpdated( formatDateTime(card.getUpdated()));
         }
         if ( card.getLastChange() != null) {
             card1.setLastChange( userToUser1(card.getLastChange()));
@@ -310,8 +310,8 @@ public interface EntryMapper {
         institution1.setName( institution.getName() );
         institution1.setDescription( institution.getDescription() );
         institution1.setActive( institution.isActive() );
-        institution1.setCreated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( institution.getCreated()));
-        institution1.setUpdated(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( institution.getUpdated()));
+        institution1.setCreated(formatDateTime(institution.getCreated()));
+        institution1.setUpdated(formatDateTime(institution.getUpdated()));
         institution1.setLastChange(userToUser1(institution.getLastChange()));
         institution1.setCreatedBy(userToUser1(institution.getCreatedBy()));
         return institution1;
@@ -328,5 +328,10 @@ public interface EntryMapper {
         }
 
         return list1;
+    }
+
+    // audit dates of referenced objects can be missing (e.g. when only their id is sent)
+    private static String formatDateTime(LocalDateTime value) {
+        return value == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(value);
     }
 }

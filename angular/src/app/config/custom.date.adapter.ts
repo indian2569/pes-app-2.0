@@ -14,6 +14,6 @@ export const DATE_TIME_FORMATS: MatDateFormats = {
   ...MAT_NATIVE_DATE_FORMATS,
   display: {
     ...MAT_NATIVE_DATE_FORMATS.display,
-    dateInput: { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+    dateInput: { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }
   }
 };

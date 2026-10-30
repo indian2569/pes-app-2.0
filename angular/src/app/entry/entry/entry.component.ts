@@ -27,6 +27,8 @@ const BACKEND_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
 type EntryForm = ReturnType<EntryComponent['buildForm']>;
 
+const CHIPS_CONTROLS = ['client', 'clients_on_site', 'work_methods', 'other_workers'] as const;
+
 @Component({
     selector: 'app-entry',
     templateUrl: './entry.component.html',
@@ -110,12 +112,16 @@ export class EntryComponent implements OnInit, OnDestroy {
     if (isNil(this.formGroup)) {
       return;
     }
+    if (this.formGroup.invalid) {
+      this.formGroup.markAllAsTouched();
+      return;
+    }
     this.entryService.saveEntry(this.getSaveObject(this.formGroup)).pipe(takeUntil(this.onDestroy$))
       .subscribe(ent => {
       this.entryEdit = ent;
       this.router.navigate([`/entry_line/` + ent.id]);
     });
-    this.readonly = !this.readonly;
+    this.setReadonly(!this.readonly);
   }
 
   getSaveObject(formGroup: EntryForm): EntryDTO {
@@ -149,8 +155,9 @@ export class EntryComponent implements OnInit, OnDestroy {
       entry_date_to: fb.control(isNil(entry) ? new Date() : new Date(entry.entry_date_to), [Validators.required]),
       place: fb.control(entry?.place ?? ''),
       contact_type: fb.control<ContractEnum | null>(entry?.contact_type ?? null),
-      campaign: fb.control<CampaignDTO | undefined>(entry?.campaign),
-      program_type: fb.control<ProgramDTO | undefined>(entry?.program_type),
+      // required by the backend (entry.campaign_id and entry.program_type_id are NOT NULL)
+      campaign: fb.control<CampaignDTO | undefined>(entry?.campaign, [Validators.required]),
+      program_type: fb.control<ProgramDTO | undefined>(entry?.program_type, [Validators.required]),
       event_description: fb.control(entry?.event_description ?? ''),
       fast_message: fb.control(entry?.fast_message ?? ''),
       // read-only audit fields are sent back unchanged
@@ -174,15 +181,28 @@ export class EntryComponent implements OnInit, OnDestroy {
     this.formSetUp();
     if (!isNil(entry)) {
       this.title = 'Záznam';
-      this.readonly = true;
+      this.setReadonly(true);
     } else {
       this.title = 'Vytvorenie záznamu';
-      this.readonly = false;
+      this.setReadonly(false);
     }
   }
 
   onMakeEditable () {
-    this.readonly = !this.readonly;
+    this.setReadonly(!this.readonly);
+  }
+
+  // inputs and selects follow the readonly flag in the template, the chips inputs are disabled through their controls
+  private setReadonly(readonly: boolean) {
+    this.readonly = readonly;
+    for (const name of CHIPS_CONTROLS) {
+      const control = this.formGroup?.controls[name];
+      if (readonly) {
+        control?.disable();
+      } else {
+        control?.enable();
+      }
+    }
   }
 
   ngOnDestroy(): void {

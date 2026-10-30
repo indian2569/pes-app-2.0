@@ -1,5 +1,7 @@
 package sk.kaspian.pes.security;
 
+import jakarta.servlet.DispatcherType;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -63,6 +65,9 @@ public class WebSecurityConfig {
 			.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
+				// let unhandled exceptions reach the error page with their real status instead of a 401
+				.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+				.requestMatchers("/error").permitAll()
 				.requestMatchers("/api/auth/**").permitAll()
 				.requestMatchers("/api/test/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/", "/v3/**").permitAll()

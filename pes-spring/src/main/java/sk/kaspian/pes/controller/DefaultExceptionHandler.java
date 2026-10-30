@@ -3,6 +3,7 @@ package sk.kaspian.pes.controller;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 
@@ -27,6 +28,12 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleEntityNotFound(Exception ex, WebRequest request) {
 		return new ResponseEntity<>("Entity not found", new HttpHeaders(), HttpStatus.GONE);
+	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Object> handleJpaEntityNotFound(EntityNotFoundException ex, WebRequest request) {
+		log.info("Handling EntityNotFoundException: {}", ex.getMessage());
+		return new ResponseEntity<>("Entity not found", new HttpHeaders(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
