@@ -3,7 +3,6 @@ package sk.kaspian.pes.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -71,12 +70,12 @@ public class Entry extends SaveableObject {
 	private ContactEnum contactType;
 
 	@JoinColumn(name = "campaign_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
 	private Campaigne campaign;
 
 	@JoinColumn(name = "program_type_id", nullable = false)
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
 	private Program programType;
 

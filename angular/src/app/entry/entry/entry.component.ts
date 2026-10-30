@@ -119,11 +119,16 @@ export class EntryComponent implements OnInit, OnDestroy {
       return;
     }
     this.entryService.saveEntry(this.getSaveObject(this.formGroup)).pipe(takeUntil(this.onDestroy$))
-      .subscribe(ent => {
-      this.entryEdit = ent;
-      this.router.navigate([`/entry_line/` + ent.id]);
-    });
-    this.setReadonly(!this.readonly);
+      .subscribe({
+        next: ent => {
+          this.entryEdit = ent;
+          // lock the form only once the backend saved it; on an error it stays editable with the user's changes
+          this.setReadonly(true);
+          this.router.navigate([`/entry_line/` + ent.id]);
+        },
+        // the error interceptor already told the user what went wrong
+        error: () => undefined
+      });
   }
 
   getSaveObject(formGroup: EntryForm): EntryDTO {

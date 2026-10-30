@@ -81,7 +81,7 @@ public class Card  extends SaveableObject {
 	private String clientBelongings;
 
 	@JoinColumn(name = "institution_id")
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Institution clientOtherInstitutes;
 

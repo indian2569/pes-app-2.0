@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
+import sk.kaspian.pes.openapi.model.v1.MessageResponse;
 
 @Slf4j
 @RestControllerAdvice
@@ -34,6 +36,14 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleJpaEntityNotFound(EntityNotFoundException ex, WebRequest request) {
 		log.info("Handling EntityNotFoundException: {}", ex.getMessage());
 		return new ResponseEntity<>("Entity not found", new HttpHeaders(), HttpStatus.NOT_FOUND);
+	}
+
+	// e.g. deleting a client card, method or coworker that an entry still uses (foreign keys from V04)
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<MessageResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
+		log.info("Handling DataIntegrityViolationException: {}", ex.getMostSpecificCause().getMessage());
+		return new ResponseEntity<>(new MessageResponse().message(
+				"Záznam sa nedá uložiť ani vymazať, pretože súvisí s inými záznamami."), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
