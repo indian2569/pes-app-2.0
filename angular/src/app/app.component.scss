@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 div#hgroup {
   display: block;
   width: 100%;
@@ -10,8 +12,15 @@ div#hgroup {
 .app-toolbar {
   display: flex;
   justify-content: space-between;
-  background-color: var(--pes-color-toolbar); // dark theme
-  color: var(--pes-color-on-dark);
+  // dark toolbar: M3 defaults to a light surface and primary-colored text buttons
+  @include mat.toolbar-overrides((
+    container-background-color: var(--pes-color-toolbar),
+    container-text-color: var(--pes-color-on-dark),
+  ));
+  @include mat.button-overrides((
+    text-label-text-color: var(--pes-color-on-dark),
+    text-state-layer-color: var(--pes-color-on-dark),
+  ));
 
   .toolbar-left,
   .toolbar-right {
@@ -21,7 +30,7 @@ div#hgroup {
   }
 
   a.active-link, button.active-link {
-    color: var(--pes-color-primary);
+    color: var(--pes-color-brand); // light green reads well on the dark toolbar
     font-weight: 600;
   }
 

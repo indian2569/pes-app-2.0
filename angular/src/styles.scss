@@ -1,37 +1,28 @@
-// Custom Theming for Angular Material
+// Angular Material 3 theme, generated from the brand green #8fcb51.
+// For more information: https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+// Palettes: regenerate with `ng generate @angular/material:theme-color --primary-color="#8fcb51" --directory=src/styles/`
+@use 'styles/theme-colors';
 // App design tokens (CSS custom properties) and global styles live in src/styles/.
 // Component stylesheets can use the shared mixins with: @use 'mixins' as pes;
 @use 'styles/tokens';
 @use 'styles/global';
 
-// For more information: https://material.angular.io/guide/theming
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: theme-colors.$primary-palette,
+      tertiary: theme-colors.$tertiary-palette,
+      theme-type: light,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
 
-// Include the common styles for Angular Material. Be sure that you only ever include this mixin once!
-@include mat.all-component-typographies();
+// .mat-elevation-z* classes are still used in table templates.
 @include mat.elevation-classes();
-@include mat.app-background();
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-$angular-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
-$angular-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$angular-warn: mat.m2-define-palette(mat.$m2-red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$angular-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $angular-primary,
-    accent: $angular-accent,
-    warn: $angular-warn,
-  )
-));
-
-// Include theme styles for core and each component used in your app.
-@include mat.all-component-themes($angular-theme);
-
 
 // App-wide styles come after the theme so they can override it.
 @include global.styles;

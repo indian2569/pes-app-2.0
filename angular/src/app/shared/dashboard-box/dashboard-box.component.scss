@@ -11,9 +11,9 @@
     max-width: 200px;
     max-height: 80px;
     word-wrap: break-word;
-    background-color: var(--pes-color-indigo-tint);
+    background-color: var(--pes-color-primary-container);
     background-clip: border-box;
-    border: 1px solid;
+    border: 1px solid var(--pes-color-border);
     border-radius: var(--pes-radius-md);
     margin: 0;
 }
@@ -21,7 +21,7 @@
 .body{
     flex: 1 1 auto;
     padding: var(--pes-space-4);
-    color: var(--pes-color-on-dark);
+    color: var(--pes-color-on-primary-container);
 }
 
 .number{

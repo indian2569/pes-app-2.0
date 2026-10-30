@@ -1,10 +1,16 @@
 // App-wide element, utility and Material override styles.
+@use '@angular/material' as mat;
 @use 'mixins' as pes;
 
 // Included from styles.scss after the Material theme, so these rules win over it.
 @mixin styles {
   html, body { height: 100%; }
-  body { margin: 0; font-family: var(--pes-font-family); }
+  body {
+    margin: 0;
+    font-family: var(--pes-font-family);
+    background: var(--pes-color-background);
+    color: var(--pes-color-text);
+  }
 
   /* Utilities */
   .full,
@@ -87,16 +93,32 @@
     box-shadow: none !important;
   }
 
-  /* Flat buttons use the brand green everywhere (disabled buttons keep Material's disabled look) */
-  // Doubled class to match the theme's ".mat-mdc-unelevated-button.mat-primary" specificity.
-  .mat-mdc-unelevated-button.mat-mdc-unelevated-button {
-    --mdc-filled-button-container-color: var(--pes-color-primary);
-    --mdc-filled-button-label-text-color: var(--pes-color-on-primary);
-    font-weight: 600;
+  /* Tables: tinted header row so it reads apart from the body */
+  .mat-mdc-table {
+    @include mat.table-overrides((
+      header-headline-color: var(--pes-color-text-secondary),
+      header-headline-weight: 600,
+      row-item-outline-color: var(--pes-color-border),
+    ));
+  }
 
-    &:hover {
-      --mdc-filled-button-container-color: var(--pes-color-primary-hover);
-    }
+  // Scoped under .mat-mdc-table to beat the table's own (later-loaded) .mat-mdc-header-cell border rule.
+  .mat-mdc-table .mat-mdc-header-row {
+    background-color: var(--pes-color-table-header);
+  }
+
+  .mat-mdc-table .mat-mdc-header-cell {
+    border-bottom: 2px solid var(--pes-color-primary);
+  }
+
+  /* M3 ignores the color="warn" / color="accent" inputs; keep their meaning for icons, icon buttons and spinners */
+  .mat-icon.mat-warn,
+  .mat-mdc-icon-button.mat-warn {
+    color: var(--pes-color-error);
+  }
+
+  .mat-mdc-progress-spinner.mat-accent {
+    @include mat.progress-spinner-overrides((active-indicator-color: var(--mat-sys-tertiary)));
   }
 
   /* ngx-mat-datetime-picker background fix */
@@ -104,7 +126,7 @@
   .cdk-overlay-pane .ngx-mat-datetime-picker,
   .cdk-overlay-pane .mat-calendar,  /* calendar surface */
   .cdk-overlay-pane .time-container /* time selector panel */ {
-    background-color: var(--pes-color-surface-muted) !important;
+    background-color: var(--mat-sys-surface-container-high) !important;
   }
 
   /* Calendar cells */
@@ -115,13 +137,15 @@
   /* Selected date */
   .cdk-overlay-pane .mat-calendar-body-selected {
     background-color: var(--pes-color-primary) !important;
-    color: var(--pes-color-on-dark);
+    color: var(--pes-color-on-primary);
   }
 
   /* HTTP error notifications (ErrorInterceptor) */
   .mat-mdc-snack-bar-container.error-snackbar {
-    --mdc-snackbar-container-color: var(--pes-color-error);
-    --mdc-snackbar-supporting-text-color: var(--pes-color-on-dark);
-    --mat-snack-bar-button-color: var(--pes-color-on-dark);
+    @include mat.snack-bar-overrides((
+      container-color: var(--pes-color-error),
+      supporting-text-color: var(--pes-color-on-error),
+      button-color: var(--pes-color-on-error),
+    ));
   }
 }

@@ -2,34 +2,39 @@
 // Use them from any stylesheet as var(--pes-…); no import needed.
 
 :root {
+  /* Colors come from the Material 3 theme (styles.scss); --mat-sys-* is set by mat.theme() on <html>. */
+
   /* Brand */
-  --pes-color-primary: #8fcb51;
-  --pes-color-primary-hover: #78b543;
-  --pes-color-on-primary: #000;
-  --pes-color-primary-tint: rgba(143, 203, 81, 0.2);
-  --pes-color-primary-glow: rgba(0, 255, 0, 0.4);
-  --pes-color-indigo-tint: #3f51b56e; // dashboard tiles (old Material indigo)
+  --pes-color-brand: #8fcb51;                      // seed color; for accents on the dark toolbar
+  --pes-color-primary: var(--mat-sys-primary);     // titles, links, accents on light surfaces
+  --pes-color-on-primary: var(--mat-sys-on-primary);
+  --pes-color-primary-container: var(--mat-sys-primary-container);
+  --pes-color-on-primary-container: var(--mat-sys-on-primary-container);
+  --pes-color-primary-glow: color-mix(in srgb, var(--mat-sys-primary) 40%, transparent);
 
   /* App chrome */
   --pes-color-toolbar: #232323;
   --pes-color-header-band: #333333;
 
   /* Surfaces */
-  --pes-color-surface: #fff;
-  --pes-color-surface-muted: #f5f5f5;
-  --pes-color-surface-subtle: #fafafa;
-  --pes-color-border: #ccc;
+  --pes-color-background: var(--mat-sys-surface);
+  --pes-color-surface: var(--mat-sys-surface-container-lowest);   // cards
+  --pes-color-surface-muted: var(--mat-sys-surface-container);    // panels, readonly fields
+  --pes-color-surface-subtle: var(--mat-sys-surface-container-low);
+  --pes-color-border: var(--mat-sys-outline-variant);
+  --pes-color-table-header: var(--mat-sys-surface-container-high);
 
   /* Text */
-  --pes-color-text: #000;
-  --pes-color-text-strong: #333;
-  --pes-color-text-secondary: rgba(0, 0, 0, 0.6);
-  --pes-color-text-disabled: rgba(0, 0, 0, 0.65);
+  --pes-color-text: var(--mat-sys-on-surface);
+  --pes-color-text-strong: var(--mat-sys-on-surface);
+  --pes-color-text-secondary: var(--mat-sys-on-surface-variant);
+  --pes-color-text-disabled: color-mix(in srgb, var(--mat-sys-on-surface) 65%, transparent);
   --pes-color-on-dark: #fff;
 
   /* Status */
   --pes-color-success: #4caf50;
-  --pes-color-error: #b3261e;
+  --pes-color-error: var(--mat-sys-error);
+  --pes-color-on-error: var(--mat-sys-on-error);
   --pes-color-warning: #f0ad4e;
   --pes-color-warning-surface: #fff8e6;
 
