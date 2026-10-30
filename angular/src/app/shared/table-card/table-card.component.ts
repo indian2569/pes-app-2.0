@@ -12,9 +12,10 @@ import { PageEvent } from '@angular/material/paginator';
 import { PageDTO } from '../../model/PageDTO';
 
 @Component({
-  selector: 'app-table-card',
-  templateUrl: './table-card.component.html',
-  styleUrls: ['./table-card.component.scss']
+    selector: 'app-table-card',
+    templateUrl: './table-card.component.html',
+    styleUrls: ['./table-card.component.scss'],
+    standalone: false
 })
 
 export class TableCardComponent implements OnChanges, OnDestroy {

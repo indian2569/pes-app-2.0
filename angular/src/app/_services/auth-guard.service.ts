@@ -7,7 +7,7 @@ import {
 
 import { TokenStorageService } from './token-storage.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = () => {
   const tokenService = inject(TokenStorageService);
   const router = inject(Router);
 

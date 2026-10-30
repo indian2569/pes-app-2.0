@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
+    standalone: false
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnDestroy {
   form: { username: string | null; email: string | null; password: string | null } = {
     username: null,
     email: null,
@@ -22,15 +23,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService) { }
 
-  ngOnInit(): void {
-  }
-
   onSubmit(): void {
     const { username, email, password } = this.form;
 
     this.authService.register(username ?? '', email ?? '', password ?? '').pipe(takeUntil(this.onDestroy$))
     .subscribe(
-      data => {
+      () => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },

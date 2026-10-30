@@ -22,9 +22,10 @@ const DEFAULT_FILTER = {
 };
 
 @Component({
-  selector: 'app-all-entry',
-  templateUrl: './all-entry.component.html',
-  styleUrls: ['./all-entry.component.scss']
+    selector: 'app-all-entry',
+    templateUrl: './all-entry.component.html',
+    styleUrls: ['./all-entry.component.scss'],
+    standalone: false
 })
 export class AllEntryComponent implements OnInit, OnDestroy {
 

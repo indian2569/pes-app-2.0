@@ -7,9 +7,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
  * and display/export the result here. Until then the form is shown but submitting is disabled.
  */
 @Component({
-  selector: 'app-report',
-  templateUrl: './report.component.html',
-  styleUrls: ['./report.component.scss']
+    selector: 'app-report',
+    templateUrl: './report.component.html',
+    styleUrls: ['./report.component.scss'],
+    standalone: false
 })
 export class ReportComponent {
 

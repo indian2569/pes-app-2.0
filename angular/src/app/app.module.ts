@@ -4,9 +4,9 @@ import { NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { errorInterceptorProviders } from './_helpers/error.interceptor';
@@ -18,27 +18,21 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {NgOptimizedImage} from "@angular/common";
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    UnauthorizedComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    // only the app shell (toolbar and menus) is here; every page, login/register/profile included,
-    // is lazy loaded by AppRoutingModule so it stays out of the initial bundle
-    MatSnackBarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatToolbarModule,
-    NgOptimizedImage
-  ],
-  providers: [authInterceptorProviders,
-             errorInterceptorProviders],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        UnauthorizedComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        // only the app shell (toolbar and menus) is here; every page, login/register/profile included,
+        // is lazy loaded by AppRoutingModule so it stays out of the initial bundle
+        MatSnackBarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatToolbarModule,
+        NgOptimizedImage], providers: [authInterceptorProviders,
+        errorInterceptorProviders, provideHttpClient(withInterceptorsFromDi()),
+        // the animations engine is loaded in its own chunk instead of the initial bundle
+        provideAnimationsAsync()] })
 export class AppModule { }

@@ -17,14 +17,15 @@ import { CrudService } from '../crud/crud.service';
 type SettingRow = CoworkerDTO;
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+    selector: 'app-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    standalone: false
 })
 export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() typeNumber = 0;
-  @Input() showFilter: boolean = false;
+  @Input() showFilter = false;
 
   dataSource = new MatTableDataSource<SettingRow>([]);
   displayedColumns: string[] = [];

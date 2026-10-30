@@ -17,9 +17,10 @@ const DEFAULT_FILTER = {
 };
 
 @Component({
-  selector: 'app-all-cards',
-  templateUrl: './all-cards.component.html',
-  styleUrls: ['./all-cards.component.scss']
+    selector: 'app-all-cards',
+    templateUrl: './all-cards.component.html',
+    styleUrls: ['./all-cards.component.scss'],
+    standalone: false
 })
 export class AllCardsComponent implements OnInit, OnDestroy {
 

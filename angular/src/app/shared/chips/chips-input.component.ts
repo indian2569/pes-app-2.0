@@ -17,12 +17,13 @@ export type ChipOption = CardBasicDTO | SettingDTO;
  * Form control (use with formControlName / [formControl]) whose value is the array of selected options.
  */
 @Component({
-  selector: 'app-chips-input',
-  templateUrl: 'chips-input.component.html',
-  styleUrls: ['chips-input.component.scss'],
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ChipsInputComponent), multi: true }
-  ]
+    selector: 'app-chips-input',
+    templateUrl: 'chips-input.component.html',
+    styleUrls: ['chips-input.component.scss'],
+    providers: [
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ChipsInputComponent), multi: true }
+    ],
+    standalone: false
 })
 export class ChipsInputComponent<T extends ChipOption> implements OnChanges, ControlValueAccessor {
   separatorKeysCodes: number[] = [ENTER, COMMA];

@@ -4,9 +4,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-board-moderator',
-  templateUrl: './board-moderator.component.html',
-  styleUrls: ['./board-moderator.component.css']
+    selector: 'app-board-moderator',
+    templateUrl: './board-moderator.component.html',
+    styleUrls: ['./board-moderator.component.css'],
+    standalone: false
 })
 export class BoardModeratorComponent implements OnInit, OnDestroy {
   content?: string;

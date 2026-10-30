@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 
 // list, add, edit and delete are handled by the shared <app-table> in the template
 @Component({
-  selector: 'app-institutions',
-  templateUrl: './institutions.component.html',
-  styleUrls: ['./institutions.component.scss']
+    selector: 'app-institutions',
+    templateUrl: './institutions.component.html',
+    styleUrls: ['./institutions.component.scss'],
+    standalone: false
 })
 export class InstitutionsComponent {
 }

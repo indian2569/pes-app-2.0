@@ -9,9 +9,10 @@ import { EntryService } from '../../entry/entry.service';
 
 // TODO: component is not used yet, its row actions are not implemented
 @Component({
-  selector: 'app-table-records',
-  templateUrl: './table-records.component.html',
-  styleUrls: ['./table-records.component.scss']
+    selector: 'app-table-records',
+    templateUrl: './table-records.component.html',
+    styleUrls: ['./table-records.component.scss'],
+    standalone: false
 })
 export class TableRecordsComponent implements OnInit {
 
@@ -29,21 +30,20 @@ export class TableRecordsComponent implements OnInit {
       this.dataSource = isNil(this.tableData) ? [] : this.tableData;
   }
 
-  // TODO: open the update/delete dialog, the template already binds the buttons to it
-  openDialog(action: 'Update' | 'Delete', row_obj: EntryDTO) {
-
+  openDialog(_action: 'Update' | 'Delete', _row_obj: EntryDTO) {
+    // TODO: open the update/delete dialog, the template already binds the buttons to it
   }
 
-  addRowData(row_obj: EntryDTO) {
-
+  addRowData(_row_obj: EntryDTO) {
+    // TODO
   }
 
-  updateRowData(row_obj: EntryDTO) {
-
+  updateRowData(_row_obj: EntryDTO) {
+    // TODO
   }
 
-  deleteRowData(row_obj: EntryDTO) {
-
+  deleteRowData(_row_obj: EntryDTO) {
+    // TODO
   }
 
 }

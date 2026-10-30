@@ -1,18 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-dasbord-box',
-  templateUrl: './dasbord-box.component.html',
-  styleUrls: ['./dasbord-box.component.scss']
+    selector: 'app-dasbord-box',
+    templateUrl: './dasbord-box.component.html',
+    styleUrls: ['./dasbord-box.component.scss'],
+    standalone: false
 })
-export class DasbordBoxComponent implements OnInit {
+export class DasbordBoxComponent {
 
   @Input()  displayName = '';
   @Input()  displayValue: string | number = '';
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

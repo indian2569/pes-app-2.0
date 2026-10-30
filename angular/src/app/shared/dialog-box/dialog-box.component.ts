@@ -30,9 +30,10 @@ export interface DialogBoxValue {
 export type DialogBoxResult = { event: DialogAction, data: DialogBoxValue } | { event: 'Cancel' };
 
 @Component({
-  selector: 'app-dialog-box',
-  templateUrl: './dialog-box.component.html',
-  styleUrls: ['./dialog-box.component.scss']
+    selector: 'app-dialog-box',
+    templateUrl: './dialog-box.component.html',
+    styleUrls: ['./dialog-box.component.scss'],
+    standalone: false
 })
 export class DialogBoxComponent implements OnInit {
 

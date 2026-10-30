@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-support',
-  templateUrl: './support.component.html',
-  styleUrls: ['./support.component.scss']
+    selector: 'app-support',
+    templateUrl: './support.component.html',
+    styleUrls: ['./support.component.scss'],
+    standalone: false
 })
-export class SupportComponent implements OnInit {
+export class SupportComponent {
 
   constructor(private fb: FormBuilder) { }
 
@@ -16,9 +17,6 @@ export class SupportComponent implements OnInit {
     title: ['', Validators.required],
     message: ['', Validators.required]
   });
-
-  ngOnInit(): void {
-  }
 
   submit(): void {
     if (this.contactForm.invalid) {

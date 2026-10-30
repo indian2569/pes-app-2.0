@@ -8,20 +8,21 @@
 // Be sure that you only ever include this mixin once!
 
 @include mat.all-component-typographies();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$angular-primary: mat.define-palette(mat.$indigo-palette);
-$angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$angular-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$angular-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$angular-warn: mat.define-palette(mat.$red-palette);
+$angular-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$angular-theme: mat.define-light-theme((
+$angular-theme: mat.m2-define-light-theme((
   color: (
     primary: $angular-primary,
     accent: $angular-accent,

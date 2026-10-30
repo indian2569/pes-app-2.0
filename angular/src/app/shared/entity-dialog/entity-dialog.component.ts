@@ -9,9 +9,10 @@ export interface EntityDialogResult {
 }
 
 @Component({
-  selector: 'app-entity-dialog',
-  templateUrl: './entity-dialog.component.html',
-  styleUrls: ['./entity-dialog.component.scss']
+    selector: 'app-entity-dialog',
+    templateUrl: './entity-dialog.component.html',
+    styleUrls: ['./entity-dialog.component.scss'],
+    standalone: false
 })
 export class EntityDialogComponent {
 

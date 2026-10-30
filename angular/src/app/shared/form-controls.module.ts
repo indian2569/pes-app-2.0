@@ -5,14 +5,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule, NgxMatDateAdapter } from '@angular-material-components/datetime-picker';
+import { NgxMatDatepickerInput, NgxMatDatepickerToggle, NgxMatDatetimepicker } from '@ngxmc/datetime-picker';
 import { CustomDateAdapter } from '../config/custom.date.adapter';
 import { ChipsInputComponent } from './chips/chips-input.component';
 
@@ -28,7 +28,11 @@ import { ChipsInputComponent } from './chips/chips-input.component';
     MatInputModule,
     MatIconModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    // the date-time picker parts are standalone, so they are imported here to be re-exported
+    NgxMatDatetimepicker,
+    NgxMatDatepickerInput,
+    NgxMatDatepickerToggle
   ],
   exports: [
     ChipsInputComponent,
@@ -44,10 +48,11 @@ import { ChipsInputComponent } from './chips/chips-input.component';
     MatAutocompleteModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule
+    NgxMatDatetimepicker,
+    NgxMatDatepickerInput,
+    NgxMatDatepickerToggle
   ],
-  providers: [{ provide: NgxMatDateAdapter, useClass: CustomDateAdapter }],
+  // shared by the Material date pickers and the ngx date-time pickers (weeks start on Monday)
+  providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 export class FormControlsModule { }

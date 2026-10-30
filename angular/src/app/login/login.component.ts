@@ -7,9 +7,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent implements OnInit, OnDestroy {
   form: { username: string | null; password: string | null } = {
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
-  user: string = '';
+  user = '';
   loading = false;
   
   onDestroy$ = new Subject();

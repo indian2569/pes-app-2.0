@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=linux/amd64 node:18-bullseye-slim as builder
+FROM --platform=linux/amd64 node:22-bookworm-slim AS builder
 
 # Set working directory
 WORKDIR /project
 
 # Install Angular CLI
-RUN npm install -g @angular/cli@16
+RUN npm install -g @angular/cli@19
 
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
@@ -16,7 +16,7 @@ COPY . .
 RUN NODE_OPTIONS="--max-old-space-size=1024" ng build --configuration production
 
 # Use a lightweight Node.js image for the final stage
-FROM node:18-bullseye-slim as production
+FROM node:22-bookworm-slim AS production
 
 # Set working directory
 WORKDIR /app

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
-import { SettingDTO } from '../../model/SettingDTO';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { SettingService } from '../../setting/setting.service';
@@ -12,16 +11,17 @@ import { CardService } from '../../card/card.service';
 import { EntryService } from '../../entry/entry.service';
 
 @Component({
-  selector: 'app-table-colapse',
-  templateUrl: './table-colapse.component.html',
-  styleUrls: ['./table-colapse.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-table-colapse',
+    templateUrl: './table-colapse.component.html',
+    styleUrls: ['./table-colapse.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 
   export class TableColapseComponent implements OnInit, OnDestroy {
@@ -66,12 +66,6 @@ import { EntryService } from '../../entry/entry.service';
           break;
      }
   }
-
-    editItem(id: string) {
-        let editItem: SettingDTO | undefined;
-        this.settingService.forType(this.typeNumber)?.get(id).pipe(takeUntil(this.onDestroy$))
-            .subscribe((item) => editItem = item);
-    }
 
   confirmDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

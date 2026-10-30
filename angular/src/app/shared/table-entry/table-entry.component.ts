@@ -12,9 +12,10 @@ import { takeUntil } from 'rxjs/operators';
 import { isNil } from '../utils/is-nil';
 
 @Component({
-  selector: 'app-table-entry',
-  templateUrl: './table-entry.component.html',
-  styleUrls: ['./table-entry.component.scss'],
+    selector: 'app-table-entry',
+    templateUrl: './table-entry.component.html',
+    styleUrls: ['./table-entry.component.scss'],
+    standalone: false
 })
 
 export class TableEntryComponent implements OnChanges, OnDestroy {

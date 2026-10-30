@@ -19,6 +19,8 @@ import {EntryDTO} from '../../model/EntryDTO';
 import {SettingService} from '../../setting/setting.service';
 import {CardService} from '../../card/card.service';
 import {forkJoin, of, Subject} from 'rxjs';
+import {MAT_DATE_FORMATS} from '@angular/material/core';
+import {DATE_TIME_FORMATS} from '../../config/custom.date.adapter';
 
 // backend expects LocalDateTime, so send the local wall-clock time without any timezone conversion
 const BACKEND_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
@@ -26,9 +28,12 @@ const BACKEND_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 type EntryForm = ReturnType<EntryComponent['buildForm']>;
 
 @Component({
-  selector: 'app-entry',
-  templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.scss']
+    selector: 'app-entry',
+    templateUrl: './entry.component.html',
+    styleUrls: ['./entry.component.scss'],
+    standalone: false,
+    // the date fields of an entry show the time too
+    providers: [{ provide: MAT_DATE_FORMATS, useValue: DATE_TIME_FORMATS }]
 })
 export class EntryComponent implements OnInit, OnDestroy {
 
