@@ -1,18 +1,9 @@
-/* PAGE HEADER */
-
-
-/* ACTION BUTTONS */
-.page-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
 /* FORM GRID */
 .form-grid {
   width: 100%;
   display: grid;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--pes-stack-gap);
+  margin-bottom: var(--pes-stack-gap);
 }
 
 .form-grid.one-col {
@@ -29,17 +20,12 @@
   }
 }
 
-/* FULL WIDTH */
-.full {
-  width: 100%;
-}
-
 /* CARD */
 mat-card {
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: var(--pes-space-6);
+  border-radius: var(--pes-radius-xl);
   box-shadow: none;
-  background: #ffffff;
+  background: var(--pes-color-surface);
 }
 
 /* INPUT COLORS */
@@ -50,42 +36,33 @@ mat-form-field {
 /* TABS */
 .details-tabs {
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: var(--pes-section-gap);
 }
 
 /* Tables */
 .flex-item  {
   grid-template-columns: repeat(2, 1fr);
   display: grid;
+  gap: var(--pes-section-gap); // between the form card and the tables
 }
 
 .flex-item.one-col {
   grid-template-columns: 1fr;
   display: block;
-  gap: 32px; // space between the two table blocks
+  gap: var(--pes-space-8); // space between the two table blocks
 }
 
 .table-section {
   display: block;
   width: 100%;
-  flex-direction: column;
-  gap: 12px; // space between h3 and table
+}
+
+.table-section + .table-section {
+  margin-top: var(--pes-section-gap);
 }
 
 .table-section h3 {
-  margin: 0;
-  padding-left: 16px;
-  color: #8fcb51; // your green
+  margin: 0 0 var(--pes-stack-gap);
+  color: var(--pes-color-primary);
   font-weight: 600;
-}
-
-/* BUTTONS */
-button[mat-flat-button] {
-  background-color: #8fcb51;
-  color: #000;
-  font-weight: 600;
-}
-
-button[mat-flat-button]:hover {
-  background-color: #78b543;
 }

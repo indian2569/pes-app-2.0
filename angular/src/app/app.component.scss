@@ -4,29 +4,24 @@ div#hgroup {
   margin: 0;
   padding: 0;
   text-align: left;
-  background-color: #333333;
+  background-color: var(--pes-color-header-band);
 }
 
 .app-toolbar {
   display: flex;
   justify-content: space-between;
-  background-color: #232323; // dark theme
-  color: white;
+  background-color: var(--pes-color-toolbar); // dark theme
+  color: var(--pes-color-on-dark);
 
   .toolbar-left,
   .toolbar-right {
     display: flex;
     align-items: center;
-    gap: 8px;
-  }
-
-  a.mat-button, button.mat-button {
-    color: white;
-    font-weight: 500;
+    gap: var(--pes-space-2);
   }
 
   a.active-link, button.active-link {
-    color: #8fcb51; // your app green
+    color: var(--pes-color-primary);
     font-weight: 600;
   }
 
@@ -34,21 +29,4 @@ div#hgroup {
     vertical-align: middle;
     font-size: 20px;
   }
-
-  /* Dropdown menu style */
-  .mat-menu-panel {
-    background-color: #333333;
-    color: white;
-    border-radius: 4px;
-  }
-
-  .mat-menu-item {
-    color: white;
-  }
-
-  .mat-menu-item:hover {
-    background-color: rgba(143, 203, 81, 0.2);
-  }
 }
-
-

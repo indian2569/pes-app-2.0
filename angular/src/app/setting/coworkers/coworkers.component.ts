@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'app-coworkers',
     templateUrl: './coworkers.component.html',
-    styleUrls: ['./coworkers.component.scss'],
     standalone: false
 })
 export class CoworkersComponent {

@@ -1,0 +1,127 @@
+// App-wide element, utility and Material override styles.
+@use 'mixins' as pes;
+
+// Included from styles.scss after the Material theme, so these rules win over it.
+@mixin styles {
+  html, body { height: 100%; }
+  body { margin: 0; font-family: var(--pes-font-family); }
+
+  /* Utilities */
+  .full,
+  .full-width {
+    width: 100%;
+  }
+
+  /* Page layout: the shell pads every routed page; pages only space their own blocks */
+  .app-content {
+    padding: var(--pes-page-padding);
+
+    @media (max-width: 600px) {
+      --pes-page-padding: var(--pes-space-4);
+    }
+  }
+
+  /* Page header used by the detail/form screens: title with actions underneath */
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--pes-inline-gap);
+    margin-bottom: var(--pes-section-gap);
+  }
+
+  .page-title {
+    @include pes.section-title;
+    display: block;
+    margin: 0 0 var(--pes-stack-gap);
+    padding-bottom: var(--pes-space-2);
+  }
+
+  .page-header .page-title,
+  .table-header .page-title {
+    margin-bottom: 0;
+  }
+
+  .page-actions {
+    display: flex;
+    gap: var(--pes-inline-gap);
+  }
+
+  /* Table header: title on the left, actions on the right */
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--pes-inline-gap);
+    margin-bottom: var(--pes-stack-gap);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* Filter panel above list tables (entries, cards) */
+  .filter-panel {
+    padding: var(--pes-space-4);
+    margin-bottom: var(--pes-section-gap);
+    background: var(--pes-color-surface-subtle);
+    border-radius: var(--pes-radius-lg);
+  }
+
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--pes-inline-gap);
+  }
+
+  .filter-actions {
+    margin-top: var(--pes-stack-gap);
+    display: flex;
+    gap: var(--pes-inline-gap);
+  }
+
+  /* Cards */
+  .mat-mdc-card {
+    border-bottom: none; /* remove default green border */
+    box-shadow: none !important;
+  }
+
+  /* Flat buttons use the brand green everywhere (disabled buttons keep Material's disabled look) */
+  // Doubled class to match the theme's ".mat-mdc-unelevated-button.mat-primary" specificity.
+  .mat-mdc-unelevated-button.mat-mdc-unelevated-button {
+    --mdc-filled-button-container-color: var(--pes-color-primary);
+    --mdc-filled-button-label-text-color: var(--pes-color-on-primary);
+    font-weight: 600;
+
+    &:hover {
+      --mdc-filled-button-container-color: var(--pes-color-primary-hover);
+    }
+  }
+
+  /* ngx-mat-datetime-picker background fix */
+  .cdk-overlay-pane ngx-mat-datetime-picker,
+  .cdk-overlay-pane .ngx-mat-datetime-picker,
+  .cdk-overlay-pane .mat-calendar,  /* calendar surface */
+  .cdk-overlay-pane .time-container /* time selector panel */ {
+    background-color: var(--pes-color-surface-muted) !important;
+  }
+
+  /* Calendar cells */
+  .cdk-overlay-pane .mat-calendar-body-cell-content {
+    color: var(--pes-color-text);
+  }
+
+  /* Selected date */
+  .cdk-overlay-pane .mat-calendar-body-selected {
+    background-color: var(--pes-color-primary) !important;
+    color: var(--pes-color-on-dark);
+  }
+
+  /* HTTP error notifications (ErrorInterceptor) */
+  .mat-mdc-snack-bar-container.error-snackbar {
+    --mdc-snackbar-container-color: var(--pes-color-error);
+    --mdc-snackbar-supporting-text-color: var(--pes-color-on-dark);
+    --mat-snack-bar-button-color: var(--pes-color-on-dark);
+  }
+}

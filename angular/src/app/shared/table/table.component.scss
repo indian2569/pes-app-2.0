@@ -1,44 +1,19 @@
 .table-container {
   width: 100%;
   overflow-x: auto;
-  margin-top: 16px;
 
-  button {
-    margin-bottom: 16px;
+  .table-actions,
+  .filter-input {
+    margin-bottom: var(--pes-stack-gap);
   }
 
   .filter-input {
     width: 300px;
-    margin-bottom: 16px;
-  }
-
-  table.mat-table {
-    min-width: 600px;
   }
 
   .action-cell {
     display: flex;
-    gap: 8px;
+    gap: var(--pes-space-2);
     justify-content: center;
-  }
-
-  .mat-header-row {
-    background-color: rgba(0, 0, 0, 0.05);
-    font-weight: bold;
-  }
-
-  .mat-row:hover {
-    background-color: rgba(0, 255, 0, 0.05);
-  }
-
-  /* Buttons (black + green theme) */
-  button[mat-flat-button] {
-    background-color: #8fcb51;
-    color: #000;
-    font-weight: 600;
-  }
-
-  button[mat-flat-button]:hover {
-    background-color: #78b543;
   }
 }

@@ -1,67 +1,58 @@
-.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter, .one_fifth, .two_fifth, .three_fifth, .four_fifth, .one_sixth, .two_sixth, .three_sixth, .four_sixth, .five_sixth {
-    display: inline;
-    float: left;
-    margin: 0 0 0 5%;
-    list-style: none;
-}
+@use 'mixins' as pes;
 
 .help-card {
-    background: #fff;
-    color: #000;
-    border-radius: 8px;
-    padding: 8px;
-    max-width: 720px;
+    @include pes.content-card(720px);
+    padding: var(--pes-space-2);
 }
 
 /* Title */
 .help-card mat-card-title {
-    color: #8fcb51;
-    font-size: 22px;
+    @include pes.section-title;
+    font-size: var(--pes-font-size-xl);
     font-weight: 600;
-    border-bottom: 1px solid #8fcb51;
-    padding-bottom: 8px;
+    padding-bottom: var(--pes-space-2);
 }
 
 /* Section */
 .help-section h3 {
-    margin-top: 16px;
-    color: #8fcb51;
-    font-size: 18px;
+    margin-top: var(--pes-space-4);
+    color: var(--pes-color-primary);
+    font-size: var(--pes-font-size-lg);
 }
 
 /* Text */
 .help-section p {
-    line-height: 1.6;
-    color: #000;
+    line-height: var(--pes-line-height-relaxed);
+    color: var(--pes-color-text);
 }
 
 /* Ordered list */
 .help-list {
-    margin-left: 16px;
-    line-height: 1.6;
+    margin-left: var(--pes-space-4);
+    line-height: var(--pes-line-height-relaxed);
 }
 
 .help-list li {
-    margin-bottom: 8px;
+    margin-bottom: var(--pes-space-2);
 }
 
 /* Images */
 .image-group {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-    margin-top: 16px;
+    gap: var(--pes-space-3);
+    margin-top: var(--pes-space-4);
 }
 
 .image-group img {
     width: 100%;
-    border-radius: 6px;
-    border: 1px solid #8fcb51;
+    border-radius: var(--pes-radius-md);
+    border: 1px solid var(--pes-color-primary);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .image-group img:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 12px var(--pes-color-primary-glow);
 }

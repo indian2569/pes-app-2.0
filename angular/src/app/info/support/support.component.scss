@@ -1,9 +1,8 @@
+@use 'mixins' as pes;
+
 .contact-card {
-    max-width: 600px;
-    background: #ffffff;
-    color: #000000;
-    border-radius: 8px;
-    padding: 8px;
+    @include pes.content-card(600px);
+    padding: var(--pes-space-2);
 }
 
 mat-card-title.mat-mdc-card-title {
@@ -12,36 +11,34 @@ mat-card-title.mat-mdc-card-title {
 
 /* Title */
 .contact-card mat-card-title {
-    font-size: 22px;
+    @include pes.section-title;
+    font-size: var(--pes-font-size-xl);
     font-weight: 600;
-    color: #8fcb51;
-    border-bottom: 1px solid #8fcb51;
-    padding-bottom: 8px;
+    padding-bottom: var(--pes-space-2);
 }
 
 /* Description */
 .contact-description {
-    margin-bottom: 20px;
-    color: #333;
-    line-height: 1.6;
+    margin-bottom: var(--pes-space-5);
+    color: var(--pes-color-text-strong);
+    line-height: var(--pes-line-height-relaxed);
 }
 
 /* Full width fields */
 .full-width {
-    width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: var(--pes-space-4);
 }
 
 /* Actions */
 .form-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--pes-inline-gap);
 }
 
 /* Spinner */
 mat-progress-spinner {
-    margin-left: 8px;
+    margin-left: var(--pes-space-2);
 }
 
 .contact-form {
@@ -51,15 +48,4 @@ mat-progress-spinner {
 
 .contact-form mat-form-field {
     width: 100%;
-}
-
-/* Buttons (black + green theme) */
-button[mat-flat-button] {
-    background-color: #8fcb51;
-    color: #000;
-    font-weight: 600;
-}
-
-button[mat-flat-button]:hover {
-    background-color: #78b543;
 }

@@ -1,0 +1,38 @@
+// Shared style patterns. In a component stylesheet: @use 'mixins' as pes;
+
+// Green heading with a green underline (page titles, card titles, settings headings).
+@mixin section-title {
+  color: var(--pes-color-primary);
+  border-bottom: 1px solid var(--pes-color-primary);
+}
+
+// White content card used by the info, support and report screens.
+@mixin content-card($max-width) {
+  max-width: $max-width;
+  background: var(--pes-color-surface);
+  color: var(--pes-color-text);
+  border-radius: var(--pes-radius-lg);
+}
+
+// Bootstrap-like ".btn" kept for templates that still use plain <button class="btn">.
+@mixin legacy-button {
+  .btn {
+    text-transform: uppercase;
+    vertical-align: bottom;
+    border: 0;
+    box-shadow: var(--pes-shadow-raised);
+    font-weight: 500;
+    padding: 0.625rem 1.2rem 0.5rem;
+    font-size: var(--pes-font-size-xs);
+    line-height: 1.5;
+  }
+
+  .btn-rounded {
+    border-radius: var(--pes-radius-pill);
+  }
+
+  .btn-link {
+    box-shadow: none;
+    text-decoration: none;
+  }
+}

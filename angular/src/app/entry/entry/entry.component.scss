@@ -2,63 +2,30 @@
     font-size: 1em;
     line-height: 1.4em;
 }
-/* Header */
-.page-header {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.page-title {
-    color: #8fcb51;
-    margin: 0;
-}
-
-.page-actions {
-    display: flex;
-    gap: 8px;
-}
-
 /* Card */
 .form-card {
-    padding: 24px;
+    padding: var(--pes-space-6);
 }
 
 /* Form layout */
 .form-grid {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--pes-stack-gap);
 }
 
 /* Two-column grid */
 .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.full {
-    width: 100%;
+    gap: var(--pes-stack-gap);
 }
 
 /* Loading */
 .loading {
     display: flex;
     justify-content: center;
-    padding: 32px;
-}
-
-/* Buttons (black + green theme) */
-button[mat-flat-button] {
-    background-color: #8fcb51;
-    color: #000;
-    font-weight: 600;
-}
-
-button[mat-flat-button]:hover {
-    background-color: #78b543;
+    padding: var(--pes-space-8);
 }
 
 /* READONLY STATE */
@@ -66,13 +33,13 @@ button[mat-flat-button]:hover {
 
     /* Inputs & textareas */
     .mat-mdc-input-element {
-        color: rgba(0, 0, 0, 0.65);
+        color: var(--pes-color-text-disabled);
         cursor: not-allowed;
     }
 
     /* Form field background */
     .mat-mdc-form-field-flex {
-        background-color: #f4f4f4;
+        background-color: var(--pes-color-surface-muted);
     }
 
     /* Remove underline / focus glow */
@@ -82,13 +49,13 @@ button[mat-flat-button]:hover {
 
     /* Labels */
     .mat-mdc-floating-label {
-        color: rgba(0, 0, 0, 0.6);
+        color: var(--pes-color-text-secondary);
     }
 
     /* Selects */
     .mat-mdc-select {
         pointer-events: none;
-        color: rgba(0, 0, 0, 0.65);
+        color: var(--pes-color-text-disabled);
     }
 
     .mat-mdc-select-arrow {

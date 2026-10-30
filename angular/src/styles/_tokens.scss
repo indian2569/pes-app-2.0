@@ -1,0 +1,76 @@
+// Design tokens shared by the whole app.
+// Use them from any stylesheet as var(--pes-…); no import needed.
+
+:root {
+  /* Brand */
+  --pes-color-primary: #8fcb51;
+  --pes-color-primary-hover: #78b543;
+  --pes-color-on-primary: #000;
+  --pes-color-primary-tint: rgba(143, 203, 81, 0.2);
+  --pes-color-primary-glow: rgba(0, 255, 0, 0.4);
+  --pes-color-indigo-tint: #3f51b56e; // dashboard tiles (old Material indigo)
+
+  /* App chrome */
+  --pes-color-toolbar: #232323;
+  --pes-color-header-band: #333333;
+
+  /* Surfaces */
+  --pes-color-surface: #fff;
+  --pes-color-surface-muted: #f5f5f5;
+  --pes-color-surface-subtle: #fafafa;
+  --pes-color-border: #ccc;
+
+  /* Text */
+  --pes-color-text: #000;
+  --pes-color-text-strong: #333;
+  --pes-color-text-secondary: rgba(0, 0, 0, 0.6);
+  --pes-color-text-disabled: rgba(0, 0, 0, 0.65);
+  --pes-color-on-dark: #fff;
+
+  /* Status */
+  --pes-color-success: #4caf50;
+  --pes-color-error: #b3261e;
+  --pes-color-warning: #f0ad4e;
+  --pes-color-warning-surface: #fff8e6;
+
+  /* Spacing */
+  --pes-space-1: 4px;
+  --pes-space-2: 8px;
+  --pes-space-3: 12px;
+  --pes-space-4: 16px;
+  --pes-space-5: 20px;
+  --pes-space-6: 24px;
+  --pes-space-8: 32px;
+  --pes-space-10: 40px;
+
+  /* Layout rhythm: use these instead of raw spacing for page structure */
+  --pes-page-padding: var(--pes-space-6);   // space between the toolbar/window edge and page content
+  --pes-section-gap: var(--pes-space-6);    // between major blocks (header, filter panel, table, card)
+  --pes-stack-gap: var(--pes-space-4);      // between items inside a block (title -> content, form rows)
+  --pes-inline-gap: var(--pes-space-3);     // between side-by-side controls (buttons, filter fields)
+
+  /* Typography */
+  --pes-font-family: Roboto, "Helvetica Neue", sans-serif;
+  --pes-font-size-xs: 0.75rem;
+  --pes-font-size-sm: 0.8125rem;
+  --pes-font-size-md: 1rem;
+  --pes-font-size-lg: 1.125rem;
+  --pes-font-size-xl: 1.375rem;
+  --pes-font-size-2xl: 1.5rem;
+  --pes-line-height-relaxed: 1.6;
+
+  /* Radii */
+  --pes-radius-xs: 2px;
+  --pes-radius-sm: 4px;
+  --pes-radius-md: 6px;
+  --pes-radius-lg: 8px;
+  --pes-radius-xl: 12px;
+  --pes-radius-pill: 10rem;
+  --pes-radius-round: 50%;
+
+  /* Shadows */
+  --pes-shadow-raised: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+  --pes-shadow-low: 0 2px 2px rgba(0, 0, 0, 0.3);
+  --pes-shadow-card: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --pes-shadow-table: 0 5px 12px -12px rgba(0, 0, 0, 0.29);
+}

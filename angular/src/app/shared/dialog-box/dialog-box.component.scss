@@ -1,11 +1,7 @@
-.full-width {
-    width: 100%;
-}
-
 .dialog-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--pes-space-4);
 }
 
 .delete-warning {
@@ -13,8 +9,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 8px;
-    padding: 12px 0;
+    gap: var(--pes-space-2);
+    padding: var(--pes-space-3) 0;
 }
 
 .delete-icon {
@@ -29,11 +25,11 @@
 
 .delete-name {
     margin: 0;
-    font-size: 16px;
+    font-size: var(--pes-font-size-md);
 }
 
 .delete-hint {
     margin: 0;
-    font-size: 13px;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: var(--pes-font-size-sm);
+    color: var(--pes-color-text-secondary);
 }

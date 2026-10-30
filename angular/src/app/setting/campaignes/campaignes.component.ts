@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'app-campaignes',
     templateUrl: './campaignes.component.html',
-    styleUrls: ['./campaignes.component.scss'],
     standalone: false
 })
 export class CampaignesComponent {
