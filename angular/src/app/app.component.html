@@ -78,8 +78,9 @@
   <span class="toolbar-right" *ngIf="token.isAuthenticated()">
     <span mat-button>Prihlasení ako: {{ token.user()?.username  }}</span>
     <button mat-button (click)="logout()">Odhlásiť sa</button>
-    <a mat-button routerLink="admin" *ngIf="showAdminBoard">Admin Board</a>
-    <a mat-button routerLink="mod" *ngIf="showModeratorBoard">Moderator Board</a>
+    <a mat-button routerLink="admin" *ngIf="showAdminBoard()">Admin Board</a>
+    <a mat-button routerLink="mod" *ngIf="showModeratorBoard()">Moderator Board</a>
+    <a mat-button routerLink="profile" routerLinkActive="active-link">Profil</a>
   </span>
 </mat-toolbar>
 

@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {formatDate} from '@angular/common';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {map, startWith, switchMap, takeUntil} from 'rxjs/operators';
 
 import {MethodsDTO} from '../../model/MethodsDTO';
 import {ProgramDTO} from '../../model/ProgramDTO';
@@ -18,7 +19,10 @@ import {CoworkerDTO} from '../../model/CoworkerDTO';
 import {EntryDTO} from '../../model/EntryDTO';
 import {SettingService} from '../../setting/setting.service';
 import {CardService} from '../../card/card.service';
-import {Observable, Subject} from 'rxjs';
+import {forkJoin, Observable, of, Subject} from 'rxjs';
+
+// backend expects LocalDateTime, so send the local wall-clock time without any timezone conversion
+const BACKEND_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
 @Component({
   selector: 'app-entry',
@@ -59,50 +63,50 @@ export class EntryComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router) {
-    this.formSetUp();
-    this.route.url.pipe(takeUntil(this.onDestroy$))
-      .subscribe((params: any) => {
-        if (params[0].path !== 'add_entry' && params.length > 0) {
-          this.editId = params[0].path;
-        }
-      });
+   }
+
+  ngOnInit(): void {
+    // option lists for the chips inputs are passed to them through [dataSet] bindings
     this.settingService.getAllMethods().pipe(takeUntil(this.onDestroy$))
       .subscribe({
-        next: (data) => {
-          this.methods = data;
-          this.methodsControl.allAvaliableChips = this.methods;
-        },
+        next: (data) => this.methods = data,
         error: (e) => console.error(e)
       });
     this.settingService.getAllCoworkers().pipe(takeUntil(this.onDestroy$))
       .subscribe({
-        next: (data) => {
-          this.contacts = data;
-          this.coworkersControl.allAvaliableChips = this.contacts;
-        },
+        next: (data) => this.contacts = data,
         error: (e) => console.error(e)
       });
     this.cardService.getAllCards().pipe(takeUntil(this.onDestroy$))
       .subscribe({
-        next: (data) => {
-          this.cards = data[0].results;
-          this.otherClientsControl.allAvaliableChips = this.cards;
-          this.clientsControl.allAvaliableChips = this.cards;
-        },
+        next: (data) => this.cards = data[0].results,
         error: (e) => console.error(e)
       });
 
-   }
-
-   async ngOnInit(): Promise<void> {
-    this.isLoading = true;
-    try {
-      await this.loadData();
-      this.isLoading = false;
-    } catch (error) {
-      console.error('Error loading programs or entry', error);
-      this.isLoading = false;
-    }
+    this.route.paramMap.pipe(
+      map(params => params.get('id') ?? this.editId),
+      switchMap(editId => {
+        this.isLoading = true;
+        this.editId = editId;
+        return forkJoin({
+          programs: this.settingService.getAllPrograms(),
+          campaigns: this.settingService.getAllCampaigns(),
+          entry: _.isNil(editId) ? of(undefined) : this.entryService.getEntry(editId)
+        });
+      }),
+      takeUntil(this.onDestroy$)
+    ).subscribe({
+      next: ({programs, campaigns, entry}) => {
+        this.programs = programs;
+        this.campaigns = campaigns;
+        this.setUpEntry(entry);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading programs or entry', error);
+        this.isLoading = false;
+      }
+    });
   }
 
   private fillClientOnSite() {
@@ -118,13 +122,14 @@ export class EntryComponent implements OnInit, OnDestroy {
       this.entryEdit = ent;
       this.router.navigate([`/entry_line/` + ent.id]);
     });
+    this.readonly = !this.readonly;
   }
 
   getSaveObject(): EntryDTO {
     let ret: EntryDTO = {
       ...this.formGroup.getRawValue(),
-      entry_date_from: this.formGroup.get('entry_date_from').value.toISOString().slice(0, 19),
-      entry_date_to: this.formGroup.get('entry_date_to').value.toISOString().slice(0, 19)
+      entry_date_from: this.toBackendDateTime(this.formGroup.get('entry_date_from').value),
+      entry_date_to: this.toBackendDateTime(this.formGroup.get('entry_date_to').value)
   };
     if (!_.isNil(this.clientsControl)) {
         ret.client = this.clientsControl.selectedChips;
@@ -139,6 +144,10 @@ export class EntryComponent implements OnInit, OnDestroy {
         ret.work_methods = this.methodsControl.selectedChips;
     }
     return ret;
+  }
+
+  private toBackendDateTime(value: Date): string {
+    return formatDate(value, BACKEND_DATE_TIME_FORMAT, 'en-US');
   }
 
   private _filter(value: string): CardBasicDTO[] {
@@ -172,11 +181,8 @@ export class EntryComponent implements OnInit, OnDestroy {
       createdBy: new FormControl(_.isNil(this.entryEdit) ? undefined : this.entryEdit.createdBy)
 
     });
+    // selected chips are passed to the chips inputs through [selectedData] bindings
     if (!_.isNil(this.entryEdit)) {
-        this.clientsControl.selectedChips =  _.isNil(this.entryEdit.client) ? [] : this.entryEdit.client;
-        this.otherClientsControl.selectedChips = _.isNil(this.entryEdit.clients_on_site) ? [] : this.entryEdit.clients_on_site;
-        this.coworkersControl.selectedChips = _.isNil(this.entryEdit.other_workers) ? [] : this.entryEdit.other_workers;
-        this.methodsControl.selectedChips = _.isNil(this.entryEdit.work_methods) ? [] : this.entryEdit.work_methods;
         this.selectedCampagne = this.entryEdit.campaign;
         this.selectedProgram = this.entryEdit.program_type;
     }
@@ -190,33 +196,17 @@ export class EntryComponent implements OnInit, OnDestroy {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
-  async loadData() {
-    try {
-      this.programs = await this.settingService.getAllPrograms().toPromise();
-      this.campaigns = await this.settingService.getAllCampaigns().toPromise();
-      await this.setUpEntry(this.editId);
-    } catch (error) {
-      console.error('Error loading settings', error);
-    }
-  }
-
-  async setUpEntry(editId: string) {
-    if (!_.isNil(editId)) {
-      try {
-        this.entryEdit = await this.entryService.getEntry(editId).toPromise();
-        this.formSetUp();
-        this.title = 'Záznam';
-        this.readonly = true;
-        this.fillClientOnSite();
-      } catch (error) {
-        console.error('Error loading entry', error);
-      }
+  private setUpEntry(entry: EntryDTO | undefined) {
+    this.entryEdit = entry;
+    this.formSetUp();
+    if (!_.isNil(entry)) {
+      this.title = 'Záznam';
+      this.readonly = true;
     } else {
-      this.formSetUp();
       this.title = 'Vytvorenie záznamu';
-      this.readonly = !_.isNil(editId);
-      this.fillClientOnSite();
+      this.readonly = false;
     }
+    this.fillClientOnSite();
   }
 
   onMakeEditable () {

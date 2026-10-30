@@ -1,44 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed} from '@angular/core';
 import { TokenStorageService } from './_services/token-storage.service';
-import * as _ from "lodash";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  private roles: string[] = [];
-  isLoggedIn = false;
-  showAdminBoard = false;
-  showModeratorBoard = false;
-  username?: string;
+  // derived from the token storage signals, so the toolbar updates right after login/logout without a page reload
+  private roles = computed<string[]>(() => this.token.user()?.roles ?? []);
+  showAdminBoard = computed(() => this.roles().includes('ROLE_ADMIN'));
+  showModeratorBoard = computed(() => this.roles().includes('ROLE_MODERATOR'));
 
   constructor(protected token: TokenStorageService) {
-
-  }
-
-  ngOnInit(): void {
-    this.isLoggedIn = this.token.isAuthenticated();
-    if (this.isLoggedIn) {
-      const user = this.token.user();
-      this.roles = user.roles;
-
-        if (!_.isNil(this.roles)) {
-            this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-            this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
-        } else {
-            this.showAdminBoard = false;
-            this.showModeratorBoard = false;
-        }
-
-      this.username = user.username;
-    }
   }
 
   logout(): void {
-    this.isLoggedIn = false;
     this.token.signOut();
   }
 }

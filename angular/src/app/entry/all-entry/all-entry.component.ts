@@ -1,13 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { EntryDTO } from '../../model/EntryDTO';
-import { EntryService } from '../entry.service';
+import { EntryFilterParams, EntryService } from '../entry.service';
 import { CampaignDTO } from '../../model/CampaignDTO';
-import { CoworkerDTO } from '../../model/CoworkerDTO';
 import { ProgramDTO } from '../../model/ProgramDTO';
 import { LookupService } from '../../shared/lookup/lookup.service';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from "@angular/forms";
+
+const DEFAULT_FILTER = {
+  place: '',
+  timeFrom: null,
+  timeTo: null,
+  campaign: '',
+  program: '',
+  author: '',
+  sortBy: 'entryDateFrom',
+  sortOrder: 'DESC'
+};
 
 @Component({
   selector: 'app-all-entry',
@@ -21,32 +32,26 @@ export class AllEntryComponent implements OnInit, OnDestroy {
 
   campaigns$: Observable<CampaignDTO[]>;
   programs$: Observable<ProgramDTO[]>;
-  coworkers$: Observable<CoworkerDTO[]>;
 
   entryData: EntryDTO[] = [];
+  // switchMap drops responses of older requests, so a slow request can't overwrite newer results
+  private load$ = new Subject<void>();
   onDestroy$ = new Subject();
 
   constructor(private entryService: EntryService,
               private lookupService: LookupService,
               private fb: FormBuilder,) {
-    this.filterForm = this.fb.group({
-      place: [''],
-      timeFrom: [null],
-      timeTo: [null],
-      campaign: [''],
-      program: [''],
-      createdBy: [''],
-      sortBy: ['time'],
-      sortOrder: ['DESC']
-    });
+    this.filterForm = this.fb.group({ ...DEFAULT_FILTER });
    }
 
   ngOnInit(): void {
     this.campaigns$ = this.lookupService.getCampaigns();
     this.programs$ = this.lookupService.getPrograms();
-    this.coworkers$ = this.lookupService.getCoworkers();
-    this.entryService.getAllEntrys().pipe(takeUntil(this.onDestroy$))
-    .subscribe(entry => this.entryData = entry);
+    this.load$.pipe(
+      switchMap(() => this.entryService.getAllEntrys(this.buildRequest())),
+      takeUntil(this.onDestroy$)
+    ).subscribe(entry => this.entryData = entry);
+    this.load$.next();
   }
 
   ngOnDestroy(): void {
@@ -55,35 +60,25 @@ export class AllEntryComponent implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    const filters = this.filterForm.value;
-
-    const request = {
-      ...filters,
-      timeFrom: filters.timeFrom
-          ? filters.timeFrom.toISOString()
-          : null,
-      timeTo: filters.timeTo
-          ? filters.timeTo.toISOString()
-          : null
-    };
-/*
-    this.entryService.getFilteredData(request).subscribe({
-      next: data => this.tableData = data,
-      error: err => console.error(err)
-    });*/
+    this.load$.next();
   }
 
   resetFilters(): void {
-    this.filterForm.reset({
-      place: '',
-      timeFrom: null,
-      timeTo: null,
-      campaign: '',
-      program: '',
-      createdBy: '',
-      sortBy: 'time',
-      sortOrder: 'DESC'
-    });
+    this.filterForm.reset({ ...DEFAULT_FILTER });
     this.applyFilters();
+  }
+
+  // maps the form onto the query parameters of GET /api/entry/allEntrys
+  private buildRequest(): EntryFilterParams {
+    const filters = this.filterForm.value;
+    return {
+      place: filters.place,
+      campaign: filters.campaign,
+      program: filters.program,
+      yearfrom: filters.timeFrom ? formatDate(filters.timeFrom, 'yyyy-MM-dd', 'en-US') : null,
+      yearto: filters.timeTo ? formatDate(filters.timeTo, 'yyyy-MM-dd', 'en-US') : null,
+      author: filters.author,
+      sort: filters.sortOrder === 'DESC' ? `${filters.sortBy}(desc)` : filters.sortBy
+    };
   }
 }

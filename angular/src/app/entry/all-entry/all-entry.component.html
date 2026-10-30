@@ -1,4 +1,4 @@
-<form [formGroup]="filterForm" class="filter-panel">
+<form [formGroup]="filterForm" class="filter-panel" (ngSubmit)="applyFilters()">
 
   <div class="filter-row">
 
@@ -48,26 +48,21 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Created by -->
+    <!-- Created by (používateľské meno autora záznamu) -->
     <mat-form-field appearance="outline">
       <mat-label>Pridal</mat-label>
-      <mat-select formControlName="createdBy">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let coworker of coworkers$ | async" [value]="coworker.name">
-          {{ coworker.name }}
-        </mat-option>
-      </mat-select>
+      <input matInput formControlName="author">
     </mat-form-field>
 
     <!-- Sort by -->
     <mat-form-field appearance="outline">
       <mat-label>Zoradiť podľa:</mat-label>
       <mat-select formControlName="sortBy">
-        <mat-option value="time">Datum</mat-option>
+        <mat-option value="entryDateFrom">Datum</mat-option>
         <mat-option value="place">Miesto</mat-option>
-        <mat-option value="campaign">Kampaň</mat-option>
-        <mat-option value="program">Program</mat-option>
-        <mat-option value="created">Pridal</mat-option>
+        <mat-option value="campaign.name">Kampaň</mat-option>
+        <mat-option value="programType.name">Program</mat-option>
+        <mat-option value="createdBy.username">Pridal</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -84,11 +79,11 @@
 
   <!-- Actions -->
   <div class="filter-actions">
-    <button mat-flat-button color="primary"(click)="applyFilters()">
+    <button mat-flat-button color="primary" type="submit">
       Apply
     </button>
 
-    <button mat-stroked-button (click)="resetFilters()">
+    <button mat-stroked-button type="button" (click)="resetFilters()">
       Reset
     </button>
   </div>

@@ -1,54 +1,34 @@
 import { Injectable } from '@angular/core';
-import { ProgramDTO } from '../model/ProgramDTO';
-import { MethodsDTO } from '../model/MethodsDTO';
-import { CampaignDTO } from '../model/CampaignDTO';
 
-import { HttpClient, HttpContext, HttpContextToken } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpContextToken, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
-import { take } from 'rxjs/operators';
-import { CoworkerDTO } from '../model/CoworkerDTO';
 import { CardBasicDTO } from '../model/CardBasicDTO';
-import { SettingService } from '../setting/setting.service';
-import { CardService } from '../card/card.service';
 import { EntryDTO } from '../model/EntryDTO';
 import { Observable } from 'rxjs';
+
+/** Query parameters supported by GET /api/entry/allEntrys (see pes.yaml). */
+export interface EntryFilterParams {
+  page_size?: number;
+  page_number?: number;
+  sort?: string;
+  place?: string;
+  campaign?: string;
+  program?: string;
+  yearfrom?: string;
+  yearto?: string;
+  author?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntryService {
   public static readonly ENTRY_API_URL = `${environment.apiUrl}/api/entry`;
-  programData: ProgramDTO[] = [];
-  methodsData: MethodsDTO[] = [];
-  campaignesData: CampaignDTO[] = [];
-  coworkerData: CoworkerDTO[] = [];
-  cardData: CardBasicDTO[] = [];
 
-  constructor(protected http: HttpClient,
-              private settingService: SettingService,
-              private cardService: CardService) { }
+  constructor(protected http: HttpClient) { }
 
   private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
-
-  public getPrograms(): ProgramDTO[] {
-    this.settingService.getAllPrograms()
-    .pipe(take(1)).toPromise()
-    .then(((program: any) => this.programData = program));
-    return this.programData;
-  }
-
-  public getMethods(): MethodsDTO[] {
-    this.settingService.getAllMethods().pipe(take(1)).toPromise()
-    .then((methods: any) => this.methodsData = methods);
-    return this.methodsData;
-  }
-
-  public getCampaignes(): CampaignDTO[] {
-    this.settingService.getAllCampaigns().pipe(take(1)).toPromise()
-    .then((campaigne: any) => this.campaignesData = campaigne);
-    return this.campaignesData;
-  }
 
   public saveEntry(entry: EntryDTO):  Observable<EntryDTO> {
     return this.http.post<EntryDTO>(EntryService.ENTRY_API_URL + '/save', entry, { context: this.CONTEXT });
@@ -62,27 +42,19 @@ export class EntryService {
     return this.http.delete<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 
-  public getAllEntrys():  Observable<EntryDTO[]> {
-    return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { context: this.CONTEXT });
+  public getAllEntrys(filter?: EntryFilterParams):  Observable<EntryDTO[]> {
+    let params = new HttpParams();
+    Object.entries(filter ?? {})
+      .filter(([, value]) => value !== null && value !== undefined && value !== '')
+      .forEach(([key, value]) => params = params.set(key, String(value)));
+    return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params, context: this.CONTEXT });
   }
 
-  getContats(): CoworkerDTO[] {
-    this.settingService.getAllCoworkers().pipe(take(1)).toPromise()
-    .then((coworker: any) => this.coworkerData = coworker);
-    return this.coworkerData;
-  }
-
-  getCards(): import("../model/CardBasicDTO").CardBasicDTO[] {
-    this.cardService.getAllCards().pipe(take(1)).toPromise()
-    .then((cardSub: any) => this.cardData = cardSub);
-    return this.cardData;
-  }
-  
-  public getAllEntrysByCardMain(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
+  public getAllEntrysByCardMain(card: CardBasicDTO):  Observable<EntryDTO[]> {
     return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysMain', card);
   }
 
-  public getAllEntrysByCardOnSite(card: import("../model/CardBasicDTO").CardBasicDTO):  Observable<EntryDTO[]> {
+  public getAllEntrysByCardOnSite(card: CardBasicDTO):  Observable<EntryDTO[]> {
     return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysOnSite', card);
   }
 

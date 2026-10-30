@@ -6,7 +6,7 @@
       <button mat-flat-button color="primary" type="submit" form="formGroup" *ngIf="!readonly">
         Uložiť
       </button>
-      <button mat-stroked-button color="primary" (click)="onMakeEditable()">
+      <button mat-stroked-button color="primary" (click)="onMakeEditable()" *ngIf="readonly">
         Zmeniť
       </button>
     </div>
@@ -18,9 +18,11 @@
     <form  class="form-grid" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="formGroup">
       <div class="grid-2">
         <app-chips-input title="Klienti:" [dataSet]="cards" [type]="1"
+                         [selectedData]="entryEdit?.client"
                          [parentForm]="formGroup" #client>
         </app-chips-input>
         <app-chips-input title="Klienti na službe:" [dataSet]="cards" [type]="1"
+                         [selectedData]="entryEdit?.clients_on_site"
                          [parentForm]="formGroup"  #otherClientsInput>
         </app-chips-input>
       </div>
@@ -79,9 +81,11 @@
       </div>
       <div class="grid-2">
         <app-chips-input title="Metódy práce:" [dataSet]="methods" [type]="3"
+                         [selectedData]="entryEdit?.work_methods"
                          [parentForm]="formGroup" #methodsInput>
         </app-chips-input>
         <app-chips-input title="Ďalší pracovníci:" [dataSet]="contacts" [type]="2"
+                         [selectedData]="entryEdit?.other_workers"
                          [parentForm]="formGroup" #coworkersInput>
         </app-chips-input>
       </div>

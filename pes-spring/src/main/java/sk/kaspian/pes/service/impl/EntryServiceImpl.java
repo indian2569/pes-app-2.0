@@ -20,6 +20,7 @@ import lombok.NonNull;
 import sk.kaspian.pes.mapper.EntryMapper;
 import sk.kaspian.pes.model.EntryFilter;
 import sk.kaspian.pes.model.EntrySpecifications;
+import sk.kaspian.pes.model.SortCriteria;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
@@ -53,10 +54,7 @@ public class EntryServiceImpl implements EntryService {
 				.and(EntrySpecifications.withAuthor(filter.getAuthor()));
 
 		// Handle sorting
-		Sort sort = Sort.by("id"); // Default sorting by id
-		if (filter.getSort() != null && !filter.getSort().isEmpty()) {
-			sort = Sort.by(Sort.Order.asc(filter.getSort()));
-		}
+		Sort sort = SortCriteria.parse(filter.getSort(), Sort.by("id")); // Default sorting by id
 
 		// Handle pagination
 		Pageable pageable = PageRequest.of(filter.getPageNumber(), filter.getPageSize(), sort);

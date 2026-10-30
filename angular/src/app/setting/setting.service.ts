@@ -31,7 +31,7 @@ export class SettingService {
   }
 
   public getCampaign(code: string):  Observable<CampaignDTO> {
-    return this.http.get<CampaignDTO>(SettingService.CAMAPAIGNE_API_URL + `${code}`);
+    return this.http.get<CampaignDTO>(SettingService.CAMAPAIGNE_API_URL + `/${code}`);
   }
 
   public deleteCampaign(code: string): Observable<CampaignDTO> {

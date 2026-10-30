@@ -41,7 +41,7 @@ const appRoutes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', canActivate: [authGuard], component: ProfileComponent },
   {
     path: '',
     redirectTo: '/home',

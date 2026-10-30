@@ -22,6 +22,7 @@ import sk.kaspian.pes.mapper.CardMapper;
 import sk.kaspian.pes.model.Card;
 import sk.kaspian.pes.model.CardFilter;
 import sk.kaspian.pes.model.CardSpecifications;
+import sk.kaspian.pes.model.SortCriteria;
 import sk.kaspian.pes.model.PersonFilterRequest;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.CardPage;
@@ -56,10 +57,7 @@ public class CardServiceImpl implements CardService {
 				.and(CardSpecifications.withYearTo(filter.getYearto()))
 				.and(CardSpecifications.withAuthor(filter.getAuthor()));
 		// Handle sorting
-		Sort sort = Sort.by("id"); // Default sorting by id
-		if (filter.getSort() != null && !filter.getSort().isEmpty()) {
-			sort = Sort.by(Sort.Order.asc(filter.getSort()));
-		}
+		Sort sort = SortCriteria.parse(filter.getSort(), Sort.by("id")); // Default sorting by id
 
 		// Handle pagination
 		Pageable pageable = PageRequest.of(filter.getPageNumber(), filter.getPageSize(), sort);
