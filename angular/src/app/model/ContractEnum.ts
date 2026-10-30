@@ -10,5 +10,5 @@ export const ContractEnum2LabelMapping: Record<ContractEnum, string> = {
     [ContractEnum.PERSONAL]: 'osobný',
     [ContractEnum.TELEPHONE]: 'telefonický',
     [ContractEnum.EMAIL]: 'emailovy',
-    [ContractEnum.SOCIAL_NETWORK]: 'zo socialnej siete',
+    [ContractEnum.SOCIAL_NETWORK]: 'zo sociálnej siete',
 };

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { dialogProviders, testProviders } from '../../../testing/test-providers';
+import { SharedModule } from '../shared.module';
 import { EntityDialogComponent } from './entity-dialog.component';
 
 describe('EntityDialogComponent', () => {
@@ -8,12 +10,10 @@ describe('EntityDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityDialogComponent ]
-    })
-    .compileComponents();
-  });
+      imports: [SharedModule],
+      providers: [...testProviders, ...dialogProviders()]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EntityDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

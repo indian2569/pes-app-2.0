@@ -8,10 +8,10 @@
     <form *ngIf="!isLoggedIn" #f="ngForm" (ngSubmit)="f.valid && onSubmit()" novalidate>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Uživateľské meno</mat-label>
+        <mat-label>Používateľské meno</mat-label>
         <input matInput name="username" [(ngModel)]="form.username" required #username="ngModel">
         <mat-error *ngIf="username.errors && f.submitted">
-          Uživateľské meno je povinné!
+          Používateľské meno je povinné!
         </mat-error>
       </mat-form-field>
 

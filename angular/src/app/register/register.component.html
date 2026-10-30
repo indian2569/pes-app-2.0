@@ -14,7 +14,7 @@
       novalidate
     >
       <div class="form-group">
-        <label for="username">Uživateľské meno:</label>
+        <label for="username">Používateľské meno:</label>
         <input
           type="text"
           class="form-control"
@@ -26,12 +26,12 @@
           #username="ngModel"
         />
         <div class="alert-danger" *ngIf="username.errors && f.submitted">
-          <div *ngIf="username.errors.required">Uživateľské meno je povinné!</div>
+          <div *ngIf="username.errors.required">Používateľské meno je povinné!</div>
           <div *ngIf="username.errors.minlength">
-            Uživateľské meno musí mať minimálne 3 znaky
+            Používateľské meno musí mať minimálne 3 znaky
           </div>
           <div *ngIf="username.errors.maxlength">
-            Uživateľské meno môže mať maximálne 20 znakov
+            Používateľské meno môže mať maximálne 20 znakov
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@
           #email="ngModel"
         />
         <div class="alert-danger" *ngIf="email.errors && f.submitted">
-          <div *ngIf="email.errors.required">Email je vyžadovaní</div>
+          <div *ngIf="email.errors.required">Email je povinný</div>
           <div *ngIf="email.errors.email">
             Email musí byť zadaní vo valídnej forme.
           </div>

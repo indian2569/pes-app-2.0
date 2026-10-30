@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { testProviders } from '../../testing/test-providers';
 import { BoardUserComponent } from './board-user.component';
 
 describe('BoardUserComponent', () => {
@@ -8,12 +9,10 @@ describe('BoardUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BoardUserComponent ]
-    })
-    .compileComponents();
-  });
+      declarations: [BoardUserComponent],
+      providers: testProviders
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BoardUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

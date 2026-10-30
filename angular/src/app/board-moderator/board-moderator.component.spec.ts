@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { testProviders } from '../../testing/test-providers';
 import { BoardModeratorComponent } from './board-moderator.component';
 
 describe('BoardModeratorComponent', () => {
@@ -8,12 +9,10 @@ describe('BoardModeratorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BoardModeratorComponent ]
-    })
-    .compileComponents();
-  });
+      declarations: [BoardModeratorComponent],
+      providers: testProviders
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BoardModeratorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -42,7 +42,7 @@ export class EntryService {
     return this.http.delete<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 
-  public getAllEntrys(filter?: EntryFilterParams):  Observable<EntryPageDTO[]> {
+  public getAllEntries(filter?: EntryFilterParams):  Observable<EntryPageDTO[]> {
     let params = new HttpParams();
     Object.entries(filter ?? {})
       .filter(([, value]) => value !== null && value !== undefined && value !== '')
@@ -50,15 +50,15 @@ export class EntryService {
     return this.http.get<EntryPageDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params });
   }
 
-  public getAllEntrysByCardMain(card: CardBasicDTO):  Observable<EntryDTO[]> {
+  public getAllEntriesByCardMain(card: CardBasicDTO):  Observable<EntryDTO[]> {
     return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysMain', card);
   }
 
-  public getAllEntrysByCardOnSite(card: CardBasicDTO):  Observable<EntryDTO[]> {
+  public getAllEntriesByCardOnSite(card: CardBasicDTO):  Observable<EntryDTO[]> {
     return this.http.post<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allCardEntrysOnSite', card);
   }
 
-  public getAllEntrysByCard():  Observable<EntryDTO[]> {
+  public getNewestEntries():  Observable<EntryDTO[]> {
     return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/getListNewEntrys');
   }
 }

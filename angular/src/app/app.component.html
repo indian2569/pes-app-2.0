@@ -17,7 +17,7 @@
       </button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="recordsMenu">
-      Zaznamy <mat-icon>arrow_drop_down</mat-icon>
+      Záznamy <mat-icon>arrow_drop_down</mat-icon>
     </button>
 
     <!-- Karty dropdown -->
@@ -48,7 +48,7 @@
       </button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="infoMenu">
-      O Programe <mat-icon>arrow_drop_down</mat-icon>
+      O programe <mat-icon>arrow_drop_down</mat-icon>
     </button>
 
     <!-- Nastavenia dropdown -->
@@ -76,7 +76,7 @@
   </span>
 
   <span class="toolbar-right" *ngIf="token.isAuthenticated()">
-    <span mat-button>Prihlasení ako: {{ token.user()?.username  }}</span>
+    <span mat-button>Prihlásený ako: {{ token.user()?.username  }}</span>
     <button mat-button (click)="logout()">Odhlásiť sa</button>
     <a mat-button routerLink="admin" *ngIf="showAdminBoard()">Admin Board</a>
     <a mat-button routerLink="mod" *ngIf="showModeratorBoard()">Moderator Board</a>

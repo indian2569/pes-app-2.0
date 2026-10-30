@@ -125,7 +125,7 @@ export class DialogBoxComponent implements OnInit {
       this.buttonText = startOfText + ' kampaň';
       break;
     case 3:
-      this.buttonText = startOfText + ' metodu';
+      this.buttonText = startOfText + ' metódu';
       break;
     case 4:
       this.buttonText = startOfText + ' program';
@@ -148,16 +148,16 @@ export class DialogBoxComponent implements OnInit {
   }
 
   initDescriptionText(type: number) {
-    const startOfText = this.action === 'Add' ? 'Dialog na pridanie ' : 'Dialog na upravu ';
+    const startOfText = this.action === 'Add' ? 'Pridanie' : 'Úprava';
     switch (type) {
         case 1:
-      this.descriptionText = startOfText + ' inštitúciu';
+      this.descriptionText = startOfText + ' inštitúcie';
       break;
     case 2:
-      this.descriptionText = startOfText + ' kampaňe';
+      this.descriptionText = startOfText + ' kampane';
       break;
     case 3:
-      this.descriptionText = startOfText + ' metody';
+      this.descriptionText = startOfText + ' metódy';
       break;
     case 4:
       this.descriptionText = startOfText + ' programu';
@@ -166,19 +166,19 @@ export class DialogBoxComponent implements OnInit {
       this.descriptionText = startOfText + ' spolupracovníka';
       break;
     case 6:
-      this.descriptionText = startOfText + 'udalosťi';
+      this.descriptionText = startOfText + ' udalosti';
       break;
     case 7:
-        this.descriptionText = startOfText + 'carty';
+        this.descriptionText = startOfText + ' karty';
         break;
     case 8:
-      this.descriptionText = startOfText + 'záznamu';
+      this.descriptionText = startOfText + ' záznamu';
       break;
     default:
       if (this.action === 'Add') {
-        this.descriptionText = 'Pridavaš nový objekt';
+        this.descriptionText = 'Pridanie nového objektu';
       } else if (this.action === 'Update') {
-        this.descriptionText = 'Upraviť objekt';
+        this.descriptionText = 'Úprava objektu';
       } else if (this.action === 'Delete') {
         this.descriptionText = 'Potvrdenie vymazania';
       }

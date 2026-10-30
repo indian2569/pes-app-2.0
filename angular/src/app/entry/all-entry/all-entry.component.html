@@ -10,7 +10,7 @@
 
     <!-- Time from -->
     <mat-form-field appearance="outline">
-      <mat-label>Datum od:</mat-label>
+      <mat-label>Dátum od:</mat-label>
       <input matInput [matDatepicker]="fromPicker"
              formControlName="timeFrom">
       <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
@@ -19,7 +19,7 @@
 
     <!-- Time to -->
     <mat-form-field appearance="outline">
-      <mat-label>Datum do:</mat-label>
+      <mat-label>Dátum do:</mat-label>
       <input matInput [matDatepicker]="toPicker"
              formControlName="timeTo">
       <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -58,7 +58,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Zoradiť podľa:</mat-label>
       <mat-select formControlName="sortBy">
-        <mat-option value="entryDateFrom">Datum</mat-option>
+        <mat-option value="entryDateFrom">Dátum</mat-option>
         <mat-option value="place">Miesto</mat-option>
         <mat-option value="campaign.name">Kampaň</mat-option>
         <mat-option value="programType.name">Program</mat-option>

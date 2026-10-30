@@ -1,19 +1,19 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { testProviders } from '../../../testing/test-providers';
+import { SettingModule } from '../setting.module';
 import { ProgramsComponent } from './programs.component';
 
 describe('ProgramsComponent', () => {
   let component: ProgramsComponent;
   let fixture: ComponentFixture<ProgramsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ProgramsComponent ]
-    })
-    .compileComponents();
-  }));
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SettingModule],
+      providers: [...testProviders]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProgramsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

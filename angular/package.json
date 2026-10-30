@@ -6,7 +6,8 @@
     "start": "ng serve ",
     "build": "ng build --configuration production",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCI --code-coverage"
   },
   "private": true,
   "resolutions": {
@@ -35,18 +36,17 @@
     "@angular/cli": "^19.2.27",
     "@angular/compiler-cli": "^19.2.25",
     "@angular/language-service": "^19.2.25",
-    "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.11.1",
+    "@types/jasmine": "~5.1.4",
+    "@types/node": "^22.20.5",
     "angular-eslint": "19.8.1",
     "eslint": "^9.28.0",
     "http-proxy-middleware": "^2.0.6",
-    "jasmine-core": "~5.1.2",
-    "jasmine-spec-reporter": "~5.0.0",
-    "karma": "^6.4.3",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
-    "karma-jasmine": "~5.0.1",
-    "karma-jasmine-html-reporter": "^1.7.0",
+    "jasmine-core": "~5.4.0",
+    "karma": "~6.4.4",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.1",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "8.33.1"
   }

@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
+    styleUrls: ['./login.component.scss'],
     standalone: false
 })
 export class LoginComponent implements OnInit, OnDestroy {

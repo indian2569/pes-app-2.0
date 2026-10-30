@@ -17,9 +17,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   title = 'Demo';
   content?: string;
-  boxName1 = 'Nedavno pridane';
-  boxName2 = 'Pridane tento mesiac';
-  boxName3 = 'Vytvorene celkom';
+  boxName1 = 'Nedávno pridané';
+  boxName2 = 'Pridané tento mesiac';
+  boxName3 = 'Vytvorené celkom';
   records: EntryDTO[] = [];
 
   onDestroy$ = new Subject();
@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // the recent entries are shown (and allowed by the backend) only to logged-in users
     if (this.isLoggedIn()) {
-      this.entryService.getAllEntrysByCard().pipe(takeUntil(this.onDestroy$))
-      .subscribe(entrys => this.records = entrys);
+      this.entryService.getNewestEntries().pipe(takeUntil(this.onDestroy$))
+      .subscribe(entries => this.records = entries);
     }
   }
 

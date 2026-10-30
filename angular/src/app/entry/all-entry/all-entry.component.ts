@@ -51,7 +51,7 @@ export class AllEntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.load$.pipe(
-      switchMap(() => this.entryService.getAllEntrys(this.buildRequest())),
+      switchMap(() => this.entryService.getAllEntries(this.buildRequest())),
       takeUntil(this.onDestroy$)
     ).subscribe(entries => this.entryData = entries[0]);
     this.load$.next();

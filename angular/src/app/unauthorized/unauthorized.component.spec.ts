@@ -1,25 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnauthorizedComponent } from './unauthorized.component';
 
 describe('UnauthorizedComponent', () => {
-  let component: UnauthorizedComponent;
   let fixture: ComponentFixture<UnauthorizedComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ UnauthorizedComponent ]
-    })
-    .compileComponents();
-  }));
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [UnauthorizedComponent]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(UnauthorizedComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('tells the user they have no access', () => {
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Na túto stránku nemáte prístup.');
   });
 });

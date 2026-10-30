@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { TableRecordsComponent } from './table-records/table-records.component';
 import { TableEntryComponent } from './table-entry/table-entry.component';
-import { TableColapseComponent } from './table-colapse/table-colapse.component';
+import { TableCollapseComponent } from './table-collapse/table-collapse.component';
 import { TableComponent } from './table/table.component';
 import { EntityDialogComponent } from './entity-dialog/entity-dialog.component';
 import { TableCardComponent } from './table-card/table-card.component';
@@ -15,7 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { DasbordBoxComponent } from './dasbord-box/dasbord-box.component';
+import { DashboardBoxComponent } from './dashboard-box/dashboard-box.component';
 import localeSk from '@angular/common/locales/sk';
 import localeSkExtra from '@angular/common/locales/extra/sk';
 import {MatPaginatorModule} from "@angular/material/paginator";
@@ -33,13 +33,13 @@ registerLocaleData(localeSk, localeSkExtra);
   declarations: [
       TableRecordsComponent,
       TableEntryComponent,
-      TableColapseComponent,
+      TableCollapseComponent,
       TableComponent,
       EntityDialogComponent,
       TableCardComponent,
       DialogBoxComponent,
       ConfirmDialogComponent,
-      DasbordBoxComponent
+      DashboardBoxComponent
 
   ],
   imports: [
@@ -59,13 +59,13 @@ registerLocaleData(localeSk, localeSkExtra);
   exports: [
     TableRecordsComponent,
     TableEntryComponent,
-    TableColapseComponent,
+    TableCollapseComponent,
     TableComponent,
     EntityDialogComponent,
     TableCardComponent,
     DialogBoxComponent,
     ConfirmDialogComponent,
-    DasbordBoxComponent,
+    DashboardBoxComponent,
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,

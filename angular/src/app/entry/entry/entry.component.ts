@@ -104,6 +104,8 @@ export class EntryComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Error loading programs or entry', error);
         this.isLoading = false;
+        // the error interceptor already told the user what went wrong, leave the empty form for the list
+        this.router.navigate(['/entry_line']);
       }
     });
   }

@@ -2,11 +2,11 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CardService } from '../card.service';
 import { EntryService} from '../../entry/entry.service';
-import { map, tap, takeUntil } from 'rxjs/operators';
+import { catchError, map, tap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNil } from '../../shared/utils/is-nil';
 import { CardBasicDTO } from '../../model/CardBasicDTO';
-import { Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import { SettingService } from '../../setting/setting.service';
 import { InstitutionDTO } from '../../model/InstitutionDTO';
 import { EntryDTO } from '../../model/EntryDTO';
@@ -61,17 +61,24 @@ export class CardComponent implements OnInit, OnDestroy {
         this.editId = editId;
         if (!isNil(editId)) {
           this.cardService.getCard(editId)
-            .pipe(takeUntil(this.onDestroy$)).subscribe(card => {
+            .pipe(
+              // the error interceptor already told the user what went wrong, go back to the list
+              catchError(() => {
+                this.router.navigate(['/card_line/all_cards']);
+                return EMPTY;
+              }),
+              takeUntil(this.onDestroy$)
+            ).subscribe(card => {
                 this.insertCard = card;
                 this.formSetUp();
                 this.title = 'Karta klienta';
                 this.readonly = true;
                 this.haveObject$ = false;
-          this.entryService.getAllEntrysByCardMain(card).pipe(takeUntil(this.onDestroy$))
-          .subscribe(entrys => this.entrySet = entrys);
+          this.entryService.getAllEntriesByCardMain(card).pipe(takeUntil(this.onDestroy$))
+          .subscribe(entries => this.entrySet = entries);
     
-          this.entryService.getAllEntrysByCardOnSite(card).pipe(takeUntil(this.onDestroy$))
-          .subscribe(entrys => this.entryOnSiteSet = entrys);
+          this.entryService.getAllEntriesByCardOnSite(card).pipe(takeUntil(this.onDestroy$))
+          .subscribe(entries => this.entryOnSiteSet = entries);
           });
         } else {
           this.insertCard = undefined;

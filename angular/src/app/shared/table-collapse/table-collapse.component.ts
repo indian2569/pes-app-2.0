@@ -11,9 +11,9 @@ import { CardService } from '../../card/card.service';
 import { EntryService } from '../../entry/entry.service';
 
 @Component({
-    selector: 'app-table-colapse',
-    templateUrl: './table-colapse.component.html',
-    styleUrls: ['./table-colapse.component.scss'],
+    selector: 'app-table-collapse',
+    templateUrl: './table-collapse.component.html',
+    styleUrls: ['./table-collapse.component.scss'],
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -24,7 +24,7 @@ import { EntryService } from '../../entry/entry.service';
     standalone: false
 })
 
-  export class TableColapseComponent implements OnInit, OnDestroy {
+  export class TableCollapseComponent implements OnInit, OnDestroy {
 
     @Input() tableData: InstitutionDTO[] = [];
     @Input() typeNumber = 0;
@@ -47,10 +47,10 @@ import { EntryService } from '../../entry/entry.service';
     columnsSetUpBaseOnType(typeNumber: number) {
      switch (typeNumber) {
         case 1:
-          this.columnsToDisplay = ['Nazov institucie'];
+          this.columnsToDisplay = ['Názov inštitúcie'];
           break;
         case 2:
-          this.columnsToDisplay = ['Názov kampaňe'];
+          this.columnsToDisplay = ['Názov kampane'];
           break;
         case 3:
           this.columnsToDisplay = ['Názov metódy'];

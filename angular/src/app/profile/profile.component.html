@@ -1,7 +1,7 @@
 <div class="container" *ngIf="currentUser; else loggedOut">
   <header class="jumbotron">
     <h3>
-       Prihlasení ako používateľ: <strong>{{ currentUser.username }}</strong>
+       Prihlásený ako používateľ: <strong>{{ currentUser.username }}</strong>
     </h3>
   </header>
   <p *ngIf="currentUser.token">
@@ -13,7 +13,7 @@
     <strong>Email:</strong>
     {{ currentUser.email }}
   </p>
-  <strong>Aktuálne ma užívateľ priradené tieto role:</strong>
+  <strong>Aktuálne má používateľ priradené tieto role:</strong>
   <ul>
     <li *ngFor="let role of currentUser.roles">
       {{ role }}

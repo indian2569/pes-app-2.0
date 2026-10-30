@@ -1,18 +1,18 @@
 <div class="home_public item" *ngIf="!isLoggedIn()">
   <h1 >Program Evidencie Služieb</h1>
   <h3 >Pre začiatok práce s programom sa prosím prihláste.</h3>
-<div >Mám email v rámci domény organizácie:</div><button (click)="redirectLoginUrl()" class ="btn">Prihlasiť sa</button>
+<div >Mám email v rámci domény organizácie:</div><button (click)="redirectLoginUrl()" class ="btn">Prihlásiť sa</button>
 <div >Chcem použiť alebo registrovať vlastný email:</div> <button  (click)="redirectLoginUrl()"  class ="btn">Prihlásiť</button> <button  (click)="redirectRegisterUrl()"  class ="btn"> Registrovať sa</button>
 </div>
 <div class="home_private" *ngIf="isLoggedIn()">
   	<h1 class="item">Program Evidencie Služieb</h1>
-      <h3 class="item page-title">Statistiky</h3>
+      <h3 class="item page-title">Štatistiky</h3>
       <div class="row">
-      <div class="fit"><app-dasbord-box [displayName]="boxName1" [displayValue]="2"></app-dasbord-box></div>
-      <div class="fit"><app-dasbord-box [displayName]="boxName2" [displayValue]="10"></app-dasbord-box></div>
-      <div class="fit"><app-dasbord-box [displayName]="boxName3" [displayValue]="20"></app-dasbord-box></div>
+      <div class="fit"><app-dashboard-box [displayName]="boxName1" [displayValue]="2"></app-dashboard-box></div>
+      <div class="fit"><app-dashboard-box [displayName]="boxName2" [displayValue]="10"></app-dashboard-box></div>
+      <div class="fit"><app-dashboard-box [displayName]="boxName3" [displayValue]="20"></app-dashboard-box></div>
       </div>
-    <div  class="item">Naposledy pridané zaznami</div>
+    <div  class="item">Naposledy pridané záznamy</div>
 	<app-table-entry [tableData] = "records"></app-table-entry>
 </div>
 

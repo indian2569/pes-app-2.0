@@ -1,6 +1,6 @@
 <mat-form-field class="example-chip-list" appearance="fill">
   <mat-label>{{title}}</mat-label>
-  <mat-chip-grid #chipList aria-label="{title}" [disabled]="disabled">
+  <mat-chip-grid #chipList [attr.aria-label]="title" [disabled]="disabled">
     <mat-chip-row *ngFor="let chip of selectedChips" (removed)="remove(chip)">
       {{chipDisplayName(chip)}}
       <button matChipRemove *ngIf="!disabled">
