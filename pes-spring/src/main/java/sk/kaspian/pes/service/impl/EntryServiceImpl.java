@@ -24,6 +24,7 @@ import sk.kaspian.pes.model.SortCriteria;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
+import sk.kaspian.pes.openapi.model.v1.EntryPage;
 import sk.kaspian.pes.repository.EntryRepository;
 import sk.kaspian.pes.repository.UserRepository;
 import sk.kaspian.pes.service.EntryService;
@@ -42,9 +43,11 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Entry> getAllEntrys(EntryFilter filter) {
+	public EntryPage getAllEntrys(EntryFilter filter) {
 		if (filter == null) {
-			return entryMapper.map(entryRepository.findAll());
+			EntryPage entryPage = new EntryPage();
+			entryPage.setResults(entryMapper.map(entryRepository.findAll()));
+			return entryPage;
 		}
 		Specification<sk.kaspian.pes.model.Entry> spec = Specification.where(EntrySpecifications.withPlace(filter.getPlace()))
 				.and(EntrySpecifications.withCampaign(filter.getCampaign()))
@@ -59,7 +62,7 @@ public class EntryServiceImpl implements EntryService {
 		// Handle pagination
 		Pageable pageable = PageRequest.of(filter.getPageNumber(), filter.getPageSize(), sort);
 
-		return entryMapper.map(entryRepository.findAll(spec, pageable).getContent());
+		return entryMapper.map(entryRepository.findAll(spec, pageable));
 	}
 
 	@Override

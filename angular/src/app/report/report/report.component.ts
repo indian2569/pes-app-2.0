@@ -1,12 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
+/**
+ * TODO: statistics are not implemented yet.
+ * The backend has no statistics endpoint; once it exists, add a call to it in a service
+ * and display/export the result here. Until then the form is shown but submitting is disabled.
+ */
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent {
+
+  // TODO: remove once the statistics backend endpoint is implemented
+  readonly notImplemented = true;
 
   statForm: FormGroup;
   loading = false;
@@ -19,19 +27,8 @@ export class ReportComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
   onSubmit() {
-    if (this.statForm.valid) {
-      this.loading = true;
-
-      const filterData = this.statForm.value;
-      console.log(filterData);
-
-      // TODO: send to backend
-      setTimeout(() => this.loading = false, 1500);
-    }
+    // TODO: send this.statForm.value to the statistics endpoint and show the result
   }
 
 }

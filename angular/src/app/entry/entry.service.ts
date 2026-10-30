@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 
 import { CardBasicDTO } from '../model/CardBasicDTO';
 import { EntryDTO } from '../model/EntryDTO';
+import { EntryPageDTO } from '../model/EntryPageDTO';
 import { Observable } from 'rxjs';
 
 /** Query parameters supported by GET /api/entry/allEntrys (see pes.yaml). */
@@ -42,12 +43,12 @@ export class EntryService {
     return this.http.delete<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 
-  public getAllEntrys(filter?: EntryFilterParams):  Observable<EntryDTO[]> {
+  public getAllEntrys(filter?: EntryFilterParams):  Observable<EntryPageDTO[]> {
     let params = new HttpParams();
     Object.entries(filter ?? {})
       .filter(([, value]) => value !== null && value !== undefined && value !== '')
       .forEach(([key, value]) => params = params.set(key, String(value)));
-    return this.http.get<EntryDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params, context: this.CONTEXT });
+    return this.http.get<EntryPageDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params, context: this.CONTEXT });
   }
 
   public getAllEntrysByCardMain(card: CardBasicDTO):  Observable<EntryDTO[]> {

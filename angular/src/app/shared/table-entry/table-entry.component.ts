@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EntryDTO } from '../../model/EntryDTO';
+import { PageDTO } from '../../model/PageDTO';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { MatTable } from '@angular/material/table';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
@@ -17,6 +19,9 @@ import { takeUntil } from 'rxjs/operators';
 export class TableEntryComponent implements OnInit, OnDestroy {
   @Input() tableData: EntryDTO[];
   @Input() addButton: boolean;
+  // paging is optional: the paginator is shown only when the parent passes server paging info
+  @Input() pageble: PageDTO;
+  @Output() pageChange = new EventEmitter<PageEvent>();
 
   displayedColumns: string[] = ['place', 'entry_date_from', 'campaign', 'program_type', 'createdBy', 'action'];
   dataSource: EntryDTO[];

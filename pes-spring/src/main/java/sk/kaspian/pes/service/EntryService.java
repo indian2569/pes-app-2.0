@@ -7,15 +7,16 @@ import sk.kaspian.pes.model.EntryFilter;
 import sk.kaspian.pes.model.User;
 import sk.kaspian.pes.openapi.model.v1.Card;
 import sk.kaspian.pes.openapi.model.v1.Entry;
+import sk.kaspian.pes.openapi.model.v1.EntryPage;
 
 public interface EntryService {
 	
 	/**
 	 * Function return all Entry's created
-	 * @param filter @{@link EntryFilter} values for the select
-	 * @return {@link List} {@link EntryService} list of Entrys
+	 * @param filter @{@link EntryFilter} values for the select, null returns all entries without paging
+	 * @return {@link EntryPage} page of Entrys with paging information
 	 */
-	List<Entry> getAllEntrys(EntryFilter filter);
+	EntryPage getAllEntrys(EntryFilter filter);
 	
 	/**
 	 * remove Entry

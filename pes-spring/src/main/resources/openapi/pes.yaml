@@ -362,7 +362,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Entry'
+                  $ref: '#/components/schemas/EntryPage'
         400:
           $ref: '#/components/responses/InvalidRequest'
         401:
@@ -1599,6 +1599,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Card'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    EntryPage:
+      type: object
+      description: "Array of entry results filtered, ordered and with paging support"
+      required:
+        - results
+        - paging
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entry'
         paging:
           $ref: '#/components/schemas/Paging'
     Card:

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { formatDate } from '@angular/common';
-import { EntryDTO } from '../../model/EntryDTO';
+import { EntryPageDTO } from '../../model/EntryPageDTO';
+import { PageEvent } from '@angular/material/paginator';
 import { EntryFilterParams, EntryService } from '../entry.service';
 import { CampaignDTO } from '../../model/CampaignDTO';
 import { ProgramDTO } from '../../model/ProgramDTO';
@@ -33,7 +34,9 @@ export class AllEntryComponent implements OnInit, OnDestroy {
   campaigns$: Observable<CampaignDTO[]>;
   programs$: Observable<ProgramDTO[]>;
 
-  entryData: EntryDTO[] = [];
+  entryData: EntryPageDTO;
+  pageNumber = 0;
+  pageSize = 20;
   // switchMap drops responses of older requests, so a slow request can't overwrite newer results
   private load$ = new Subject<void>();
   onDestroy$ = new Subject();
@@ -50,7 +53,7 @@ export class AllEntryComponent implements OnInit, OnDestroy {
     this.load$.pipe(
       switchMap(() => this.entryService.getAllEntrys(this.buildRequest())),
       takeUntil(this.onDestroy$)
-    ).subscribe(entry => this.entryData = entry);
+    ).subscribe(entries => this.entryData = entries[0]);
     this.load$.next();
   }
 
@@ -60,6 +63,7 @@ export class AllEntryComponent implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
+    this.pageNumber = 0;
     this.load$.next();
   }
 
@@ -68,10 +72,18 @@ export class AllEntryComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
+  onPageChange(event: PageEvent): void {
+    this.pageNumber = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.load$.next();
+  }
+
   // maps the form onto the query parameters of GET /api/entry/allEntrys
   private buildRequest(): EntryFilterParams {
     const filters = this.filterForm.value;
     return {
+      page_number: this.pageNumber,
+      page_size: this.pageSize,
       place: filters.place,
       campaign: filters.campaign,
       program: filters.program,

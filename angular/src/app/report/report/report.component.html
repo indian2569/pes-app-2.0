@@ -1,6 +1,11 @@
 <div class="stats-card">
   <h3 class="page-title">Štatistiky</h3>
 
+  <!-- TODO: remove this notice once statistics are implemented -->
+  <p class="todo-notice" *ngIf="notImplemented">
+    Štatistiky zatiaľ nie sú implementované. Táto funkcionalita bude dostupná v ďalšej verzii.
+  </p>
+
   <form [formGroup]="statForm" (ngSubmit)="onSubmit()">
 
     <!-- Date Range -->
@@ -33,7 +38,7 @@
 
     <!-- Submit Button -->
     <div class="form-actions">
-      <button mat-flat-button color="primary" type="submit">
+      <button mat-flat-button color="primary" type="submit" [disabled]="notImplemented">
         Zobraziť
       </button>
       <img src="/images/spinner-sb.gif" *ngIf="loading" class="loading-spinner">

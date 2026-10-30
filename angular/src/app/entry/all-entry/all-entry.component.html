@@ -89,5 +89,5 @@
   </div>
 
 </form>
-<app-table-entry
-[tableData] = "entryData"></app-table-entry>
+<app-table-entry *ngIf="entryData"
+[tableData] = "entryData.results" [pageble] = "entryData.paging" (pageChange)="onPageChange($event)"></app-table-entry>

@@ -58,4 +58,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <mat-paginator *ngIf="pageble" (page)="pageChange.emit($event)" [length]="pageble.totalElements" [pageIndex]="pageble.pageNumber" [pageSize]="pageble.pageSize" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Vyber pocet zaznamov">
+  </mat-paginator>
 </div>

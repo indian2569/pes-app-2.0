@@ -10,15 +10,34 @@ import jakarta.validation.Valid;
 
 import org.mapstruct.Mapper;
 
+import org.springframework.data.domain.Page;
 import sk.kaspian.pes.model.*;
 import sk.kaspian.pes.model.enums.ContactEnum;
 import sk.kaspian.pes.openapi.model.v1.Campaign;
 import sk.kaspian.pes.openapi.model.v1.Entry;
+import sk.kaspian.pes.openapi.model.v1.EntryPage;
+import sk.kaspian.pes.openapi.model.v1.Paging;
 
 @Mapper(componentModel = "spring")
 public interface EntryMapper {
 
 	List<Entry> map(List<sk.kaspian.pes.model.Entry> findAll);
+
+	default EntryPage map(Page<sk.kaspian.pes.model.Entry> pageValues) {
+		var page = new EntryPage();
+		page.setPaging(toPaging(pageValues));
+		page.setResults(map(pageValues.getContent()));
+		return page;
+	}
+
+	default Paging toPaging(Page<?> page) {
+		var paging = new Paging();
+		paging.setPageCount(page.getTotalPages());
+		paging.setPageNumber(page.getNumber());
+		paging.setPageSize(page.getSize());
+		paging.setTotalElements(page.getTotalElements());
+		return paging;
+	}
 
     default Entry map(sk.kaspian.pes.model.Entry one) {
         if ( one == null ) {

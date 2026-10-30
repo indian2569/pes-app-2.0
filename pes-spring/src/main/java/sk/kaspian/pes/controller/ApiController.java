@@ -137,7 +137,7 @@ public class ApiController implements ApiApi {
 
     @Override
     public ResponseEntity<List<Entry>> filterEntrys() {
-        return ResponseEntity.ok(entryService.getAllEntrys(null));
+        return ResponseEntity.ok(entryService.getAllEntrys(null).getResults());
     }
 
     @Override
@@ -210,9 +210,10 @@ public class ApiController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<List<Entry>> getAllEntry(Integer pageSize, Integer pageNumber, String sort, String place, String campaign, String yearfrom, String yearto, String author, String program) {
-        return ResponseEntity.ok(entryService.getAllEntrys(fillEntryFilterValue
-                (Optional.ofNullable(pageSize), Optional.ofNullable(pageNumber), Optional.ofNullable(sort), Optional.ofNullable(place), Optional.ofNullable(campaign),Optional.ofNullable(yearfrom), Optional.ofNullable(yearto), Optional.ofNullable(program), Optional.ofNullable(author))));
+    public ResponseEntity<List<EntryPage>> getAllEntry(Integer pageSize, Integer pageNumber, String sort, String place, String campaign, String yearfrom, String yearto, String author, String program) {
+        EntryPage entry = entryService.getAllEntrys(fillEntryFilterValue
+                (Optional.ofNullable(pageSize), Optional.ofNullable(pageNumber), Optional.ofNullable(sort), Optional.ofNullable(place), Optional.ofNullable(campaign),Optional.ofNullable(yearfrom), Optional.ofNullable(yearto), Optional.ofNullable(program), Optional.ofNullable(author)));
+        return ResponseEntity.ok(List.of(entry));
     }
 
     private EntryFilter fillEntryFilterValue(Optional<Integer> pageSize, Optional<Integer> pageNumber, Optional<String> sort, Optional<String> place, Optional<String> campaign, Optional<String> yearfrom, Optional<String> yearto, Optional<String> program, Optional<String> author) {
