@@ -92,3 +92,9 @@ table.mat-table th.mat-header-cell {
   background-color: #8fcb51 !important; /* your green */
   color: #fff;
 }
+/* HTTP error notifications (ErrorInterceptor) */
+.mat-mdc-snack-bar-container.error-snackbar {
+  --mdc-snackbar-container-color: #b3261e;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}

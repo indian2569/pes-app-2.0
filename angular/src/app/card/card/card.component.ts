@@ -46,7 +46,7 @@ export class CardComponent implements OnInit, OnDestroy {
               private router: Router) {}
 
   ngOnInit(): void {
-    this.settingService.getAllInstitutions().pipe(takeUntil(this.onDestroy$))
+    this.settingService.institutions.getAll().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => {
           this.institutions = data;

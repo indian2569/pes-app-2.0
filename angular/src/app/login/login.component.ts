@@ -52,7 +52,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       (err: HttpErrorResponse) => {
-        this.errorMessage = err.error?.message ?? err.message;
+        this.errorMessage = err.status === 401
+          ? 'Nesprávne používateľské meno alebo heslo.'
+          : err.status === 0 ? 'Server je nedostupný.' : (err.error?.message ?? err.message);
         this.isLoginFailed = true;
         this.loading = false;
       }

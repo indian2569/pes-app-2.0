@@ -29,9 +29,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.entryService.getAllEntrysByCard().pipe(takeUntil(this.onDestroy$))
-    .subscribe(entrys => this.records = entrys);
-
+    // the recent entries are shown (and allowed by the backend) only to logged-in users
+    if (this.isLoggedIn()) {
+      this.entryService.getAllEntrysByCard().pipe(takeUntil(this.onDestroy$))
+      .subscribe(entrys => this.records = entrys);
+    }
   }
 
   ngOnDestroy(): void {

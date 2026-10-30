@@ -18,12 +18,10 @@
     <form  class="form-grid" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="formGroup">
       <div class="grid-2">
         <app-chips-input title="Klienti:" [dataSet]="cards" [type]="1"
-                         [selectedData]="entryEdit?.client"
-                         [parentForm]="formGroup" #client>
+                         formControlName="client">
         </app-chips-input>
         <app-chips-input title="Klienti na službe:" [dataSet]="cards" [type]="1"
-                         [selectedData]="entryEdit?.clients_on_site"
-                         [parentForm]="formGroup"  #otherClientsInput>
+                         formControlName="clients_on_site">
         </app-chips-input>
       </div>
       <div class="grid-2">
@@ -81,12 +79,10 @@
       </div>
       <div class="grid-2">
         <app-chips-input title="Metódy práce:" [dataSet]="methods" [type]="3"
-                         [selectedData]="entryEdit?.work_methods"
-                         [parentForm]="formGroup" #methodsInput>
+                         formControlName="work_methods">
         </app-chips-input>
         <app-chips-input title="Ďalší pracovníci:" [dataSet]="contacts" [type]="2"
-                         [selectedData]="entryEdit?.other_workers"
-                         [parentForm]="formGroup" #coworkersInput>
+                         formControlName="other_workers">
         </app-chips-input>
       </div>
       <mat-form-field appearance="fill" class="full">

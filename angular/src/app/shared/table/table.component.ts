@@ -5,21 +5,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAction, DialogBoxComponent, DialogBoxData, DialogBoxResult } from '../dialog-box/dialog-box.component';
 
 import { SettingService } from '../../setting/setting.service';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import { CoworkerDTO } from '../../model/CoworkerDTO';
 import { isNil } from '../utils/is-nil';
+import { CrudService } from '../crud/crud.service';
 
 /** Rows of the setting tables; only coworkers (type 5) have a position. */
 type SettingRow = CoworkerDTO;
-
-interface SettingApi {
-  getAll(): Observable<SettingRow[]>;
-  save(item: SettingRow): Observable<SettingRow>;
-  delete(id: string): Observable<SettingRow>;
-}
 
 @Component({
   selector: 'app-table',
@@ -101,17 +96,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // --- CRUD Operations
-  private getServiceMethods(): SettingApi | undefined {
-    const s = this.settingService;
-    const serviceMap: Record<number, SettingApi> = {
-      1: { getAll: () => s.getAllInstitutions(), save: item => s.saveInstitution(item), delete: id => s.deleteInstitution(id) },
-      2: { getAll: () => s.getAllCampaigns(), save: item => s.saveCampaign(item), delete: id => s.deleteCampaign(id) },
-      3: { getAll: () => s.getAllMethods(), save: item => s.saveMethod(item), delete: id => s.deleteMethod(id) },
-      4: { getAll: () => s.getAllPrograms(), save: item => s.saveProgram(item), delete: id => s.deleteProgram(id) },
-      5: { getAll: () => s.getAllCoworkers(), save: item => s.saveCoworker(item), delete: id => s.deleteCoworker(id) },
-      6: { getAll: () => s.getAllEvents(), save: item => s.saveEvent(item), delete: id => s.deleteEvent(id) },
-    };
-    return serviceMap[this.typeNumber];
+  private getServiceMethods(): CrudService<SettingRow> | undefined {
+    return this.settingService.forType(this.typeNumber);
   }
 
   private addRow(data: SettingRow): void {

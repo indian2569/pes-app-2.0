@@ -31,42 +31,42 @@ export class LookupService {
 
   getCampaigns(): Observable<CampaignDTO[]> {
     if (!this.campaigns$) {
-      this.campaigns$ = this.settingService.getAllCampaigns().pipe(shareReplay(1));
+      this.campaigns$ = this.settingService.campaigns.getAll().pipe(shareReplay(1));
     }
     return this.campaigns$;
   }
 
   getCoworkers(): Observable<CoworkerDTO[]> {
     if (!this.coworkers$) {
-      this.coworkers$ = this.settingService.getAllCoworkers().pipe(shareReplay(1));
+      this.coworkers$ = this.settingService.coworkers.getAll().pipe(shareReplay(1));
     }
     return this.coworkers$;
   }
 
   getEvents(): Observable<EventDTO[]> {
     if (!this.events$) {
-      this.events$ = this.settingService.getAllEvents().pipe(shareReplay(1));
+      this.events$ = this.settingService.events.getAll().pipe(shareReplay(1));
     }
     return this.events$;
   }
 
   getInstitutions(): Observable<InstitutionDTO[]> {
     if (!this.institutions$) {
-      this.institutions$ = this.settingService.getAllInstitutions().pipe(shareReplay(1));
+      this.institutions$ = this.settingService.institutions.getAll().pipe(shareReplay(1));
     }
     return this.institutions$;
   }
 
   getMethods(): Observable<MethodsDTO[]> {
     if (!this.methods$) {
-      this.methods$ = this.settingService.getAllMethods().pipe(shareReplay(1));
+      this.methods$ = this.settingService.methods.getAll().pipe(shareReplay(1));
     }
     return this.methods$;
   }
 
   getPrograms(): Observable<ProgramDTO[]> {
     if (!this.programs$) {
-      this.programs$ = this.settingService.getAllPrograms().pipe(shareReplay(1));
+      this.programs$ = this.settingService.programs.getAll().pipe(shareReplay(1));
     }
     return this.programs$;
   }

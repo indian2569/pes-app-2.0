@@ -5,6 +5,7 @@ import { EntryRoutingModule } from './entry-routing.module';
 import { AllEntryComponent } from './all-entry/all-entry.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { FormControlsModule } from '../shared/form-controls.module';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
@@ -16,6 +17,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CommonModule,
     EntryRoutingModule,
     SharedModule,
+    FormControlsModule,
     MatProgressSpinnerModule
   ]
 })

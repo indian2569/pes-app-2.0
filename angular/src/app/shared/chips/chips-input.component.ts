@@ -1,6 +1,6 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, ViewChild, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, ElementRef, ViewChild, Input, OnChanges, SimpleChanges, forwardRef} from '@angular/core';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
@@ -14,13 +14,17 @@ export type ChipOption = CardBasicDTO | SettingDTO;
 
 /**
  * @title Chips with input
+ * Form control (use with formControlName / [formControl]) whose value is the array of selected options.
  */
 @Component({
   selector: 'app-chips-input',
   templateUrl: 'chips-input.component.html',
   styleUrls: ['chips-input.component.scss'],
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ChipsInputComponent), multi: true }
+  ]
 })
-export class ChipsInputComponent<T extends ChipOption> implements OnChanges {
+export class ChipsInputComponent<T extends ChipOption> implements OnChanges, ControlValueAccessor {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // holds the typed text, and briefly the picked option while the autocomplete selects it
   inputControl = new FormControl<string | T | null>('');
@@ -28,18 +32,20 @@ export class ChipsInputComponent<T extends ChipOption> implements OnChanges {
   selectedChips: T[] = [];
   allAvaliableChips: T[] = [];
   inputPlaceholder = 'Pridaj';
+  disabled = false;
 
   @ViewChild('chipsInput') chipsInput?: ElementRef<HTMLInputElement>;
   @Input() title = '';
   @Input() dataSet?: T[] | null;
-  @Input() parentForm?: FormGroup;
-  @Input() selectedData?: T[] | null;
   @Input() type?: number;
 
   // dataSet usually arrives asynchronously, so the suggestion list re-filters when it changes
   private availableChips$ = new BehaviorSubject<T[]>([]);
   // emits whenever selectedChips changes, so already selected options leave (and removed ones return to) the suggestions
   private selectionChanged$ = new BehaviorSubject<void>(undefined);
+
+  private onChange: (value: T[]) => void = () => {};
+  onTouched: () => void = () => {};
 
   constructor() {
     this.filteredChips = combineLatest([
@@ -57,10 +63,6 @@ export class ChipsInputComponent<T extends ChipOption> implements OnChanges {
       this.allAvaliableChips = isNil(this.dataSet) ? [] : this.dataSet;
       this.availableChips$.next(this.allAvaliableChips);
     }
-    if (changes['selectedData']) {
-      this.selectedChips = isNil(this.selectedData) ? [] : [...this.selectedData];
-      this.selectionChanged$.next();
-    }
     if (changes['type']) {
       if (this.type === 1) {
           this.inputPlaceholder = 'Pridaj klienta';
@@ -72,14 +74,39 @@ export class ChipsInputComponent<T extends ChipOption> implements OnChanges {
     }
   }
 
+  // ===== ControlValueAccessor =====
+
+  writeValue(value: T[] | null): void {
+    this.selectedChips = isNil(value) ? [] : [...value];
+    this.selectionChanged$.next();
+  }
+
+  registerOnChange(fn: (value: T[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    if (isDisabled) {
+      this.inputControl.disable({ emitEvent: false });
+    } else {
+      this.inputControl.enable({ emitEvent: false });
+    }
+  }
+
+  // ===== chip handling =====
+
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim().toLowerCase();
 
     // typed text is accepted only when it names an existing option, the backend expects objects not free text
     const match = this.allAvaliableChips.find(chip => this.chipDisplayName(chip).toLowerCase() === value);
     if (value && match && !this.isSelected(match)) {
-      this.selectedChips.push(match);
-      this.selectionChanged$.next();
+      this.updateSelection([...this.selectedChips, match]);
     }
 
     // Clear the input value
@@ -89,24 +116,27 @@ export class ChipsInputComponent<T extends ChipOption> implements OnChanges {
   }
 
   remove(removedChip: T): void {
-    const index = this.selectedChips.indexOf(removedChip);
-
-    if (index >= 0) {
-      this.selectedChips.splice(index, 1);
-      this.selectionChanged$.next();
+    if (this.selectedChips.includes(removedChip)) {
+      this.updateSelection(this.selectedChips.filter(chip => chip !== removedChip));
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const chip: T = event.option.value;
     if (!this.isSelected(chip)) {
-      this.selectedChips.push(chip);
-      this.selectionChanged$.next();
+      this.updateSelection([...this.selectedChips, chip]);
     }
     if (this.chipsInput) {
       this.chipsInput.nativeElement.value = '';
     }
     this.inputControl.setValue(null);
+  }
+
+  private updateSelection(chips: T[]): void {
+    this.selectedChips = chips;
+    this.selectionChanged$.next();
+    this.onChange([...chips]);
+    this.onTouched();
   }
 
   // compares by id, because chips loaded with an edited entry are different instances than the dataSet options

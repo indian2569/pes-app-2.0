@@ -69,32 +69,8 @@ import { EntryService } from '../../entry/entry.service';
 
     editItem(id: string) {
         let editItem: SettingDTO | undefined;
-        switch (this.typeNumber) {
-            case 1:
-                this.settingService.getInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-            case 2:
-                this.settingService.getCampaign(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-            case 3:
-                this.settingService.getMethod(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-            case 4:
-                this.settingService.getProgram(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-            case 5:
-                this.settingService.getCoworker(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-            case 6:
-                this.settingService.getEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe((item) => editItem = item);
-                break;
-        }
+        this.settingService.forType(this.typeNumber)?.get(id).pipe(takeUntil(this.onDestroy$))
+            .subscribe((item) => editItem = item);
     }
 
   confirmDialog(id: string): void {
@@ -114,41 +90,10 @@ import { EntryService } from '../../entry/entry.service';
     });
   }
 
+    // only setting lists (types 1-6) can be deleted here; unknown types do nothing
     deleteItem(id: string) {
-        switch (this.typeNumber) {
-            case 1:
-                this.settingService.deleteInstitution(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 2:
-                this.settingService.deleteCampaign(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 3:
-                this.settingService.deleteMethod(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 4:
-                this.settingService.deleteProgram(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 5:
-                this.settingService.deleteCoworker(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 6:
-                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 7:
-                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-            case 8:
-                this.settingService.deleteEvent(id.toString()).pipe(takeUntil(this.onDestroy$))
-                    .subscribe();
-                break;
-        }
+        this.settingService.forType(this.typeNumber)?.delete(id).pipe(takeUntil(this.onDestroy$))
+            .subscribe();
     }
 
   ngOnDestroy(): void {

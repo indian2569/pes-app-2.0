@@ -4,6 +4,7 @@ import { CardComponent } from './card/card.component';
 import { AllCardsComponent } from './all-cards/all-cards.component';
 import { CarRoutingModule } from './car-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { FormControlsModule } from '../shared/form-controls.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     CarRoutingModule,
 
-    SharedModule
+    SharedModule,
+    FormControlsModule
   ]
 })
 export class CardModule { }

@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import {authGuard} from './_services/auth-guard.service';
-import { ProfileComponent } from './profile/profile.component';
 
 const appRoutes: Routes = [
   {
@@ -39,13 +36,15 @@ const appRoutes: Routes = [
     path: 'info',
     loadChildren: () => import('./info/info.module').then(m => m.InfoModule)
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'profile', canActivate: [authGuard], component: ProfileComponent },
   {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
+  },
+  // login, register and profile keep their top-level URLs (/login, /register, /profile)
+  {
+    path: '',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   }
 ];
 

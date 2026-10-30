@@ -5,6 +5,7 @@ import { ReportRoutingModule } from './report-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {SharedModule} from "../shared/shared.module";
+import { FormControlsModule } from '../shared/form-controls.module';
 
 
 
@@ -15,7 +16,8 @@ import {SharedModule} from "../shared/shared.module";
     ReportRoutingModule,
     ReactiveFormsModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
+    FormControlsModule
   ]
 })
 export class ReportModule { }

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {formatDate} from '@angular/common';
 import {FormBuilder, Validators} from '@angular/forms';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
@@ -14,7 +14,6 @@ import {ContractEnum, ContractEnum2LabelMapping} from '../../model/ContractEnum'
 
 
 import {CardBasicDTO} from '../../model/CardBasicDTO';
-import {ChipsInputComponent} from '../../shared/chips/chips-input.component';
 import {CoworkerDTO} from '../../model/CoworkerDTO';
 import {EntryDTO} from '../../model/EntryDTO';
 import {SettingService} from '../../setting/setting.service';
@@ -32,11 +31,6 @@ type EntryForm = ReturnType<EntryComponent['buildForm']>;
   styleUrls: ['./entry.component.scss']
 })
 export class EntryComponent implements OnInit, OnDestroy {
-
-  @ViewChild('client', {static: false}) clientsControl?: ChipsInputComponent<CardBasicDTO>;
-  @ViewChild('otherClientsInput', {static: false}) otherClientsControl?: ChipsInputComponent<CardBasicDTO>;
-  @ViewChild('coworkersInput', {static: false}) coworkersControl?: ChipsInputComponent<CoworkerDTO>;
-  @ViewChild('methodsInput', {static: false}) methodsControl?: ChipsInputComponent<MethodsDTO>;
 
   programs: ProgramDTO[] = [];
   methods: MethodsDTO[] = [];
@@ -65,12 +59,12 @@ export class EntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // option lists for the chips inputs are passed to them through [dataSet] bindings
-    this.settingService.getAllMethods().pipe(takeUntil(this.onDestroy$))
+    this.settingService.methods.getAll().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => this.methods = data,
         error: (e) => console.error(e)
       });
-    this.settingService.getAllCoworkers().pipe(takeUntil(this.onDestroy$))
+    this.settingService.coworkers.getAll().pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (data) => this.contacts = data,
         error: (e) => console.error(e)
@@ -87,8 +81,8 @@ export class EntryComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.editId = editId;
         return forkJoin({
-          programs: this.settingService.getAllPrograms(),
-          campaigns: this.settingService.getAllCampaigns(),
+          programs: this.settingService.programs.getAll(),
+          campaigns: this.settingService.campaigns.getAll(),
           entry: isNil(editId) ? of(undefined) : this.entryService.getEntry(editId)
         });
       }),
@@ -121,25 +115,12 @@ export class EntryComponent implements OnInit, OnDestroy {
 
   getSaveObject(formGroup: EntryForm): EntryDTO {
     const value = formGroup.getRawValue();
-    let ret: EntryDTO = {
+    return {
       ...value,
       contact_type: value.contact_type ?? undefined,
       entry_date_from: this.toBackendDateTime(value.entry_date_from),
       entry_date_to: this.toBackendDateTime(value.entry_date_to)
-  };
-    if (!isNil(this.clientsControl)) {
-        ret.client = this.clientsControl.selectedChips;
-    }
-    if (!isNil(this.otherClientsControl)) {
-        ret.clients_on_site = this.otherClientsControl.selectedChips;
-    }
-    if (!isNil(this.coworkersControl)) {
-        ret.other_workers = this.coworkersControl.selectedChips;
-    }
-    if (!isNil(this.methodsControl)) {
-        ret.work_methods = this.methodsControl.selectedChips;
-    }
-    return ret;
+    };
   }
 
   private toBackendDateTime(value: Date): string {
@@ -147,7 +128,6 @@ export class EntryComponent implements OnInit, OnDestroy {
   }
 
   formSetUp() {
-    // selected chips are passed to the chips inputs through [selectedData] bindings
     this.formGroup = this.buildForm(this.entryEdit);
   }
 
@@ -155,6 +135,11 @@ export class EntryComponent implements OnInit, OnDestroy {
     const fb = this.formBuilder.nonNullable;
     return fb.group({
       id: fb.control<number | undefined>(entry?.id),
+      // bound to <app-chips-input formControlName>, the value is the list of selected options
+      client: fb.control<CardBasicDTO[]>(entry?.client ?? []),
+      clients_on_site: fb.control<CardBasicDTO[]>(entry?.clients_on_site ?? []),
+      work_methods: fb.control<MethodsDTO[]>(entry?.work_methods ?? []),
+      other_workers: fb.control<CoworkerDTO[]>(entry?.other_workers ?? []),
       entry_date_from: fb.control(isNil(entry) ? new Date() : new Date(entry.entry_date_from), [Validators.required]),
       entry_date_to: fb.control(isNil(entry) ? new Date() : new Date(entry.entry_date_to), [Validators.required]),
       place: fb.control(entry?.place ?? ''),

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpContext, HttpContextToken, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 import { CardBasicDTO } from '../model/CardBasicDTO';
@@ -29,14 +29,13 @@ export class EntryService {
 
   constructor(protected http: HttpClient) { }
 
-  private CONTEXT = new HttpContext().set(new HttpContextToken(() => false), true);
 
   public saveEntry(entry: EntryDTO):  Observable<EntryDTO> {
-    return this.http.post<EntryDTO>(EntryService.ENTRY_API_URL + '/save', entry, { context: this.CONTEXT });
+    return this.http.post<EntryDTO>(EntryService.ENTRY_API_URL + '/save', entry);
   }
 
   public getEntry(code: string | number):  Observable<EntryDTO> {
-    return this.http.get<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`, { context: this.CONTEXT });
+    return this.http.get<EntryDTO>(EntryService.ENTRY_API_URL + '/' + `${code}`);
   }
 
   deleteEntry(code: string | number): Observable<EntryDTO> {
@@ -48,7 +47,7 @@ export class EntryService {
     Object.entries(filter ?? {})
       .filter(([, value]) => value !== null && value !== undefined && value !== '')
       .forEach(([key, value]) => params = params.set(key, String(value)));
-    return this.http.get<EntryPageDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params, context: this.CONTEXT });
+    return this.http.get<EntryPageDTO[]>(EntryService.ENTRY_API_URL + '/allEntrys', { params });
   }
 
   public getAllEntrysByCardMain(card: CardBasicDTO):  Observable<EntryDTO[]> {
